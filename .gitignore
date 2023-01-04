@@ -8,8 +8,8 @@ node_modules/
 dist/
 
 # Sesitive Configuration files - DataBase, MyBatis, ...
-*-configuration.xml 
-database.properties
+/config/mybatis-configuration.xml 
+/config/database.properties
 
 ### Eclipse Patch ###
 # Spring Boot Tooling
