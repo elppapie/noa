@@ -8,8 +8,7 @@ node_modules/
 dist/
 
 # Sesitive Configuration files - DataBase, MyBatis, ...
-/config/mybatis-configuration.xml 
-/config/database.properties
+*.properties
 
 ### Eclipse Patch ###
 # Spring Boot Tooling
@@ -44,6 +43,9 @@ replay_pid*
 # Maven
 target/
 dist/
+
+# sbteclipse plugin
+.target
 
 # Unit test reports
 TEST*.xml
