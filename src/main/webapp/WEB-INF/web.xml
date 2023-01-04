@@ -3,6 +3,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee; https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+	<welcome-file-list>
+		<welcome-file>/home.noa</welcome-file>
+	</welcome-file-list>
+	
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -27,12 +31,9 @@
 		
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<!-- <url-pattern>/</url-pattern> -->
+		<url-pattern>*.noa</url-pattern>
 	</servlet-mapping>
 	
-	<context-param>
-		<param-name>path</param-name>
-		<param-value></param-value>
-	</context-param>
-
+	
 </web-app>

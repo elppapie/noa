@@ -14,14 +14,14 @@ public class TilesConfig {
 		UrlBasedViewResolver resolver = new UrlBasedViewResolver();
 		//사용할 뷰 설정
 		resolver.setViewClass(TilesView.class);
-		//뷰 리졸버의 우선순위 설정: 이 뷰를 우선순위가 InternalResourceViewResolver보다 높게 해야한다
+		//뷰 리졸버의 우선순위 설정: 이 뷰리졸버의 우선순위가 InternalResourceViewResolver보다 높게 해야한다
 		resolver.setOrder(0);
 		return resolver;
 	}/////////////
 	@Bean
 	public TilesConfigurer tilesConfigurer() {
 		final TilesConfigurer configurer = new TilesConfigurer();
-		configurer.setDefinitions(new String[] {"/WEB-INF/views/template/layouts.xml"});		
+		configurer.setDefinitions(new String[] {"/WEB-INF/views/tiles3/noaLayouts.xml"});		
 		return configurer;
 	}/////////////////////////////
 }

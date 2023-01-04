@@ -4,6 +4,6 @@
 <!-- top -->
 <tiles:insertAttribute name="top"/>
 <!-- body -->
-<tiles:insertAttribute name="body"/>
+<tiles:insertAttribute name="content"/>
 <!-- footer -->
 <tiles:insertAttribute name="footer"/>
