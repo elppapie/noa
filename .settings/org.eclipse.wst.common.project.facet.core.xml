@@ -3,4 +3,5 @@
   <runtime name="NoAServer"/>
   <installed facet="java" version="11"/>
   <installed facet="jst.web" version="2.5"/>
+  <installed facet="wst.jsdt.web" version="1.0"/>
 </faceted-project>
