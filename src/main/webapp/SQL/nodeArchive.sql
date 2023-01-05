@@ -382,7 +382,7 @@ CREATE TABLE MEMBERS
 	-- 계정상태
 	M_ENABLED number(1) DEFAULT 1 NOT NULL,
 	-- 개인연락처
-	M_PRIVATE_CONTACT char(11),
+	M_PRIVATE_CONTACT char(11) NOT NULL,
 	-- 개인이메일
 	M_PRIVATE_EMAIL varchar2(70),
 	-- 사무실번호
