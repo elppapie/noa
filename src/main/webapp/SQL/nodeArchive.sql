@@ -373,6 +373,8 @@ CREATE TABLE MEMBERS
 	M_TEAM_LEADER varchar2(50),
 	-- 아이디
 	M_DEPT_LEADER varchar2(50),
+	-- 이름
+	M_NAME nvarchar2(10) NOT NULL,
 	-- 주민번호
 	M_SSN number(13) NOT NULL,
 	-- 비밀번호
