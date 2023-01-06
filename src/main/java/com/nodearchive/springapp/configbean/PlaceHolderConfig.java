@@ -10,7 +10,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 //를 자바코드로 설정한 것.
 
 @Configuration
-@PropertySource({"classpath:config/database.properties"})
+@PropertySource({"classpath:config/database.properties","classpath:config/paging.properties"})
 public class PlaceHolderConfig {
 	
 	@Bean
