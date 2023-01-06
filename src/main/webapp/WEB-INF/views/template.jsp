@@ -6,6 +6,7 @@
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
 
 
+<h1>데이터 베이스 연결 확인</h1>
 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
 <!----Main Page의 Nav 메뉴 작성---->
 </div>  
