@@ -1,4 +1,4 @@
-package com.nodearchive.springapp;
+package com.nodearchive.springapp.web;
 
 import java.util.Map;
 

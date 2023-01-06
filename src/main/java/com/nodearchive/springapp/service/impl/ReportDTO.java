@@ -1,4 +1,4 @@
-package com.nodearchive.springapp.service.utils;
+package com.nodearchive.springapp.service.impl;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.nodearchive.springapp;
+package com.nodearchive.springapp.web;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kosmo.springapp.onememo.service.ListPagingData;
 import com.kosmo.springapp.onememo.service.OneMemoDTO;
 import com.kosmo.springapp.onememo.service.OneMemoService;
-import com.nodearchive.springapp.service.utils.ProjectService;
+import com.nodearchive.springapp.service.ProjectService;
 
 //1.메핑 페이지
 //2.주입받을 서비스 페이지

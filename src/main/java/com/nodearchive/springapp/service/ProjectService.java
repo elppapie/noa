@@ -1,9 +1,11 @@
-package com.nodearchive.springapp.service.utils;
+package com.nodearchive.springapp.service;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.nodearchive.springapp.service.utils.ListPagingData;
 
 //제너릭 인터페이스
 public interface ProjectService<ScheduleDTO> {
