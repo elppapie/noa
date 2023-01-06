@@ -2,7 +2,7 @@ package com.nodearchive.springapp.backend;
 
 import java.sql.Date;
 
-import com.nodearchive.springapp.calendar.Sche_RefDTO;
+import com.nodearchive.springapp.calendar.ScheRefDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

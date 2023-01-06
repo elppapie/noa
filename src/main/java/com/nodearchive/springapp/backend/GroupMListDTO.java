@@ -13,10 +13,9 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Emp_GroupDTO {
-	private int group_no;
+public class GroupMListDTO {
 	private String m_id;
-	private String group_name;
-	private java.sql.Date group_regidate;
-	private String group_separator;
+	private int group_no;
+	private java.sql.Date gml_regidate;
+
 }

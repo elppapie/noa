@@ -1,6 +1,4 @@
-package com.nodearchive.springapp.backend;
-
-import java.sql.Date;
+package com.nodearchive.springapp.calendar;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +11,9 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Emp_RolesDTO {
-	private int er_code;
-	private String emp_code;
-	private String er_name;
+public class ScheRefDTO {
+	private String m_id;
+	private int sche_no;
+	private java.sql.Timestamp sr_regidate;
+	
 }
