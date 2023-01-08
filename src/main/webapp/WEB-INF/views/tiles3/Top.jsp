@@ -13,7 +13,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Star Admin2 </title>
+  <title>Node Archive </title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="${path}/resources/vendors/feather/feather.css">
   <link rel="stylesheet" href="${path}/resources/vendors/mdi/css/materialdesignicons.min.css">
@@ -29,7 +29,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="${path}/resources/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="${path}/resources/images/favicon.png" />
+  <link rel="shortcut icon" href="${path}/resources/images/logo-removebg-preview.png" />
 </head>
 <body>
   <div class="container-scroller"> 
@@ -42,10 +42,10 @@
           </button>
         </div>
         <div>
-          <a class="navbar-brand brand-logo" href="${path}/home.noa">
+          <a class="navbar-brand brand-logo" href="${path}/home.kosmo">
       	    <img src="${path}/resources/images/textlogo-NodeArchive.svg" alt="logo" />
     	  </a>
-	      <a class="navbar-brand brand-logo-mini" href="${path}/home.noa">
+	      <a class="navbar-brand brand-logo-mini" href="${path}/home.kosmo">
 	        <img src="${path}/resources/images/logo-removebg-preview.png" alt="logo" />
 	      </a>
         </div>
