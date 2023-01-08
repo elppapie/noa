@@ -26,7 +26,7 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	@RequestMapping(value = "/home.noa")
+	@RequestMapping(value = "/home.kosmo")
 	public String home(Locale locale, Model model) {
 		
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -38,7 +38,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 	
-		return "home.tiles";
+		return "home.noa";
 		
 	}
 	
