@@ -478,7 +478,8 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="home-tab">
-              
+<!-- ------------------TOP.JSP END------------------ -->              
+<!-- ------------------BODY START------------------ -->      
 	            <!-- 
 	            <div class="d-sm-flex align-items-center justify-content-between border-bottom">
 	            ----Main Page의 Nav 메뉴 작성----

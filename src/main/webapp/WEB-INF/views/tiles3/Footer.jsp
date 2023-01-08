@@ -4,7 +4,8 @@
 <!-- Footer.jsp -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 
-                
+<!-- ------------------BODY END------------------ --> 
+<!-- ------------------FOOTER.JSP START------------------ -->                 
               </div>
             </div>
           </div>
