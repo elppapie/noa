@@ -12,21 +12,21 @@
 		<put-attribute name="content" value="" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles3/Footer.jsp" />
 	</definition>
-	<definition name="*.tiles" extends="noaLayouts">
+	<definition name="*.noa" extends="noaLayouts">
 		<!-- 와일드 카드 * 이 {1}에 대입됨 -->
 		<!-- 즉 컨트롤러에서 index.tiles로 리턴하면 index가 {1}로 치환되서 index.jsp가 보여짐 -->
 		<!-- *.tiles는 임의로 설정 가능 즉 *.daum로 가능 혹은 *.spring등 단 jsp는 제외 -->
 		<put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />		
 	</definition>
 	<!-- /*/*.kosmo 는 불가 즉 *앞에 /를 붙이지 않는다 -->
-	<definition name="*/*.tiles" extends="noaLayouts">
+	<definition name="*/*.noa" extends="noaLayouts">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp" />
 
 	</definition>
-	<definition name="*/*/*.tiles" extends="noaLayouts">
+	<definition name="*/*/*.noa" extends="noaLayouts">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
 	</definition>
-	<definition name="*/*/*/*.tiles" extends="noaLayouts">
+	<definition name="*/*/*/*.noa" extends="noaLayouts">
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}/{3}/{4}.jsp" />
 	</definition>
 
