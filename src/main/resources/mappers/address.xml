@@ -23,6 +23,13 @@
 		SELECT emp_code FROM members WHERE m_id=#{m_id}
 	</select>
 	
+	<!-- 전체 구성원 조회하기
+		mm.m_id='로그인 중인 구성원'
+		e.emp_code='로그인 중인 구성원의 기업코드'	
+		m_id!='로그인 중인 구성원'
+		#{searchWord} = 검색 시 검색어
+		#{start} AND #{end} = 페이징 정보
+	 -->
 	<select id="addressGetAllMembers" parameterType="Map" resultType="Map">
 		SELECT *
 		FROM (SELECT temp.*, ROWNUM r FROM
@@ -35,7 +42,7 @@
 			        WHERE mm.m_id=#{m_id} AND eg.group_name='즐겨찾기' AND eg.group_separator='기본그룹'
 			    ) book
 			    WHERE book.m_id=memb.m_id
-			) mark, memb.m_profile_img "m_profile_img", memb.m_name "m_name", p.position_name "position_name", t.team_name "team_name", memb.m_id "m_id", memb.m_private_contact "m_private_contact"
+			) "mark", memb.m_profile_img "m_profile_img", memb.m_name "m_name", p.position_name "position_name", t.team_name "team_name", memb.m_id "m_id", memb.m_private_contact "m_private_contact", memb.m_hiredate "m_hiredate"
 			FROM emp e JOIN members memb ON e.emp_code=memb.emp_code 
 			JOIN position p ON memb.position_code=p.position_code
 			JOIN team t ON memb.team_no=t.team_no
@@ -43,7 +50,7 @@
 			<if test="searchColumn != null">
 			AND ${searchColumn} LIKE '%' || #{searchWord} || '%'		
 			</if>
-			ORDER BY mark DESC) temp)
+			ORDER BY "mark" DESC, "m_hiredate") temp)
 		WHERE R BETWEEN #{start} AND #{end}
 	</select>
 	

@@ -28,8 +28,12 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="${path}/resources/css/vertical-layout-light/style.css">
+  <!-- custom style -->
+  <link rel="stylesheet" href="${path}/resources/css/noaCss.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="${path}/resources/images/logo-removebg-preview.png" />
+  <!-- font-awesome Kit Code -->
+  <script src="https://kit.fontawesome.com/672ea2e509.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="container-scroller"> 
@@ -394,7 +398,7 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="${path}/Address/AllList.kosmo">전체 구성원</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/Address/allList.kosmo">전체 구성원</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/resources/pages/ui-features/dropdowns.html">Dropdowns</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/resources/pages/ui-features/typography.html">Typography</a></li>
               </ul>

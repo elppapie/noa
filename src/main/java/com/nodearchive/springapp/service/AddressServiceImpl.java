@@ -46,15 +46,23 @@ public class AddressServiceImpl implements AddressService<Map> {
 		//나머지 페이징 정보를 map에 세팅한다. >> START, END, TOTAL_PAGE
 		PagingUtil.setMapForPaging(map);
 		
-		//test
+////////////////////////////////test
 		Set keyss=map.keySet();
 		for(Object o:keyss) {
 			System.out.println(String.format("[🔔서비스] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
 		}
-		///////////////////////////////////////////////
+///////////////////////////////////////////////
 		
 		//내 기업의 구성원 전체 목록 얻기
 		List membersList = dao.getAllMembers(map);
+////////////////////////////////test
+		for (Object member : membersList) {
+			keyss=((Map)member).keySet();
+			for(Object o:keyss) {
+				System.out.println(String.format("[🔔서비스] member의 키:%s, value:%s", o.toString(),((Map)member).get(o).toString()));
+			}
+		}
+///////////////////////////////////////////////
 		
 		/*
 		 * membersList의 key

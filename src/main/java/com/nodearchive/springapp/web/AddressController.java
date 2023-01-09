@@ -29,7 +29,7 @@ public class AddressController {
 	//@ExceptionHandler
 	
 	//컨트롤러 메소드 - 주소록 전체 구성원 목록 (주소록 메인페이지)
-	@GetMapping("/AllList.kosmo")
+	@GetMapping("/allList.kosmo")
 	public String allList(
 //			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
 			Model model,
