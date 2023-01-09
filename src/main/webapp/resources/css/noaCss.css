@@ -2,3 +2,21 @@
 .fa-color-gray{
 	color:#8d8d8d;
 }
+
+@font-face {
+	font-family: 'NanumGothicCoding';
+	font-style: noraml;
+	font-weight: 400;
+	src: local(''),
+		url('../fonts/NanumGothicCoding/NanumGothicCoding-Regular.ttf'),
+		url('../fonts/NanumGothicCoding/NanumGothicCoding-Bold.ttf');
+	unicode-range:U+AC00-D7A3;
+}
+
+* {
+	font-family:'NanumGothicCoding', "Manrope", sans-serif;
+}
+
+.mifa {
+	width:30px !important;
+}

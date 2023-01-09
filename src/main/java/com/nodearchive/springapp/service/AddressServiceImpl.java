@@ -117,4 +117,11 @@ public class AddressServiceImpl implements AddressService<Map> {
 		return 0;
 	}
 
+	public void getOrg(Map map) {
+		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
+		map.put("emp_code", dao.getEmpCodeByMId(map).toString());
+		
+		
+	}
+
 }
