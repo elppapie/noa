@@ -22,8 +22,12 @@ public class AddressDAO {
 		return template.selectList("addressGetAllMembers", map);
 	}
 
-	public Object getEmpCodeByMId(Map map) {
+	public String getEmpCodeByMId(Map map) {
 		return template.selectOne("addressGetEmpCodeByMId", map);
+	}
+
+	public Object getDeptOrg(Map map) {
+		return template.selectList("addressGetDeptOrg", map);
 	}
 	
 	

@@ -5,6 +5,7 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
 
+
 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
   <ul class="nav nav-tabs aligh-items-center" role="tablist">
     <li class="nav-item align-items-baseline">

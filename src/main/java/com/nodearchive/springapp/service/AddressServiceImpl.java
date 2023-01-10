@@ -34,7 +34,7 @@ public class AddressServiceImpl implements AddressService<Map> {
 	public ListPagingData<Map> selectList(Map map, HttpServletRequest req, int nowPage) {
 		//페이징을 위한 로직 시작]
 		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
-		map.put("emp_code", dao.getEmpCodeByMId(map).toString());
+		map.put("emp_code", dao.getEmpCodeByMId(map));
 		
 		//전체 레코드수	
 		int totalRecordCount = dao.getTotalRecordCount(map); //검색시에도 페이징 해야 함으로 맵을 넘겨준다
@@ -119,7 +119,10 @@ public class AddressServiceImpl implements AddressService<Map> {
 
 	public void getOrg(Map map) {
 		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
-		map.put("emp_code", dao.getEmpCodeByMId(map).toString());
+		map.put("emp_code", dao.getEmpCodeByMId(map));
+		//기업의 부서 얻어오기
+		dao.getDeptOrg(map);
+		
 		
 		
 	}

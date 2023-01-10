@@ -60,8 +60,9 @@ public class AddressController {
 		 * map = 페이징 관련 데이터(pageSize,nowPage,...)
 		 * pagingString = 페이징 문자열
 		 */
+		ListPagingData<Map> listPagingData = addrService.selectList(map, req, nowPage);
 		//데이터 저장
-		model.addAttribute("listPagingData",addrService.selectList(map, req, nowPage));
+		model.addAttribute("listPagingData",listPagingData);
 		//뷰정보 반환
 		return "address/addressList.noa";
 	}
