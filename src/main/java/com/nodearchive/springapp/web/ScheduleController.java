@@ -5,10 +5,11 @@ import java.util.Map;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-//@Controller
+@Controller
 @RequestMapping("/Schedule")
 public class ScheduleController {
 	
@@ -47,17 +48,17 @@ public class ScheduleController {
 			) {
 		
 		
-		return "schedule/Week";
+		return "schedule/Week.noa";
 	}
 	
 	//월간 달력(메인)
 	//왼쪽 드롭다운에서 줄 주소
-	@RequestMapping("/month.kosmo")
+	@GetMapping("/month.kosmo")
 	public String monthly(
 			//Authentication auth,
 			@RequestParam Map map
 			) {
-		return "schedule/Month";
+		return "schedule/Month.noa";
 	}
 	
 	//연간 달력
@@ -66,7 +67,7 @@ public class ScheduleController {
 			//Authentication auth,
 			@RequestParam Map map
 			) {
-		return "schedule/Year";
+		return "schedule/Year.noa";
 	}
 	
 	//일정 등록시(개인-디폴트)
@@ -75,7 +76,7 @@ public class ScheduleController {
 			//Authentication auth,
 			@RequestParam Map map
 			) {
-		return "schedule/Write";
+		return "schedule/Write.noa";
 	}
 	
 	//일정 클릭시
@@ -84,7 +85,7 @@ public class ScheduleController {
 			//Authentication auth,
 			@RequestParam Map map
 			) {
-		return "schedule/View";
+		return "schedule/View.noa";
 	}
 	
 	//일정 수정시
@@ -93,9 +94,18 @@ public class ScheduleController {
 			//Authentication auth,
 			@RequestParam Map map
 			) {
-		return "schedule/Edit";
+		return "schedule/Edit.noa";
 	}
 	
+	//일정 검색시
+	//ListPagingData.java파일 사용 필요
+	@RequestMapping("/search.kosmo")
+	public String search(
+			//Authentication auth,
+			@RequestParam Map map
+			) {
+		return "schedule/Search.noa";
+	}
 	
 	
 }

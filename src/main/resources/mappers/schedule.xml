@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace속성:매퍼파일의 완전한경로 .xml는 생략 -->
+<!--※ibatis와는 다르게 id값에 .(dot)를 사용 못한다. --> 
+<!-- 
+	[쿼리문 작성법]
+	A. 값에 해당하는 부분은 #{변수}
+	B. 객체에 해당하는 부분은 ${변수} 객체은 테이블명 혹은 컬럼명등을 의미
+	C. #{변수} 작성시 parameterType이 Map인 경우는 키값을
+	     자바빈(DTO계열)인 경우는 자바빈의 속성명(멤버변수명) 이어야 한다
+	     단,parameterType이 int나 String인 경우는 임의값을 줘도 무방
+	D. 쿼리문안에  >,>= ,<,<=등의 비교 연산자를 사용하는 경우 에러
+	  	1. <![CDATA[     ]]> CDATA섹션을 사용하거나
+	  		예] 
+	  		SELECT * FROM emp
+	  		<![CDATA[ 
+	  		WHERE sal >= 3000
+	  		]]>
+	  		CDATA섹션의 문자열은 단순 텍스트로 처리한다
+	  	2. 특수문자를 사용한다 즉 >은 &gt; < 은 &lt;
+	  	   예]
+	  	  SELECT * FROM emp
+	  	  WHERE sal &gt;= 3000
+	 -->
+
+<mapper namespace="mappers.schedule">
+	<!-- ResultMap은 DB 필드값과 DTO객체의 프라퍼티(변수)명이 다를 때 사용한다. -->
+
+	<select id="scheFindRecordByMonth" parameterType="Map" resultType="List">
+		SELECT * 
+		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
+		WHERE 
+			sche_startdate BETWEEN #{month_start} AND #{month_end} AND 
+			id = #{id}
+		ORDER BY sche_startdate 
+	</select>
+	
+	<select id="scheFindRecordByYear" parameterType="Map" resultType="List">
+		SELECT * 
+		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
+		WHERE 
+			sche_startdate BETWEEN #{year_start} AND #{year_end} AND 
+			id = #{id}
+		ORDER BY sche_startdate 
+	</select>
+
+	<select id="scheFindRecordByWeek" parameterType="Map" resultType="List">
+		SELECT * 
+		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
+		WHERE 
+			sche_startdate BETWEEN #{week_start} AND #{week_end} AND 
+			id = #{id}
+		ORDER BY sche_startdate 
+	</select>
+	
+	<!-- 일정 하나 클릭시(상세보기) 띄워주기 -->
+	<select id="scheFindRecordByNo" parameterType="Map" resultType="Map">
+		SELECT * 
+		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche ) JOIN members m ON m.m_id = sr.m_id
+		WHERE 
+			sche_no = #{sche_no} AND 
+			id = #{id}
+		
+	</select>
+	
+	<!-- 결국 주간 표시할 때 아래에 일간일정이 있기 때문에 scheFindRecordByDay도 필요함 -->
+	<!-- 아니면 timestamp 가져간 걸 해석해서 사용하는 게 나으려나?? -->
+	
+	<!-- 일정 삭제용 -->
+	<delete id="scheDelete" parameterType="Map">
+		
+	</delete>
+	
+	<!-- 일정 수정용 -->
+	<update id="scheUpdate" parameterType="Map">
+	
+	</update>
+	
+	<!-- 일정 총 검색 개수 -->
+	<select id="scheTotalCountRemains" parameterType="Map">
+	
+	</select>
+	
+	
+	
+	
+	
+	<select id="warehouse">
+		<!-- 스케줄 작성자의 권한(뷰 페이지에서 확인가능)과 일정 작성자의 권한 비교용 -->
+		<!--  -->
+		schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no 
+		JOIN members m ON m.m_id = sr.m_id <!-- member테이블 join으로 멤버 아이디연결, emp_code 가져오기 -->
+		JOIN emp_roles er ON er.emp_code = m.emp_code <!-- emp_roles테이블 join으로 er_code 연결 -->
+		JOIN autho_grant ag ON ag.er_code = er.er_code <!-- autho_grant테이블 join으로 autho_no 연결 -->
+		JOIN authorities auth ON auth.autho_no = ag.autho_no <!-- authorities테이블 join으로 autho_name 연결, 권한이름 가져오기 -->
+		
+		<!-- 스케줄 작성자의 권한(뷰 페이지에서 확인가능)과 일정 작성자의 권한 비교용 -->
+	</select>
+	
+	
+
+
+	<!-- 스프링 씨큐리티 회원 입력용 -->
+	<insert id="saveUser" parameterType="Map">
+		INSERT INTO users VALUES(#{id},#{pass},#{name},DEFAULT,'ROLE_ADMIN')
+	</insert>
+	
+</mapper>

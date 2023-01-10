@@ -10,7 +10,7 @@
 <!----Main Page의 Nav 메뉴 작성---->
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="<c:url value="Schedule/year.kosmo"/>" role="tab" aria-controls="overview" aria-selected="true">연간달력</a>
+      <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="<c:url value="Schedule/year.kosmo"/>" role="tab" aria-controls="overview" aria-selected="true">연간달력</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="<c:url value="Schedule/month.kosmo"/>" role="tab" aria-selected="false">월간달력</a>

@@ -14,7 +14,7 @@
       <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="<c:url value="Schedule/year.kosmo"/>" role="tab" aria-selected="false">연간달력</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="<c:url value="Schedule/month.kosmo"/>" role="tab" aria-controls="overview" aria-selected="true">월간달력</a>
+      <a class="nav-link active " id="home-tab" data-bs-toggle="tab" href="<c:url value="Schedule/month.kosmo"/>" role="tab" aria-controls="overview" aria-selected="true">월간달력</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="<c:url value="Schedule/week.kosmo"/>" role="tab" aria-selected="false">주간달력</a>
@@ -25,22 +25,20 @@
   </ul>
   <div>
     <div class="btn-wrapper">
-      <a href="#" class="btn btn-otline-dark align-items-center"><i class="icon-share"></i> 일정추가</a>
-      <a href="#" class="btn btn-otline-dark"><i class="icon-printer"></i> Print</a>
-      <a href="#" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Export</a>
+      <a href="#" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 일정추가</a>
+      <a href="#" class="btn btn-otline-dark"><i class="fa-solid fa-magnifying-glass"></i> 일정검색</a>
+      <a href="#" class="btn btn-primary text-white me-0"><i class="fa-solid fa-download"></i> 달력저장</a>
     </div>
   </div>
 </div>  
 
 <div class="tab-content tab-content-basic">
 <!----Main Page의 Content 작성---->
-
-
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Basic Table</h4>
+                  <h4 class="card-title">우와 Nav도 추가해야 하네</h4>
                   <p class="card-description">
-                    Add class <code>.table</code>
+                    여기는 sysdate <code>뿌리자</code>
                   </p>
                   <div class="table-responsive">
                     <table class="table">

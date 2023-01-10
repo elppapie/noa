@@ -16,7 +16,7 @@
       <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="<c:url value="Schedule/month.kosmo"/>" role="tab" aria-selected="false">월간달력</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active ps-0" id="contact-tab" data-bs-toggle="tab" href="<c:url value="Schedule/week.kosmo"/>" role="tab"  aria-controls="overview" aria-selected="true">주간달력</a>
+      <a class="nav-link active" id="contact-tab" data-bs-toggle="tab" href="<c:url value="Schedule/week.kosmo"/>" role="tab"  aria-controls="overview" aria-selected="true">주간달력</a>
     </li>
     <li class="nav-item">
       <a class="nav-link border-0" id="more-tab" data-bs-toggle="tab" href="#more" role="tab" aria-selected="false">More</a>
