@@ -30,6 +30,14 @@ public class ScheduleDAO {
 	@Autowired
 	private SqlSessionTemplate template;
 	
+	
+	// 현재 시스템시간 / 선택한 기간단위별 뷰 뿌려주기용
+	public List<ScheduleDTO> findRecordByPeriod(Map map) {		
+		
+		
+		return template.selectList("scheFindRecordByPeriod", map);
+	}
+	/*
 	// 현재 시스템시간 월별 / 선택한 월별 뷰 뿌려주기용
 	public List<ScheduleDTO> findRecordByMonth(Map map) {		
 		return template.selectList("scheFindRecordByMonth", map);
@@ -42,6 +50,7 @@ public class ScheduleDAO {
 	public List<ScheduleDTO> findRecordByWeek(Map map) {		
 		return template.selectOne("scheFindRecordByWeek", map);
 	}
+	*/
 	
 	// 일정 상세보기용(일정 하나 클릭시)
 	// 로그인한 사람의 권한 확인

@@ -28,6 +28,26 @@
 <mapper namespace="mappers.schedule">
 	<!-- ResultMap은 DB 필드값과 DTO객체의 프라퍼티(변수)명이 다를 때 사용한다. -->
 
+
+	<!-- 
+	그냥 month인지, year인지, week인지, day인지 여부 판단하는 flag만 가져오면 쿼리문 반복할 필요가 없을듯...? 
+	아니 그냥 start랑 end가져오면 되잖아? month인지 year인지 week인지는 service에서 판단해서 보내고 계산해서 가져오면 되니까
+	-->
+	<!-- 
+	...다시 생각해보니 시작일자가 해당기간과 같거나 이른지, 
+	끝일자가 해당기간과 같거나 늦은지를 비교해야함
+	단순히 시작날짜가 이 안에 들어있는 걸로는 안됨!!!
+	-->
+	<select id="scheFindRecordByPeriod" parameterType="Map" resultType="ScheduleDTO">
+		SELECT * 
+		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
+		WHERE 
+			sche_startdate BETWEEN #{start} AND #{end} AND 
+			id = #{id}
+		ORDER BY sche_startdate 
+	</select>
+	
+	<!-- 
 	<select id="scheFindRecordByMonth" parameterType="Map" resultType="List">
 		SELECT * 
 		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
@@ -54,7 +74,9 @@
 			id = #{id}
 		ORDER BY sche_startdate 
 	</select>
-	
+	 -->
+	 
+	 
 	<!-- 일정 하나 클릭시(상세보기) 띄워주기 -->
 	<select id="scheFindRecordByNo" parameterType="Map" resultType="Map">
 		SELECT * 
@@ -62,7 +84,6 @@
 		WHERE 
 			sche_no = #{sche_no} AND 
 			id = #{id}
-		
 	</select>
 	
 	<!-- 결국 주간 표시할 때 아래에 일간일정이 있기 때문에 scheFindRecordByDay도 필요함 -->
@@ -70,7 +91,7 @@
 	
 	<!-- 일정 삭제용 -->
 	<delete id="scheDelete" parameterType="Map">
-		
+		DELETE FROM 
 	</delete>
 	
 	<!-- 일정 수정용 -->
