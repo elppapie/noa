@@ -1,13 +1,20 @@
 package com.nodearchive.springapp.web;
 
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.nodearchive.springapp.service.ScheduleServiceImpl;
+import com.nodearchive.springapp.service.impl.ScheduleDTO;
 
 @Controller
 @RequestMapping("/Schedule")
@@ -40,12 +47,20 @@ public class ScheduleController {
 	// [1] API로 태그 한줄로 가져올지 - 커스터마이징 기능 있는 API여야 함
 	// [2] 직접 table tr 월 화 수 목 금 토 일 /tr 폼을 가져와서 js로 설정할지 
 	
+	@Autowired
+	private ScheduleServiceImpl scheduleService; 
+	
+	
 	//주간 달력
 	@RequestMapping("/week.kosmo")
 	public String weekly(
-			//Authentication auth,
-			@RequestParam Map map
+			Model model, //
+			//Authentication auth, //스프링 씨큐리티 사용
+			@RequestParam Map map, //
+			HttpServletRequest req //요청한 페이지의 req객체 받음
 			) {
+		List<ScheduleDTO> list = scheduleService.selectList(map, req);
+		model.addAllAttributes(list); //?
 		
 		
 		return "schedule/Week.noa";
@@ -55,9 +70,14 @@ public class ScheduleController {
 	//왼쪽 드롭다운에서 줄 주소
 	@GetMapping("/month.kosmo")
 	public String monthly(
-			//Authentication auth,
-			@RequestParam Map map
+			Model model, //
+			//Authentication auth, //스프링 씨큐리티 사용
+			@RequestParam Map map, //
+			HttpServletRequest req //요청한 페이지의 req객체 받음
 			) {
+		List<ScheduleDTO> list = scheduleService.selectList(map, req);
+		model.addAllAttributes(list); //?
+		
 		return "schedule/Month.noa";
 	}
 	
@@ -105,6 +125,14 @@ public class ScheduleController {
 			@RequestParam Map map
 			) {
 		return "schedule/Search.noa";
+	}
+	
+	@RequestMapping("/notice.kosmo")
+	public String notice(
+			//Authentication auth,
+			
+			) {
+		return "schedule/Notice.noa";
 	}
 	
 	
