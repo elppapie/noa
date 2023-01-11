@@ -54,5 +54,41 @@
 		WHERE R BETWEEN #{start} AND #{end}
 	</select>
 	
+	<!-- 기업의 부서 조회하기: #{emp_code}=조회할 기업 -->
+	<select id="addressGetDeptOrg" parameterType="Map" resultType="Map">
+		SELECT  dept_code "dept_code", dept_name "dept_name", 
+			(SELECT m_id FROM members m JOIN team t ON m.team_no=t.team_no WHERE m_dept_leader IS NULL AND t.dept_code=d.dept_code
+		    ) "dept_leader_id", 
+		    (SELECT m_name FROM members mm JOIN team t ON mm.team_no=t.team_no WHERE m_dept_leader IS NULL AND t.dept_code=d.dept_code
+		    ) "dept_leader_name"
+		FROM dept d JOIN emp e ON d.emp_code=e.emp_code
+		WHERE e.emp_code=#{emp_code}
+		ORDER BY dept_name
+	</select>
+	
+	<!-- 부서별 팀 조회하기 -->
+	<select id="addressGetTeamOrg" parameterType="List" resultType="Map">
+		SELECT tt.TEAM_NO "team_no", tt.TEAM_NAME "team_name", d.dept_code "dept_code" ,
+			(SELECT m_id FROM members m JOIN team t ON m.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_id", 
+		    (SELECT m_name FROM members mm JOIN team t ON mm.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_name"
+		FROM team tt JOIN dept d ON tt.dept_code=d.dept_code
+		WHERE d.dept_code IN 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 팀별 팀 구성원 조회 -->
+	<select  id="addressGetTeamMembers" parameterType="List" resultType="Map">
+		SELECT memb.team_no "team_no", memb.m_id "m_id", memb.m_name "m_name", memb.m_profile_img "m_profile_img", p.position_name "position_name"
+		FROM members memb JOIN position p ON memb.position_code=p.position_code
+		JOIN team t ON memb.team_no=t.team_no
+		WHERE memb.team_no IN 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
 	
 </mapper>

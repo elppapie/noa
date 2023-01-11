@@ -93,8 +93,8 @@ public class AddressController {
 		//서비스 호출
 		addrService.getOrg(map);
 		
-		
-		return "address/empOrg.noa";
+		return null;
+//		return "address/empOrg.noa";
 	}
 	//위 메소드와 연계. 조직도 모달에서 어떤 부서/팀을 클릭했을 때 해당 부서/팀의 구성원을 가져올 메소드
 	// 부서를 클릭했다면 >> "부서 책임자 + 하위 팀들"을 뿌려주고

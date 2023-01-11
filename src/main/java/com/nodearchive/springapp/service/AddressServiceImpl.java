@@ -3,6 +3,7 @@ package com.nodearchive.springapp.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -120,10 +121,50 @@ public class AddressServiceImpl implements AddressService<Map> {
 	public void getOrg(Map map) {
 		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
 		map.put("emp_code", dao.getEmpCodeByMId(map));
-		//기업의 부서 얻어오기
-		dao.getDeptOrg(map);
+		//기업의 부서 얻어오기 
+		//<Map> dept_code=부서코드, dept_name=부서명, m_dept_leader=부서책임자, dept_leader_name=부서책임자이름 의 List컬렉션 
+		List<Map> deptList = dao.getDeptOrg(map);
+////////////////////////////////test
+for (Map dept : deptList) {
+Set keys=dept.keySet();
+for(Object o:keys) {
+System.out.println(String.format("[🔔서비스] dept의 키:%s, value:%s", o.toString(),((Map)dept).get(o).toString()));
+}
+}
+///////////////////////////////////////////////
 		
+		//부서별 팀 얻어오기
+		List<String> deptCodeList = new Vector<>();
+		deptList.forEach(t->deptCodeList.add(t.get("dept_code").toString()));
+////////////////////////////////test
+for (String str : deptCodeList) {
+	System.out.println(String.format("[🔔서비스] deptCodeList컬렉션:%s", str));
+}
+///////////////////////////////////////////////
 		
+		//<Map> dept_code=부서코드, team_no=팀일련번호, team_name=팀명, m_team_leader=팀책임자, team_leader_name=팀책임자이름의 List컬렉션
+		List<Map> teamList = dao.getTeamOrg(deptCodeList);
+////////////////////////////////test
+for (Map team : teamList) {
+Set keys=team.keySet();
+for(Object o:keys) {
+System.out.println(String.format("[🔔서비스] team의 키:%s, value:%s", o.toString(),((Map)team).get(o).toString()));
+}
+}
+///////////////////////////////////////////////
+		//팀별 팀 구성원 얻어오기
+		//리스트 컬렉션에 팀 일련번호 넣기
+		List<Integer> teamNoList = new Vector<>();
+		teamList.forEach(t->teamNoList.add(Integer.parseInt(t.get("team_no").toString())));
+		List<Map> teamMembersList = dao.getTeamMembers(teamNoList);
+////////////////////////////////test
+for (Map teamMember : teamMembersList) {
+Set keys=teamMember.keySet();
+for(Object o:keys) {
+System.out.println(String.format("[🔔서비스] teamMembers의 키:%s, value:%s", o.toString(),((Map)teamMember).get(o).toString()));
+}
+}
+///////////////////////////////////////////////
 		
 	}
 
