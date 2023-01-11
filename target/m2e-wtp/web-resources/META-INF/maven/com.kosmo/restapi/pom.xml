@@ -82,7 +82,12 @@
 			</exclusions>
 			<scope>runtime</scope>
 		</dependency>
-
+		<!-- log4jdbc - log4j2 -->
+		<dependency>
+		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+		    <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+		    <version>1.16</version>
+		</dependency>
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
