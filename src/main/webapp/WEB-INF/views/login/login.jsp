@@ -37,7 +37,7 @@
   <div class="container-scroller"> 
       <div class="main-panel">
         <div class="content-wrapper d-flex justify-content-center ">
-          <div class="row flex-grow" style="height: 790px;">
+          <div class="row flex-grow" style="height: auto;">
             <div class="col-sm-6 d-flex align-items-stretch">
               <div class="grid-margin stretch-card flex-grow">
                 <div class="card card-rounded">
@@ -102,7 +102,7 @@
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-		<footer class="footer">
+		<footer class="footer" style="height:100%;">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2021. All rights reserved.</span>
