@@ -20,3 +20,35 @@
 .mifa {
 	width:30px !important;
 }
+.page-body-wrapper{
+  padding-top: 0px;
+}
+.main-panel {
+  width: 100% !important;
+}
+.align-text-center{
+  text-align: center;
+}
+.btn-submit-fitX{
+  width: 100%;
+  color: white !important;
+  background-color: #cccccc !important;
+}
+.find-id-pwd{
+  font-size: 0.9rem;
+  color: #5f6368;
+  text-align: right;
+  display: block;
+  cursor: pointer;
+  margin-bottom: 7px;
+}
+.loginpage-logo-img{
+  width: 90%;
+  height: auto;
+}
+.emp-description{
+  text-align: center;
+  color: #5f6368;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}

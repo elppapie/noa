@@ -514,7 +514,7 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="${path}/Meet/list.kosmo">예약목록</a></li>
                 <!-- /Meet/calview.kosmo : 예약 캘린더로 보기 >> 예약목록에서 달력 버튼 누르면 모달로 보여주기. -->
-                <li class="nav-item"> <a class="nav-link" href="${path}/Meet/calview.kosmo">예약신청</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/Meet/insertview.kosmo">예약신청</a></li>
               </ul>
             </div>
           </li>

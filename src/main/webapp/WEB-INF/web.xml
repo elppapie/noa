@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee; https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<welcome-file-list>
+		<welcome-file>/Login/login.kosmo</welcome-file>
 		<welcome-file>/home.kosmo</welcome-file>
 	</welcome-file-list>
 	
