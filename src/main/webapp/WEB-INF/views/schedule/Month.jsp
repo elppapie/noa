@@ -39,7 +39,7 @@
                 <div class="card-body">
                   <h4 class="card-title">우와 Nav도 추가해야 하네</h4>
                   <p class="card-description">
-                    여기는 sysdate <code>뿌리자</code>
+                    현재시간 <code>\${ }</code>
                   </p>
                   <div class="table-responsive">
                     <table class="table">
@@ -69,38 +69,29 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Jacob</td>
-                          <td>53275531</td>
-                          <td>12 May 2017</td>
-                          <td><label class="badge badge-danger">Pending</label></td>
-                        </tr>
-                        <tr>
-                          <td>Messsy</td>
-                          <td>53275532</td>
-                          <td>15 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
-                        <tr>
-                          <td>John</td>
-                          <td>53275533</td>
-                          <td>14 May 2017</td>
-                          <td><label class="badge badge-info">Fixed</label></td>
-                        </tr>
-                        <tr>
-                          <td>Peter</td>
-                          <td>53275534</td>
-                          <td>16 May 2017</td>
-                          <td><label class="badge badge-success">Completed</label></td>
-                        </tr>
-                        <tr>
-                          <td>Dave</td>
-                          <td>53275535</td>
-                          <td>20 May 2017</td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
+	                      <c:if test="true">
+		                      <%-- <c:forEach items="">--%>
+		                      	<tr>
+		                      		<td>1</td>
+		                      		<td>2</td>
+		                      		<td>3</td>
+		                      		<td>4</td>
+		                      		<td>5</td>
+		                      		<td>6</td>
+		                      		<td>7</td>
+		                      	</tr>
+		                      <%-- </c:forEach>--%>
+	                      </c:if>
                       </tbody>
                     </table>
+                    <form method="POST" action="<c:url value='Schedule/month.kosmo'/>">
+                    	<label for="fname">아이디 입력:</label>
+  						<input type="text" id="fname" name="fname"/><br/><br/>
+  						<input type="hidden" name="id" value="month"/>
+  						<input type="submit" value="검색"/>
+                    </form>
+                    
+                    
                   </div>
                 </div>
               </div>

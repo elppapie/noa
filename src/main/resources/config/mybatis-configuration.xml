@@ -12,5 +12,6 @@
 	<!-- 매퍼파일(SQL쿼리 결과와 자바빈 매핑)의 위치정보 설정 -->
 	<mappers>
 		<mapper resource="mappers/address.xml"/>
+		<mapper resource="mappers/schedule.xml"/>
 	</mappers>
 </configuration>

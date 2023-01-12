@@ -7,7 +7,8 @@
 <!-- 
 	[쿼리문 작성법]
 	A. 값에 해당하는 부분은 #{변수}
-	B. 객체에 해당하는 부분은 ${변수} 객체은 테이블명 혹은 컬럼명등을 의미
+	B. 객체에 해당하는 부분은 ${변수} 
+		객체는 테이블명 혹은 컬럼명등을 의미
 	C. #{변수} 작성시 parameterType이 Map인 경우는 키값을
 	     자바빈(DTO계열)인 경우는 자바빈의 속성명(멤버변수명) 이어야 한다
 	     단,parameterType이 int나 String인 경우는 임의값을 줘도 무방
@@ -37,67 +38,92 @@
 	...다시 생각해보니 시작일자가 해당기간과 같거나 이른지, 
 	끝일자가 해당기간과 같거나 늦은지를 비교해야함
 	단순히 시작날짜가 이 안에 들어있는 걸로는 안됨!!!
+	
+	각 기간의 시작시간과 끝시간을 TIMESTAMP 형태로 혹은 YYYY-MM-DD HH24:MI:SS 형태로 전달/TO_TIMESTAMP
+	생각해보니 시작시간만 비교해도 될듯? 끝시간이 더 길면 비교해서 그냥 끝까지 쭉 보여주면 되는거고
+	어......... 아니네 끝시간도 속하는지를 확인해서 끝시간이 들어가있으면 앞부분을 붙여서 보여주고
+	
+	
 	-->
-	<select id="scheFindRecordByPeriod" parameterType="Map" resultType="ScheduleDTO">
-		SELECT * 
-		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
-		WHERE 
-			sche_startdate BETWEEN #{start} AND #{end} AND 
-			id = #{id}
-		ORDER BY sche_startdate 
-	</select>
 	
 	<!-- 
-	<select id="scheFindRecordByMonth" parameterType="Map" resultType="List">
-		SELECT * 
-		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
-		WHERE 
-			sche_startdate BETWEEN #{month_start} AND #{month_end} AND 
-			id = #{id}
-		ORDER BY sche_startdate 
+	map에 담아서 넣을 변수:
+	로그인한 사람의 아이디
+	구간의 시작시간/ 구간의 끝시간
+	
+	
+	해당 구간에 시작/끝 시간이 포함된 일정 가져오기
+	이름, 아이디(이메일), 일정의 모든 컬럼
+	-->
+	<select id="scheFindRecordByPeriod" parameterType="Map" resultType="Map">
+		SELECT m.m_name, sr.m_id, s.*
+		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
+    		JOIN members m ON m.m_id = sr.m_id
+		WHERE     
+    		sche_startdate BETWEEN #{sche_start,jdbcType=TIMESTAMP} AND #{sche_end,jdbcType=TIMESTAMP} OR
+    		sche_enddate BETWEEN #{sche_start,jdbcType=TIMESTAMP} AND #{sche_end,jdbcType=TIMESTAMP} AND
+    		m.m_id = #{id}
 	</select>
 	
-	<select id="scheFindRecordByYear" parameterType="Map" resultType="List">
-		SELECT * 
-		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
-		WHERE 
-			sche_startdate BETWEEN #{year_start} AND #{year_end} AND 
-			id = #{id}
-		ORDER BY sche_startdate 
+	 
+	<!-- 
+	
+	정보를 얼마나 많이 띄워줘야 하는지 모르겠음
+	
+	-->
+	<!-- #{sche_no} 일정번호 전달 -->
+	<!-- #{id} 로그인한 사람의 아이디 전달 -->
+	<!-- 일정 하나 클릭시(상세보기) 띄워주기 -->
+	<select id="scheFindRecordByNo" parameterType="Map" resultType="Map">		
+		SELECT m.m_name, p.position_name, sr.m_id, s.*
+		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
+    		JOIN members m ON m.m_id = sr.m_id
+    		JOIN position p ON p.position_code = m.position_code
+		WHERE     
+    		sche_no = #{sche_no} AND
+    		m.m_id = #{id}
+	</select>
+	
+	<!-- 하나의 일정에 연관된 사람들 목록 (여러명일 경우...만 하는 건 안되고 한 사람이라도 이걸로 데려와야할듯)-->
+	<!-- JOIN을 하는 경우 DTO 타입으로는 못 가져오고, map으로 가져오는 게 제일 편함 -->
+	<!-- 이름, 직함, 소속 부서, 소속 팀, 이메일 -->
+	<select id="scheFindRefByNo" parameterType="Map" resultType="Map">
+		SELECT m.m_name, p.position_name, sr.m_id
+		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
+			JOIN members m ON m.m_id = sr.m_id 
+    		JOIN position p ON p.position_code = m.position_code
+    	WHERE
+    		sche_no = #{sche_no}
 	</select>
 
-	<select id="scheFindRecordByWeek" parameterType="Map" resultType="List">
-		SELECT * 
-		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche )
-		WHERE 
-			sche_startdate BETWEEN #{week_start} AND #{week_end} AND 
-			id = #{id}
-		ORDER BY sche_startdate 
-	</select>
-	 -->
-	 
-	 
-	<!-- 일정 하나 클릭시(상세보기) 띄워주기 -->
-	<select id="scheFindRecordByNo" parameterType="Map" resultType="Map">
-		SELECT * 
-		FROM ( sche.*,m_id id FROM ( schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no ) sche ) JOIN members m ON m.m_id = sr.m_id
-		WHERE 
-			sche_no = #{sche_no} AND 
-			id = #{id}
-	</select>
 	
-	<!-- 결국 주간 표시할 때 아래에 일간일정이 있기 때문에 scheFindRecordByDay도 필요함 -->
-	<!-- 아니면 timestamp 가져간 걸 해석해서 사용하는 게 나으려나?? -->
-	
-	<!-- 일정 삭제용 -->
+	<!-- 일정 삭제용 
+	삭제권한은 어떻게 설정하지
+	-->
 	<delete id="scheDelete" parameterType="Map">
-		DELETE FROM 
+		DELETE schedule WHERE sche_no = #{sche_no} 
 	</delete>
 	
 	<!-- 일정 수정용 -->
 	<update id="scheUpdate" parameterType="Map">
-	
+		UPDATE schedule SET
+			sche_title = #{sche_title},
+			sche_content = #{sche_content},
+			sche_startdate = #{sche_startdate},
+			sche_enddate = #{sche_enddate},
+			sche_color = #{sche_color},
+			sche_status = #{sche_status}
+		WHERE sche_no = #{sche_no}
 	</update>
+	
+	<!-- 일정 완료처리용 // 일정 수정폼이 아닌 밖에서 설정 가능하도록 -->
+	<update id="scheUpdateState" parameterType="Map">
+		UPDATE schedule SET
+			sche_status = #{status}
+		WHERE sche_no = #{sche_no}
+	</update>
+	
+	
 	
 	<!-- 일정 총 검색 개수 -->
 	<select id="scheTotalCountRemains" parameterType="Map">
@@ -118,6 +144,12 @@
 		JOIN authorities auth ON auth.autho_no = ag.autho_no <!-- authorities테이블 join으로 autho_name 연결, 권한이름 가져오기 -->
 		
 		<!-- 스케줄 작성자의 권한(뷰 페이지에서 확인가능)과 일정 작성자의 권한 비교용 -->
+		
+		
+		    	WHERE     
+    		sche_startdate BETWEEN TO_TIMESTAMP(#{sche_start,jdbcType=TIMESTAMP},'YYYY-MM-DD HH24:MI:SS') AND TO_TIMESTAMP(#{sche_end},'YYYY-MM-DD HH24:MI:SS') AND
+    		sche_enddate BETWEEN TO_TIMESTAMP(#{sche_start},'YYYY-MM-DD HH24:MI:SS') AND TO_TIMESTAMP(#{sche_end},'YYYY-MM-DD HH24:MI:SS') AND
+    		m.m_id = #{id}
 	</select>
 	
 	

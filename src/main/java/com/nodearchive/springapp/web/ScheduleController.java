@@ -56,27 +56,49 @@ public class ScheduleController {
 	public String weekly(
 			Model model, //
 			//Authentication auth, //스프링 씨큐리티 사용
-			@RequestParam Map map, //
+			@RequestParam Map map, //파라미터로 넘어온 값을 map에 저장
+			//현재로서는 접속한 사람의 아이디 전달
 			HttpServletRequest req //요청한 페이지의 req객체 받음
 			) {
-		List<ScheduleDTO> list = scheduleService.selectList(map, req);
-		model.addAllAttributes(list); //?
+		List<Map> list = scheduleService.selectList(map, req);
+		model.addAttribute(list); //?
 		
 		
 		return "schedule/Week.noa";
 	}
 	
-	//월간 달력(메인)
+	//월간 달력(메인 - 현재시각을 넘겨줄 수 있으면 그걸 서비스에서 해석하면 되는데)
 	//왼쪽 드롭다운에서 줄 주소
-	@GetMapping("/month.kosmo")
+	@RequestMapping("/month.kosmo")
 	public String monthly(
-			Model model, //
+			Model model, //?
 			//Authentication auth, //스프링 씨큐리티 사용
-			@RequestParam Map map, //
+			@RequestParam Map map, //파라미터로 넘어온 값을 map에 저장:접속한 사람의 아이디 전달
 			HttpServletRequest req //요청한 페이지의 req객체 받음
 			) {
-		List<ScheduleDTO> list = scheduleService.selectList(map, req);
-		model.addAllAttributes(list); //?
+		
+////////////////////////////////////// jsp페이지에서 form버튼 클릭해서 input으로 넘기도록 실험해볼 수도 있음 //////////////
+		map.put("id", "kim1234@samsung.com");
+		map.put("flag", "month");
+//////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		List<Map> list = scheduleService.selectList(map, req);
+		//model.addAttribute("sche_list",list); //?
+/////////////////////////////////////////////////////////////////////
+		System.out.println("[⚜] list는 무엇을 담고 있나요"+list.size());
+		for(Map map1: list) {
+			System.out.printf("[⚜] %s : %s%n","m_name",map1.get("m_name"));
+			System.out.printf("[⚜] %s : %s%n","m_id",map1.get("m_id"));
+			System.out.printf("[⚜] %s : %s%n","sche_content",map1.get("sche_content"));
+			System.out.printf("[⚜] %s : %s%n","sche_title",map1.get("sche_title"));
+			System.out.printf("[⚜] %s : %s%n","sche_regidate",map1.get("sche_regidate"));
+			System.out.printf("[⚜] %s : %s%n","sche_startdate",map1.get("sche_startdate"));
+			System.out.printf("[⚜] %s : %s%n","sche_enddate",map1.get("sche_enddate"));
+			System.out.println("================일정 하나 출력 완료=====================");
+		}
+/////////////////////////////////////////////////////////////////////	
+		
 		
 		return "schedule/Month.noa";
 	}

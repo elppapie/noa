@@ -32,32 +32,35 @@ public class ScheduleDAO {
 	
 	
 	// 현재 시스템시간 / 선택한 기간단위별 뷰 뿌려주기용
-	public List<ScheduleDTO> findRecordByPeriod(Map map) {		
+	public List<Map> findRecordByPeriod(Map map) {
+		System.out.println("[⚜] map에 저장된 아이디:"+map.get("id"));
+		System.out.println("[⚜] map에 저장된 시작시간:"+map.get("sche_start"));
+		System.out.println("[⚜] map에 저장된 끝시간:"+map.get("sche_end"));
 		
-		
-		return template.selectList("scheFindRecordByPeriod", map);
+		List<Map> listing = template.selectList("scheFindRecordByPeriod", map);
+		for(Map mappp : listing) {
+			System.out.println("[⚜] mappp에 저장된 아이디:"+mappp.get("id"));
+			System.out.println("[⚜] mappp에 저장된 시작시간:"+mappp.get("sche_start"));
+			System.out.println("[⚜] mappp에 저장된 끝시간:"+mappp.get("sche_end"));
+		};
+		return listing;
 	}
-	/*
-	// 현재 시스템시간 월별 / 선택한 월별 뷰 뿌려주기용
-	public List<ScheduleDTO> findRecordByMonth(Map map) {		
-		return template.selectList("scheFindRecordByMonth", map);
-	}
-	// 현재 시스템시간 연도별 / 선택한 연도별 뷰 뿌려주기용
-	public List<ScheduleDTO> findRecordByYear(Map map) {		
-		return template.selectList("scheFindRecordByYear", map);
-	}
-	// 현재 시스템시간 주별 / 선택한 주별 뷰 뿌려주기용
-	public List<ScheduleDTO> findRecordByWeek(Map map) {		
-		return template.selectOne("scheFindRecordByWeek", map);
-	}
-	*/
 	
 	// 일정 상세보기용(일정 하나 클릭시)
 	// 로그인한 사람의 권한 확인
 	public Map view(Map map) {
-		return template.selectOne("scheFindRecordByNo", map);
+		return template.selectOne("scheFindRecordByNo",map);
+	}
+	// 일정에 연관된 사람들 가져오기 (1명(본인만 연관된)이어도 가져옴)
+	public List findRefByNo(Map map){
+		return template.selectList("scheFindRefByNo",map);
 	}
 	
+	
+	// 일정 입력용 - 몇 개의 레코드가 영향을 받는지 반환
+	public int insert(Map map) {		
+		return template.delete("scheDelete",map);
+	}
 	// 일정 삭제용 - 몇 개의 레코드가 영향을 받는지 반환
 	public int delete(Map map) {		
 		return template.delete("scheDelete",map);
@@ -65,6 +68,10 @@ public class ScheduleDAO {
 	// 일정 수정용 - 몇 개의 레코드가 영향을 받는지 반환
 	public int update(Map map) {
 		return template.update("scheUpdate",map);
+	}
+	// 일정 완료상태 수정용 - 몇 개의 레코드가 영향을 받는지 반환
+	public int updateState(Map map) {
+		return template.update("scheUpdateState",map);
 	}
 	
 	// 일정이 총 몇 개 검색되는지 확인
