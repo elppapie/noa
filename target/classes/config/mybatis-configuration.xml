@@ -13,5 +13,6 @@
 	<mappers>
 		<mapper resource="mappers/address.xml"/>
 		<mapper resource="mappers/schedule.xml"/>
+		<mapper resource="mappers/project.xml"/>
 	</mappers>
 </configuration>
