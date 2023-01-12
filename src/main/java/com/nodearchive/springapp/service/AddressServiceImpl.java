@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.nodearchive.springapp.service.impl.AddressDAO;
+import com.nodearchive.springapp.service.impl.OrganizationDTO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 import com.nodearchive.springapp.service.utils.PagingUtil;
 
@@ -47,30 +48,11 @@ public class AddressServiceImpl implements AddressService<Map> {
 		//나머지 페이징 정보를 map에 세팅한다. >> START, END, TOTAL_PAGE
 		PagingUtil.setMapForPaging(map);
 		
-////////////////////////////////test
-		Set keyss=map.keySet();
-		for(Object o:keyss) {
-			System.out.println(String.format("[🔔서비스] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
-		}
-///////////////////////////////////////////////
-		
 		//내 기업의 구성원 전체 목록 얻기
-		List membersList = dao.getAllMembers(map);
-////////////////////////////////test
-		for (Object member : membersList) {
-			keyss=((Map)member).keySet();
-			for(Object o:keyss) {
-				System.out.println(String.format("[🔔서비스] member의 키:%s, value:%s", o.toString(),((Map)member).get(o).toString()));
-			}
-		}
-///////////////////////////////////////////////
-		
-		/*
-		 * membersList의 key
-		 * : mark, m_profile_img, m_name, position_name, team_name, m_id, R
-		 *  mark=즐겨찾기 표시(0이면 즐겨찾기한 구성원이 아닌 것, 1이면 내가 즐겨찾기한 구성원)
-		 *  R=페이징 용 컬럼(rownum).
-		 */
+		//membersList의 key
+		//|mark |m_profile_img |m_name  |position_name |team_name |m_id        |m_private_contact |m_hiredate | r
+		//즐겨찾기|프로필사진링크   | 이름    | 직급명         | 팀명      |이메일주소(id)| 개인연락처          | 입사일     | 행번호(rownum, 페이징용)
+		List membersList = dao.getAllMembers(map);		
 		
 		//검색 시 문자열 채워짐.
 		String searchString="";
@@ -92,7 +74,7 @@ public class AddressServiceImpl implements AddressService<Map> {
 													.pagingString(pagingString)//페이징 표시 문자열 설정
 													.build();
 		return listPagingData;
-	}
+	}//////////selectList()
 
 	@Override
 	public Map selectOne(Map map) {
@@ -118,54 +100,36 @@ public class AddressServiceImpl implements AddressService<Map> {
 		return 0;
 	}
 
-	public void getOrg(Map map) {
+	public OrganizationDTO getOrg(Map map) {
 		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
 		map.put("emp_code", dao.getEmpCodeByMId(map));
 		//기업의 부서 얻어오기 
 		//<Map> dept_code=부서코드, dept_name=부서명, m_dept_leader=부서책임자, dept_leader_name=부서책임자이름 의 List컬렉션 
+		//|dept_code |dept_name |dept_leader_id      |dept_leader_name |
+		// 부서코드    |부서명     | 부서책임자 아이디      |  부서책임자 이름
 		List<Map> deptList = dao.getDeptOrg(map);
-////////////////////////////////test
-for (Map dept : deptList) {
-Set keys=dept.keySet();
-for(Object o:keys) {
-System.out.println(String.format("[🔔서비스] dept의 키:%s, value:%s", o.toString(),((Map)dept).get(o).toString()));
-}
-}
-///////////////////////////////////////////////
 		
 		//부서별 팀 얻어오기
 		List<String> deptCodeList = new Vector<>();
 		deptList.forEach(t->deptCodeList.add(t.get("dept_code").toString()));
-////////////////////////////////test
-for (String str : deptCodeList) {
-	System.out.println(String.format("[🔔서비스] deptCodeList컬렉션:%s", str));
-}
-///////////////////////////////////////////////
 		
 		//<Map> dept_code=부서코드, team_no=팀일련번호, team_name=팀명, m_team_leader=팀책임자, team_leader_name=팀책임자이름의 List컬렉션
 		List<Map> teamList = dao.getTeamOrg(deptCodeList);
-////////////////////////////////test
-for (Map team : teamList) {
-Set keys=team.keySet();
-for(Object o:keys) {
-System.out.println(String.format("[🔔서비스] team의 키:%s, value:%s", o.toString(),((Map)team).get(o).toString()));
-}
-}
-///////////////////////////////////////////////
+
 		//팀별 팀 구성원 얻어오기
 		//리스트 컬렉션에 팀 일련번호 넣기
 		List<Integer> teamNoList = new Vector<>();
 		teamList.forEach(t->teamNoList.add(Integer.parseInt(t.get("team_no").toString())));
+		//teamMembersList
+		//|team_no |m_id       |m_name   |m_profile_img |position_name |
+		// 팀 번호  | 팀원 아이디  | 팀원이름  |프로필사진링크   | 직급명        |
 		List<Map> teamMembersList = dao.getTeamMembers(teamNoList);
-////////////////////////////////test
-for (Map teamMember : teamMembersList) {
-Set keys=teamMember.keySet();
-for(Object o:keys) {
-System.out.println(String.format("[🔔서비스] teamMembers의 키:%s, value:%s", o.toString(),((Map)teamMember).get(o).toString()));
-}
-}
-///////////////////////////////////////////////
-		
-	}
+
+		OrganizationDTO dto = new OrganizationDTO();
+		dto.setDeptList(deptList);
+		dto.setTeamList(teamList);
+		dto.setTeamMembersList(teamMembersList);
+		return dto;
+	}////////////getOrg()
 
 }

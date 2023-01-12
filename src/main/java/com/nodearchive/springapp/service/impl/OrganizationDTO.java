@@ -1,5 +1,8 @@
 package com.nodearchive.springapp.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,23 +11,17 @@ import lombok.Setter;
 
 @Getter
 @Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class OrganizationDTO {
-
-	private String dept_name; //부서명
-	private String m_dept_leader; //부서 책임자
+public class OrganizationDTO {	
 	
-	private String team_name; //팀명
-	private String m_team_leader; //팀 책임자
-	private String[] m_id; //팀원
-	
-	
-	//기업별 부서 + 부서 책임자
-	
-	//부서별 팀 + 팀 책임자
-	
-	//팀별 팀원 + 팀 책임자
-	
+	//기업의 부서, 부서책임자
+	private List<Map> deptList;
+	//부서별 팀, 팀책임자
+	private List<Map> teamList;
+	//팀별 팀원들
+	private List<Map> teamMembersList;
+	//그룹 구성원들
+	private List<Map> groupMembersList;
 }
