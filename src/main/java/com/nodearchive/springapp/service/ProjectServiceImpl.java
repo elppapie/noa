@@ -82,33 +82,37 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	public int insert(Map map) {
 		
 		int newProj = dao.save(map);
-	
-		//[TEST]-------------------------------------------------------
+		//[TEST]------------------------------------------------
 		System.out.println("project_no:"+map.get("project_no"));
 		System.out.println("project_name"+map.get("project_name"));
 		System.out.println("newProj:"+newProj);
-		//-------------------------------------------------------		
-		
+		//------------------------------------------------------		
 		return newProj;
 	}
 
-	//해당 프로젝트의 sche_no 구하기 - 업데이트 중
-	//프로젝트 수정시 필요
-	/*
-	public int selectScheNo(int project_no) {
-		return dao.selectScheNo();
-	}
-	*/
+
 	
-	/*업데이트 중
 	//update
 	@Override
 	public int update(Map map) {
-		int sche_no = selectScheNo(map.get("project_no"));
+		int project_no = (int) map.get("project_no");
+		System.out.println("project_no:"+project_no);
+		int sche_no = dao.selectScheNo(project_no);
+		System.out.println("2.sche_no:"+sche_no);
 		map.put("sche_no", sche_no);
 		return dao.update(map);
 	}
-	*/
+	
+	//해당 프로젝트의 sche_no 구하기 
+	//프로젝트 수정시 필요
+	//**SCHEDULE 테이블 키값 속성 변동시 수정 필요
+	public int selectScheNo(int project_no) {
+		int sche_no = dao.selectScheNo(project_no);
+		System.out.println("1.sche_no:"+sche_no);
+		return sche_no;
+	}
+	
+
 	
 	
 	//트랜잭션 처리 관련 빈 주입 받기
@@ -122,9 +126,9 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	
 	@Override
 	public int delete(Map map) {
-		/*
+	
 		int affected=0;//삭제된 댓글의 총 수 저장용
-		//타입 파라미터<T>: 트랜잭션 처리 작업후 반환할 타입으로 지정
+		//타입 파라미터<T>: 트랜잭션 처리 작업 후 반환할 타입으로 지정
 		affected=transactionTemplate.execute(new TransactionCallback<Integer>() {
 			//아래 메소드에 트랜잭션으로 처리할 작업들을 기술
 			@Override
@@ -139,20 +143,10 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 				dao.delete(map);
 				//doInTransaction()의 반환값이 execute()메소드의 반환값이다 
 				return deletedCommentCount;
-				*/
+				
 				return 0;
-			//}
-		//});
-		
+			}
+		});
 	}
 
-	@Override
-	public int update(Map map) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	
-
-	
 }

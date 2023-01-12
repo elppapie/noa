@@ -21,5 +21,6 @@ public interface ProjectService<T> {
 	int insert(Map map);
 	int delete(Map map);
 	int update(Map map);
+	int selectScheNo(int project_no);
 	
 }

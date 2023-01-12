@@ -52,21 +52,16 @@ public class ProjectController {
 		
 		//[TEST]-------------------------------------
 		//테스트를 위한 유저 아이디, nowPage 저장
-		map.put("m_id", "kim1234@samsung.com");
+		map.put("m_id", "park1234@samsung.com");
 		int nowPage=1;
 		//-------------------------------------------
+		//-------------------------------------------
 		
+		
+		//-------------------------------------------
 		//ListPagingData<Map> projectList = 
 		projectService.selectList(map, req, nowPage);
 		model.addAttribute("projectList", map);
-		
-		//[TEST]-------------------------------------------
-		//결과 MAP 출력
-		Set keys=map.keySet();
-		for(Object o:keys) {
-			System.out.println(String.format("[🔔컨트롤러] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
-		}
-		//-------------------------------------------------
 
 		return "project/list.noa";
 	}
@@ -121,13 +116,6 @@ public class ProjectController {
 		
 		model.addAttribute("selectOneProject", projectService.selectOne(map));
 		
-		//[TEST]-------------------------------------------
-		//결과 MAP 출력
-		Set keys=map.keySet();
-		for(Object o:keys) {
-			System.out.println(String.format("[🔔컨트롤러] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
-		}
-		//-------------------------------------------------
 		return "project/view.noa";
 	}
 	
@@ -141,7 +129,7 @@ public class ProjectController {
 		
 		int deleteProject = projectService.delete(map);
 		model.addAttribute("deleteProject", deleteProject);
-		//목록 페이지로 반환
+		//삭제 후 목록 페이지로 반환
 		return "project/list.noa";
 	}
 	
@@ -152,8 +140,23 @@ public class ProjectController {
 			@RequestParam Map map, 
 			Model model) {
 		
+		//[TEST]----------------------------
+		//테스트용 project / schedule 테이블 정보 입력
+		//실제 운영시 selectOne으로 불러온 기존 테이블 값을 map에 저장하여 사용함
+		map.put("project_no", 1);
+		map.put("project_name", "수정된 프로젝트 입니다");
+		map.put("m_id", "na1234@samsung.com");
+		map.put("sche_title", "프로젝트 수정됨");
+		map.put("sche_startdate", "2023-01-10 15:20:24");
+		map.put("sche_enddate", "2023-01-15 15:20:24");
+		//----------------------------------
+		
+		//int sche_no = projectService.selectScheNo((int)map.get("project_no"));
+		//System.out.println("컨트롤러 페이지 sche_no:"+sche_no);
+		//map.put("sched_no", sche_no);
 		int editProject = projectService.update(map);
 		model.addAttribute("editProject", editProject);
+		//수정 완료 후 해당 프로젝트 상세보기 페이지로 이동
 		return "project/view.noa";
 	}
 	

@@ -40,23 +40,24 @@
 		</if>			
 	</select>
 	
-	<!-- 프로젝트 삭제 -->
-	
-	
-	
+
 	<!-- 프로젝트 테이블의 sche_no 값 구하기 -->
-	<select id="projectScheNo" parameterType="Map" resultType="int">
+	<select id="projectScheNo" parameterType="int" resultType="int">
 		SELECT sche_no FROM project WHERE project_no=#{project_no}
 	</select>
 	
 	
 	<!-- 프로젝트 수정 -->
-	<update id="updateProjectTable" parameterType="Map">
+	<update id="updateProjectTable" parameterType="Map" >
 		UPDATE project SET project_name=#{project_name},m_id=#{m_id} WHERE project_no=#{project_no}
 	</update>
-	<update id="updateScheduleTable" parameterType="Map">
-		UPDATE schedule SET sche_startdate=#{sche_startdate},sche_enddate=#{sche_enddate} WHERE project_no=#{project_no}
+	<update id="updateScheduleTable" parameterType="Map" >
+		UPDATE schedule SET sche_startdate=#{sche_startdate},sche_enddate=#{sche_enddate} WHERE sche_no=#{sche_no}
 	</update>
+	
+	
+	<!-- 프로젝트 삭제 -->
+	
 	
 	
 </mapper>
