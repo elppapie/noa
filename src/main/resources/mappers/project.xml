@@ -6,7 +6,7 @@
     
 <mapper namespace="mapper.project">
 
-	<!--프로젝트 인서트(생성) - 캘린더 동시 생성-->
+	<!--프로젝트 인서트(생성) - 캘린더 테이블 동시 생성-->
 	<!-- **프로젝트 시작일 - 마감일 TIMESTAMP 속성 인자 적용 필요 -->
 	<insert id="projectInsert" parameterType="Map">
 		INSERT ALL

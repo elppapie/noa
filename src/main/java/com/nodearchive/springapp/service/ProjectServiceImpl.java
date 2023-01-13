@@ -14,6 +14,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.nodearchive.springapp.service.impl.ProjectDAO;
 import com.nodearchive.springapp.service.impl.ProjectDTO;
+import com.nodearchive.springapp.service.impl.TaskDAO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 import com.nodearchive.springapp.service.utils.PagingUtil;
 
@@ -119,11 +120,10 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	@Autowired
 	private TransactionTemplate  transactionTemplate;
 	//글 번호에따른 댓글 삭제용 DAO주입 받기
-	//@Autowired
-	//private TaskDAO tdao;
+	@Autowired
+	private TaskDAO tdao;
 
 	//delete
-	
 	@Override
 	public int delete(Map map) {
 	
@@ -136,17 +136,14 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 				
 				//글번호에 따른 모든 댓글 삭제
 				int deletedCommentCount=tdao.deleteByNo(map);
-				//트랜잭션 테스트를 위한 에러 발생
-				//String str=null;
-				//str.length();
+
 				//해당 원본 글 삭제
 				dao.delete(map);
 				//doInTransaction()의 반환값이 execute()메소드의 반환값이다 
 				return deletedCommentCount;
-				
-				return 0;
 			}
 		});
+		return 0;
 	}
 
 }
