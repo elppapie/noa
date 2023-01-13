@@ -110,7 +110,7 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-              <i class="icon-mail icon-lg"></i>
+              <i class="fa fa-light fa-square-xmark"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="notificationDropdown">
               <a class="dropdown-item py-3 border-bottom">
@@ -434,18 +434,24 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#main-message" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" href="javascript:openChatMain('${path}/Chat/main.kosmo')" aria-expanded="false" aria-controls="form-elements">
+            <!--  data-bs-toggle="collapse"  -->
               <i class="menu-icon mifa fa fa-color-gray fa-light fa-comment"></i>
               <span class="menu-title">메신저</span>
-              <i class="menu-arrow"></i>
+              <i class="menu-chat-sidebar"></i>
+              <i class="fa fa-solid fa-up-right-from-square"></i>
+              <!-- <i class="menu-arrow"></i>  
+               -->
             </a>
+            <!-- 
             <div class="collapse" id="main-message">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/Chat/login.kosmo">메신저열기</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/Chat/main.kosmo">메신저열기</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
               </ul>
             </div>
+            -->
           </li>
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#main-attendance" aria-expanded="false" aria-controls="form-elements">

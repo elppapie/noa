@@ -14,6 +14,8 @@
 		<mapper resource="mappers/address.xml"/>
 		<mapper resource="mappers/schedule.xml"/>
 		<mapper resource="mappers/project.xml"/>
+		<mapper resource="mappers/task.xml"/>
+		<mapper resource="mappers/report.xml"/>
 		<mapper resource="mappers/mail.xml"/>
 		<mapper resource="mappers/notice.xml"/>
 		<mapper resource="mappers/chat.xml"/>

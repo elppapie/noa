@@ -2,6 +2,9 @@
 .fa-color-gray{
 	color:#8d8d8d;
 }
+.fa-color-chatGreen{
+	color:#2db400;
+}
 
 @font-face {
 	font-family: 'NanumGothicCoding';
@@ -69,3 +72,30 @@
   border-radius: 10px;
 }
 /* login.jsp - end */
+
+/* chat start */
+
+.menu-chat-sidebar{
+	-webkit-font-smoothing: antialiased;
+    margin-left: auto;
+    margin-right: 0;
+    color: #bfccda;
+}
+.menu-chat-sidebar::before{
+	content: "";
+    font-family: "Material Design Icons";
+    font-style: normal;
+    display: block;
+    font-size: 0.687rem;
+    line-height: 10px;
+}
+#sidebar > ul > li:nth-child(4) > a > i.fa.fa-solid.fa-up-right-from-square{
+	font-size: 0.65rem;
+	text-align:top;
+}
+
+
+
+/* chat end */
+
+

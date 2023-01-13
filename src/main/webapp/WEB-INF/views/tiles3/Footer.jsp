@@ -46,6 +46,8 @@
   <script src="${path}/resources/js/dashboard.js"></script>
   <script src="${path}/resources/js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
+  <script src="${path}/resources/js/noaJS.js"></script>
+  <script src="${path}/chatResources/js/noaChatJS.js"></script>
 </body>
 
 </html>
