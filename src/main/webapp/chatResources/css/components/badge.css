@@ -1,0 +1,25 @@
+.badge {
+  background-color: rgb(255, 38, 0);
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 15px;
+  bottom: 10px;
+}
+
+.badge2 {
+  background-color: gray;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 15px;
+  bottom: 10px;
+}

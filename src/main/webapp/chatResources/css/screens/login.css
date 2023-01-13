@@ -1,0 +1,57 @@
+html {
+  height: 100vh;
+}
+
+.welcome-header {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: #2db400;
+  position: relative;
+  margin-top: 130px;
+}
+.welcome-header__text {
+  font-size: 17px;
+  opacity: 0.7;
+  margin-top: 40px;
+  font-weight: normal;
+  color: black;
+}
+#login-form {
+  display: flex;
+  flex-direction: column;
+  margin: 80px 30px;
+}
+#login-form input {
+  padding: 15px 0px;
+  border: none;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+#login-form input:not([type="submit"]) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  transition: border-color 0.3s ease-in-out;
+}
+#login-form input::placeholder {
+  color: rgba(0, 0, 0, 0.2);
+}
+#login-form input:focus {
+  border-color: var(--green);
+}
+#login-form input[type="submit"] {
+  background-color: var(--green);
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+}
+#login-form a {
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  color: inherit;
+}

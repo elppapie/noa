@@ -1,0 +1,78 @@
+#create-open-crew {
+  text-align: center;
+  display: block;
+  background-color: #fafafa;
+  padding: 8px 0px;
+  font-size: 16px;
+}
+
+#create-open-crew i {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.opencrew-screen {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.opnecrew-screen__popular {
+  border-top: var(--main-border);
+}
+
+.opencrew-screen__hashtags,
+.opnecrew-screen__popular {
+  padding: 10px 0px;
+}
+
+.hashtags__title {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.opencrew-screen__hashtags button {
+  border-radius: 10px;
+  margin: 3px;
+  height: 20px;
+  border: none;
+  transition-duration: 0.4s;
+}
+
+.opencrew-screen__hashtags button:hover {
+  background-color: var(--green);
+  color: white;
+}
+
+.opencrew-componet-margin {
+  margin: 10px 0px;
+}
+
+.opencrew-componet,
+.opencrew-componet-column {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.opencrew-componet__avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+}
+
+.opencrew-componet__text {
+  margin-left: 20px;
+}
+
+.opencrew-componet__title {
+  font-weight: 600;
+}
+
+.opencrew-componet__subtitle {
+  color: gray;
+  margin-top: 4px;
+}
+
+.fa-fire-alt {
+  color: white;
+}
