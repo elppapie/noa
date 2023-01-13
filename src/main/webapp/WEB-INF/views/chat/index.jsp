@@ -16,18 +16,18 @@
     <title>노드아카이브 메신저</title>
   </head>
     <div class="status-bar">
-    <div class="status-bar__column">
-      <div>
-        <a href="javascript:openNOAMain('${path}/home.kosmo')">
-          <img src="${path}/resources/images/textlogo-NodeArchive.svg" alt="text-logo" style="width:100%;height:100%;"/>
-      	</a>
+      <div class="status-bar__column">
+        <div>
+          <a href="javascript:openNOAMain('${path}/home.kosmo')">
+            <img src="${path}/resources/images/textlogo-NodeArchive.svg" alt="text-logo" style="width:100%;height:100%;"/>
+        	</a>
+        </div>
+      </div>
+  	  <div class="status-bar__column"></div>
+      <div class="status-bar__column">
+        <i class="fa fa-color-chatGreen fa-comment" style="padding-right:8px;"></i>
       </div>
     </div>
-	<div class="status-bar__column"></div>
-    <div class="status-bar__column">
-      <i class="fa fa-color-chatGreen fa-comment" style="padding-right:8px;"></i>
-    </div>
-  </div>
 
   <body>
     <header class="welcome-header">

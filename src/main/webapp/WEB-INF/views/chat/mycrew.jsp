@@ -13,16 +13,15 @@
   <body>
     <div class="status-bar">
       <div class="status-bar__column">
-        <span>No service</span>
-        <i class="fas fa-wifi"></i>
+        <div>
+          <a href="javascript:openNOAMain('${path}/home.kosmo')">
+            <img src="${path}/resources/images/textlogo-NodeArchive.svg" alt="text-logo" style="width:100%;height:100%;"/>
+        	</a>
+        </div>
       </div>
+  	  <div class="status-bar__column"></div>
       <div class="status-bar__column">
-        <span>15:52</span>
-      </div>
-      <div class="status-bar__column">
-        <span>1000%</span>
-        <i class="fas fa-battery-full"></i>
-        <i class="fas fa-bolt"></i>
+        <i class="fa fa-color-chatGreen fa-comment" style="padding-right:8px;"></i>
       </div>
     </div>
     <header class="screen-header">
