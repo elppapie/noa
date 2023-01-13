@@ -99,7 +99,7 @@ public class ScheduleController {
 		}
 /////////////////////////////////////////////////////////////////////	
 		
-		
+		//해당정보를 뷰페이지로 전달
 		return "schedule/Month.noa";
 	}
 	
@@ -127,7 +127,34 @@ public class ScheduleController {
 			//Authentication auth,
 			@RequestParam Map map
 			) {
-		return "schedule/View.noa";
+		
+//////////////////////////////////////jsp페이지에서 form버튼 클릭해서 input으로 넘기도록 실험해볼 수도 있음 //////////////
+map.put("id", "kim1234@samsung.com");
+//map.put("sche_no", "2"); //테스트용 하드코딩
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+			Map oneSchedule = scheduleService.view(map);
+
+//model.addAttribute("sche_list",list); //?
+/////////////////////////////////////////////////////////////////////
+
+System.out.printf("[⚜] %s : %s%n","m_name",oneSchedule.get("m_name"));
+System.out.printf("[⚜] %s : %s%n","position_name",oneSchedule.get("position_name"));
+System.out.printf("[⚜] %s : %s%n","m_id",oneSchedule.get("m_id"));
+System.out.printf("[⚜] %s : %s%n","sche_title",oneSchedule.get("sche_title"));
+System.out.printf("[⚜] %s : %s%n","sche_regidate",oneSchedule.get("sche_regidate"));
+System.out.printf("[⚜] %s : %s%n","sche_startdate",oneSchedule.get("sche_startdate"));
+System.out.printf("[⚜] %s : %s%n","sche_enddate",oneSchedule.get("sche_enddate"));
+System.out.println("================일정 하나 출력 완료=====================");
+
+/////////////////////////////////////////////////////////////////////	
+		
+		
+		//해당 정보를 뷰페이지로 전달
+
+		//return "schedule/View.noa";
+		//테스트용 페이지 ↓
+		return "schedule/Month.noa";
 	}
 	
 	//일정 수정시

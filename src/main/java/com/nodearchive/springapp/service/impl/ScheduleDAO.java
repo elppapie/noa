@@ -58,9 +58,17 @@ public class ScheduleDAO {
 	
 	
 	// 일정 입력용 - 몇 개의 레코드가 영향을 받는지 반환
-	public int insert(Map map) {		
-		return template.delete("scheDelete",map);
+	public int insertSche(Map map) {		
+		return template.delete("scheInsert",map);
 	}
+	// 일정 참조인 입력용 - 몇 개의 레코드가 영향을 받는지 반환
+	public int insertRef(Map map) {		
+		return template.delete("scheInsertRef",map);
+	}
+	
+	
+	
+	
 	// 일정 삭제용 - 몇 개의 레코드가 영향을 받는지 반환
 	public int delete(Map map) {		
 		return template.delete("scheDelete",map);

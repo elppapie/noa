@@ -5,7 +5,19 @@
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
+<style>
+	.dayyy{
+		height:100px;
+	
+	}
+	
+	.boxxxx{
+		height:auto;
+		border-left:1px solid black;
+		width: 100px;
+	}
 
+</style>
 
 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
 <!----Main Page의 Nav 메뉴 작성---->
@@ -37,7 +49,7 @@
 <!----Main Page의 Content 작성---->
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">우와 Nav도 추가해야 하네</h4>
+                  <h4 class="card-title">2023 January <code>월간일정</code></h4>
                   <p class="card-description">
                     현재시간 <code>\${ }</code>
                   </p>
@@ -72,18 +84,55 @@
 	                      <c:if test="true">
 		                      <%-- <c:forEach items="">--%>
 		                      	<tr>
-		                      		<td>1</td>
-		                      		<td>2</td>
-		                      		<td>3</td>
-		                      		<td>4</td>
-		                      		<td>5</td>
-		                      		<td>6</td>
-		                      		<td>7</td>
+		                      		<td class="dayyy">1</td>
+		                      		<td class="dayyy">2</td>
+		                      		<td class="dayyy">3</td>
+		                      		<td class="dayyy">4</td>
+		                      		<td class="dayyy">5</td>
+		                      		<td class="dayyy">6</td>
+		                      		<td class="dayyy">7</td>
 		                      	</tr>
 		                      <%-- </c:forEach>--%>
 	                      </c:if>
+	                      		                      	<tr>
+		                      		<td class="dayyy">1</td>
+		                      		<td class="dayyy">2</td>
+		                      		<td class="dayyy">3</td>
+		                      		<td class="dayyy">4</td>
+		                      		<td class="dayyy">5</td>
+		                      		<td class="dayyy">6</td>
+		                      		<td class="dayyy">7</td>
+		                      	</tr>	                      
+		                      	<tr>
+		                      		<td class="dayyy">1</td>
+		                      		<td class="dayyy">2</td>
+		                      		<td class="dayyy">3</td>
+		                      		<td class="dayyy">4</td>
+		                      		<td class="dayyy">5</td>
+		                      		<td class="dayyy">6</td>
+		                      		<td class="dayyy">7</td>
+		                      	</tr>
+		                      	<tr>
+		                      		<td class="dayyy">1</td>
+		                      		<td class="dayyy">2</td>
+		                      		<td class="dayyy">3</td>
+		                      		<td class="dayyy">4</td>
+		                      		<td class="dayyy">5</td>
+		                      		<td class="dayyy">6</td>
+		                      		<td class="dayyy">7</td>
+		                      	</tr>		                      	
+		                      	<tr>
+		                      		<td class="dayyy">1</td>
+		                      		<td class="dayyy">2</td>
+		                      		<td class="dayyy">3</td>
+		                      		<td class="dayyy">4</td>
+		                      		<td class="dayyy">5</td>
+		                      		<td class="dayyy">6</td>
+		                      		<td class="dayyy">7</td>
+		                      	</tr>		
                       </tbody>
                     </table>
+                    <%-- 
                     <form method="POST" action="<c:url value='Schedule/month.kosmo'/>">
                     	<label for="fname">아이디 입력:</label>
   						<input type="text" id="fname" name="fname"/><br/><br/>
@@ -91,13 +140,25 @@
   						<input type="submit" value="검색"/>
                     </form>
                     
+                    <form method="POST" action="<c:url value='view.kosmo'/>">
+                    	<label for="fname">글번호 입력:</label>
+  						<input type="text" id="fname" name="sche_no"/><br/><br/>
+  						<input type="submit" value="글번호 검색"/>
+                    </form>
+                    --%>
+                    
                     
                   </div>
+                  <%-- 
+                  <div class="boxxxx">
+                  	ddd
+                  </div>
+                  --%>
                 </div>
               </div>
 
 
-
+<%--
 <table class="calendar_body">
 
 <thead>
@@ -188,4 +249,5 @@
 	</tr>
 </tbody>
 </table>
+--%>
 </div>

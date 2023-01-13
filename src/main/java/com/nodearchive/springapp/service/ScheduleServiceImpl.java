@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nodearchive.springapp.service.impl.AddressDAO;
 import com.nodearchive.springapp.service.impl.ScheduleDAO;
 import com.nodearchive.springapp.service.impl.ScheduleDTO;
 
@@ -19,6 +20,9 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	
 	@Autowired
 	private ScheduleDAO dao;
+	
+	@Autowired
+	private AddressDAO addrdao;
 	
 	// 일정 목록 구현시 스크롤바 사용 (페이징 x)
 
@@ -88,7 +92,8 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		
 		return dao.findRecordByPeriod(map);
 	}
-
+	
+	/*
 	// 선택한 기간단위별 뷰 뿌려주기용
 	public List<Map> selectListForPeriod(Map map, HttpServletRequest req) {
 		//map에 넘어온 값은 아이디, 선택한 구간의 시작시간/끝시간
@@ -156,15 +161,50 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		
 		return dao.findRecordByPeriod(map);
 	}
-	
+	*/
 	
 	// 일정 상세보기용(일정 하나 클릭시)
 	// 로그인한 사람의 권한 확인
+	public Map view(Map map) {
+		return dao.view(map);
+	}
+	// 일정 참조인 목록보기
+	public List viewRef(Map map) {
+		return dao.findRefByNo(map);
+	}
+	
+	
+	
+	// 일정 입력용
 	@Override
 	public int insert(Map map) {
+		dao.insertSche(map);
+		return 0;
+	}
+	
+	/*
+		일정을 입력한 후에 해당 일정번호를 가져오는 (TOP 쿼리문) 쿼리를 실행해서
+		일정 참조인 입력용 테이블에 sche_no를 전달해야하는데...  
+	*/
+	
+	// 일정 참조인 입력용
+	public int insertRef(Map map) {
+		String sche_no="";
+		
+		// 참조인 이름-아이디를 고르게 한 후 아이디를 가져와서
+		// AddressDAO.java 에 getOneMember메소드 작성 - 가져온 아이디를 분리해서...id를 해당 메소드에 넣어서 
+		
+		for(int i=0; i<map.size(); i++) {
+			Map mapForOne = null;
+			mapForOne.put("id",(map.get(Integer.toString(i+1))));
+			mapForOne.put("sche_no", sche_no);
+			dao.insertRef(mapForOne); //한사람씩 레코드에 넣음
+		}
+		
 		
 		return 0;
 	}
+	
 
 	@Override
 	public int delete(Map map) {

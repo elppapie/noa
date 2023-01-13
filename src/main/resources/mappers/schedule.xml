@@ -71,16 +71,19 @@
 	정보를 얼마나 많이 띄워줘야 하는지 모르겠음
 	
 	-->
-	<!-- #{sche_no} 일정번호 전달 -->
-	<!-- #{id} 로그인한 사람의 아이디 전달 -->
+	
+	
 	<!-- 일정 하나 클릭시(상세보기) 띄워주기 -->
+	<!-- #{sche_no} 일정번호 전달 -->
+	<!-- #{id} 로그인한 사람의 아이디 전달 / 권한때 필요할듯 -->
+	<!-- 일정 하나만 띄울거니까 id로도 WHERE문 제한해야함 -->
 	<select id="scheFindRecordByNo" parameterType="Map" resultType="Map">		
 		SELECT m.m_name, p.position_name, sr.m_id, s.*
 		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
     		JOIN members m ON m.m_id = sr.m_id
     		JOIN position p ON p.position_code = m.position_code
 		WHERE     
-    		sche_no = #{sche_no} AND
+    		s.sche_no = #{sche_no} AND
     		m.m_id = #{id}
 	</select>
 	
@@ -88,14 +91,39 @@
 	<!-- JOIN을 하는 경우 DTO 타입으로는 못 가져오고, map으로 가져오는 게 제일 편함 -->
 	<!-- 이름, 직함, 소속 부서, 소속 팀, 이메일 -->
 	<select id="scheFindRefByNo" parameterType="Map" resultType="Map">
-		SELECT m.m_name, p.position_name, sr.m_id
+		SELECT m.m_name, p.position_name, sr.m_id, t.team_name, d.dept_name
 		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
 			JOIN members m ON m.m_id = sr.m_id 
     		JOIN position p ON p.position_code = m.position_code
+    		JOIN team t ON t.team_no = m.team_no
+    		JOIN dept d ON d.dept_code = t.dept_code
     	WHERE
     		sche_no = #{sche_no}
 	</select>
 
+	<!-- 일정 입력용 -->
+	<insert id="scheInsert" parameterType="Map">
+		INSERT INTO schedule VALUES(
+			#{sche_no},
+			#{sche_title},
+			#{sche_content},
+			SYSTIMESTAMP,
+			#{sche_startdate},
+			#{sche_enddate},
+			'0',
+			#{sche_status},
+			#{sche_color}		
+		)
+		
+	</insert>
+	<!-- 일정 인원 입력용 -->
+	<insert id="scheInsertRef" parameterType="Map">
+		INSERT INTO sche_ref VALUES(
+			#{id},
+			#{sche_no},
+			SYSTIMESTAMP
+		)
+	</insert>
 	
 	<!-- 일정 삭제용 
 	삭제권한은 어떻게 설정하지
