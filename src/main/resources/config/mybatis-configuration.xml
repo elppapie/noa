@@ -16,5 +16,6 @@
 		<mapper resource="mappers/project.xml"/>
 		<mapper resource="mappers/mail.xml"/>
 		<mapper resource="mappers/notice.xml"/>
+		<mapper resource="mappers/chat.xml"/>
 	</mappers>
 </configuration>

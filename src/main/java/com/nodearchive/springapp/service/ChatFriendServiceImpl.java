@@ -1,11 +1,20 @@
 package com.nodearchive.springapp.service;
 
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.nodearchive.springapp.service.impl.ChatDAO;
 import com.nodearchive.springapp.service.impl.ChatDTO;
 
+@Service
 public class ChatFriendServiceImpl implements ChatService<ChatDTO>{
 
+	@Autowired
+	private ChatDAO dao;
+	
 	@Override
 	public int authMember(Map map) {
 		// TODO Auto-generated method stub
@@ -13,9 +22,10 @@ public class ChatFriendServiceImpl implements ChatService<ChatDTO>{
 	}
 
 	@Override
-	public ChatDTO selectList(Map map) { 
-		// TODO Auto-generated method stub
-		return null;
+	public List selectList(Map map) {
+		
+		return dao.selectFriendsList(map);
+		//return null;
 	}
 
 	@Override

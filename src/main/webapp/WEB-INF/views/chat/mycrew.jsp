@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- 뷰 페이지 -->    
+<!-- Top.jsp -->
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
+<c:set var="view" value="${pageContext.request.contextPath}/WEB-INF/views"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +30,7 @@
       </div>
     </div>
     <header class="screen-header">
-      <h1 class="screen-header__title">My Crews</h1>
+      <h1 class="screen-header__title">회사이름</h1>
       <div class="screen-header__icons">
         <span><i class="fas fa-user-plus fa-lg"></i></span>
         <span><i class="fas fa-cog fa-lg"></i></span>
@@ -51,29 +52,30 @@
             class="user-component__avatar user-component__avatar--xl"
           />
           <div class="user-component__text">
-            <div class="user-component__title">Lorraine</div>
-            <!-- <div class="user-component__subtitle">Lorraine</div> -->
+            <div class="user-component__title">사용자이름, 상태</div> 
+            <div class="user-component__subtitle">상태메세지</div>
           </div>
         </div>
         <div class="user-component"></div>
       </div>
       <div class="crew-screen__channel">
         <div class="crew-screen__channel__header">
-          <span>Channel</span>
+          <span>그룹이름</span>
           <i class="fas fa-chevron-up fa-xs"></i>
         </div>
+
         <div class="user-component">
           <div class="user-component__column">
             <img
               src="https://media.glassdoor.com/sqll/599602/naver-squarelogo-1429700032474.png"
               class="user-component__avatar user-component__avatar--sm"
             />
+            
             <div class="user-component__text">
-              <div
-                class="user-component__title user-component__title--not-bold"
-              >
-                Channel
+              <div class="user-component__title user-component__title--not-bold">
+                그룹내 사원이름, 상태
               </div>
+              <div class="user-component__subtitle">상태메세지</div>
             </div>
           </div>
           <div class="user-component">
@@ -81,6 +83,7 @@
             <i class="fas fa-chevron-right fa-xs"></i>
           </div>
         </div>
+ 
       </div>
     </main>
 

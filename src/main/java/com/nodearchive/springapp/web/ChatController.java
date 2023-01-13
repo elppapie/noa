@@ -1,9 +1,13 @@
 package com.nodearchive.springapp.web;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +19,7 @@ import com.nodearchive.springapp.service.ChatService;
 import com.nodearchive.springapp.service.ChatServiceImpl;
 import com.nodearchive.springapp.service.impl.ChatDTO;
 
+@Controller
 @RequestMapping("/Chat")
 public class ChatController {
 	
@@ -27,24 +32,28 @@ public class ChatController {
 	//메신저 메인페이지(로그인페이지) 이동
 	@RequestMapping("/main.kosmo")
 	public String main() {
-		return "chat/Main.jsp";
+		return "chat/index";
 	}
 	
 	//메신저 로그인--
 	@RequestMapping("/login.kosmo")
 	public String loginChat(
 			//Authentication auth,
-			@ModelAttribute("id") String id,
-			@RequestParam Map map,
-			Model model
+			@RequestParam Map map, Model model,
+			HttpSession session
 			) {
 		
 		//서비스 호출
 		int auth= chatService.authMember(map);
+		if(auth!=1) {
+			model.addAttribute("message","아이디 또는 비밀번호가 일치하지 않습니다");
+			return "chat/index";
+		}
 		//데이터 저장
-		model.addAttribute("auth",auth);
+		session.setAttribute("id", map.get("username"));   
 		//뷰정보 반환(목록처리 컨트롤러로 이동)		
 		return "forward:/Chat/friendList.kosmo";
+		//return "chat/mycrew";
 	}
 	
 	
@@ -52,17 +61,20 @@ public class ChatController {
 	@RequestMapping("/friendList.kosmo")
 	public String friendList(
 			//Authentication auth,
-			@ModelAttribute("id") String id,
 			@RequestParam Map map,
-			Model model
+			Model model,
+			HttpSession session
 			) {
 		
+		//세션에 저장된 아이디
+		map.put("id", session.getAttribute("id").toString());
+		
 		//서비스 호출
-		ChatDTO record= chatFriendService.selectList(map);
+		List record= chatFriendService.selectList(map);
 		//데이터 저장
 		model.addAttribute("record",record);
 		//뷰정보 반환		
-		return "chat/FriendList.jsp";
+		return "chat/mycrew";
 	}
 	
 	
@@ -126,11 +138,11 @@ public class ChatController {
 			) {
 		
 		//서비스 호출
-		ChatDTO record= chatService.selectList(map);
+		List record= chatService.selectList(map);
 		//데이터 저장
 		model.addAttribute("record",record);
 		//뷰정보 반환		
-		return "chat/ChatList.jsp";
+		return "chat/chats.html";
 	}
 	
 	

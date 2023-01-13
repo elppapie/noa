@@ -1,5 +1,6 @@
 package com.nodearchive.springapp.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,5 +20,10 @@ public class ChatDAO {
 		return template.selectOne("chatLogin", map);
 	}
 	
+	public List selectFriendsList(Map map) {		
+		
+		return template.selectList("selectFriendsList", map);
+		//return template.selectOne("selectFriendsList", map);
+	}
 	
 }

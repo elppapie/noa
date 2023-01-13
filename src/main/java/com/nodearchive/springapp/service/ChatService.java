@@ -1,5 +1,6 @@
 package com.nodearchive.springapp.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,7 @@ public interface ChatService<T> {
 	int authMember(Map map);
 	
 	//목록
-	T selectList(Map map);
+	List selectList(Map map);
 	
 	//상세보기
 	T selectOne(Map map);

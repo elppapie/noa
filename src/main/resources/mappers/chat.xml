@@ -6,10 +6,25 @@
 
 
 <mapper namespace="mappers.chat">
-
+	
+	<!-- 메신저 로그인 -->
 	<select id="chatLogin" parameterType="Map" resultType="int">
-		SELECT COUNT(*) FROM members WHERE M_ID='kim1234@samsung.com' AND M_PASSWORD='kim1234'
+		SELECT COUNT(*) FROM members WHERE M_ID=#{username} AND M_PASSWORD=#{password}
 	</select>
 
+	<!--  -->
+	<select id="selectFriendsList" parameterType="Map" resultType="Map">
+		SELECT eg.GROUP_NAME, T.*
+		FROM EMP_GROUP eg,
+		(SELECT mm.* ,gml.group_no 그룹번호
+		FROM GROUP_M_LIST gml ,
+		(SELECT m.M_PROFILE_IMG 프로필사진, m.M_NAME 이름, m.M_STATUS 상태, m.M_PROFILE_MSG 상태메세지, t.TEAM_NAME 부서, p.POSITION_NAME 직급, m.m_id 아이디
+		FROM members m
+		JOIN team t ON t.team_no=m.team_no
+		JOIN position p ON p.position_code=m.position_code
+		) mm
+		where mm.아이디=gml.m_id)T
+		WHERE T.그룹번호=eg.group_no AND eg.group_separator='채팅그룹' AND eg.m_id=#{username}
+	</select>
 
 </mapper>

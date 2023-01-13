@@ -1,12 +1,15 @@
 package com.nodearchive.springapp.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.nodearchive.springapp.service.impl.ChatDAO;
 import com.nodearchive.springapp.service.impl.ChatDTO;
 
+@Service
 public class ChatServiceImpl implements ChatService<ChatDTO>{
 	
 	@Autowired
@@ -14,13 +17,13 @@ public class ChatServiceImpl implements ChatService<ChatDTO>{
 
 	@Override
 	public int authMember(Map map) {
-		int auth= dao.authMember(map);
-		return 0;
+		
+		return dao.authMember(map);
 	}
 
 	@Override
-	public ChatDTO selectList(Map map) {
-		// TODO Auto-generated method stub
+	public List selectList(Map map) {
+		
 		return null;
 	}
 
