@@ -16,7 +16,7 @@
 		</h1>
 	</div>
 	<div class="text-right mb-2">
-		<a href="<c:url value="/views/notice/Write.do"/>" class="btn btn-light">글등록</a>
+		<a href="<c:url value="/Notice/write.kosmo"/>" class="btn btn-light">글등록</a>
 	</div>
 	<table class="table table-light table-hover text-center">
 
