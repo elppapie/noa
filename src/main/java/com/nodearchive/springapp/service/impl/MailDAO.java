@@ -15,42 +15,45 @@ public class MailDAO {
 	private SqlSessionTemplate template;
 	
 	
-	//받은 메일함 가져오기
-	public List<Map> findRecByMailReceive(Map map){
-		return template.selectList("mailFindByReceive", map);
+	//받은 메일함 
+	public List<Map> recByMailReceive(Map map){
+		return template.selectList("mailByReceive", map);
 	}
 	
-	//보낸 메일함 가져오기
-	public List<Map> findRecByMailSend(Map map){
-		return template.selectList("mailFindBySend", map);
+	//보낸 메일함 
+	public List<Map> recByMailSend(Map map){
+		return template.selectList("mailBySend", map);
 	}
 	
-	//임시 메일함 가져오기
-	public List<Map> findRecByMailTemp(Map map){
-		return template.selectList("mailFindByTemp", map);		
+	//임시 메일함 
+	public List<Map> recByMailTemp(Map map){
+		return template.selectList("mailByTemp", map);		
 	}
 	
-	//내게 쓴 메일함 가져오기
-	public List<Map> findRecByMailMy(Map map){
-		return template.selectList("mailFindByMy", map);
+	//내게 쓴 메일함 
+	public List<Map> recByMailMy(Map map){
+		return template.selectList("mailByMy", map);
 	}
 	
-	//스팸 메일함 가져오기
-	public List<Map> findRecByMailSpam(Map map){
-		return template.selectList("mailFindBySpan", map);
+	//스팸 메일함 
+	public List<Map> recByMailSpam(Map map){
+		return template.selectList("mailBySpan", map);
 	}
 	
-	//즐겨찾기 메일함 가져오기
-	public List<Map> findRecByMailfav(Map map){
+	//즐겨찾기 메일함 
+	public List<Map> recByMailfav(Map map){
 		return template.selectList("mailFindByFav", map);
 	}
 	
-	//휴지통 메일함 가져오기
-	public List<Map> findRecByMailTrash(Map map){
-		return template.selectList("mailFindByTrash", map);
+	//휴지통 메일함 
+	public List<Map> recByMailTrash(Map map){
+		return template.selectList("mailByTrash", map);
 	}
 	
-	//
+	//메일 전체 목록
+	public List<Map> recByMailLists(Map map){
+		return template.selectList("mailByLists", map);
+	}
 	
 	
 }

@@ -27,8 +27,8 @@
 
 <mapper namespace="mappers.mail">
 
-	<!-- 받은 메일함 가져오기 -->
-	<select id="mailFindByReceive" parameterType="Map" resultType="Map">
+	<!-- 받은 메일함 -->
+	<select id="mailByReceive" parameterType="Map" resultType="Map">
 		SELECT mail_no,
 			   m_id,
 			   mail_mark,
@@ -36,14 +36,77 @@
 			   mail_type,
 			   mail_title,
 			   mail_regidate
-		FROM mail;
+		FROM mail
+		WHERE mail_type=#{0};
 	</select>
 	
-	<!-- 보낸 메일함 가져오기 -->
-	<select id="mailFindBySend" parameterType="Map" resultType="Map">
+	<!-- 보낸 메일함 -->
+	<select id="mailBySend" parameterType="Map" resultType="Map">
+		SELECT mail_no,
+			   m_id,
+			   mail_mark,
+			   mail_check,
+			   mail_type,
+			   mail_title,
+			   mail_regidate
+		FROM mail
+		WHERE mail_type=#{1};
+	
+	</select>
+	
+	<!-- 임시 메일함 -->
+	<select id="mailByTemp" parameterType="Map" resultType="Map" >
+		SELECT mail_no,
+			   m_id,
+			   mail_mark,
+			   mail_check,
+			   mail_type,
+			   mail_title,
+			   mail_regidate
+		FROM mail
+		WHERE mail_type=#{2};
+	
+	</select>
+	
+	<!-- 내게 쓴 메일함 -->
+	<select id="mailByMy" parameterType="Map" resultType="Map" >
+		SELECT mail_no,
+			   m_id,
+			   mail_mark,
+			   mail_check,
+			   mail_type,
+			   mail_title,
+			   mail_regidate
+		FROM mail
+		WHERE mail_type=#{3};
+	
+	</select>
+	
+	<!-- 스팸 메일함 -->
+	<select id="mailBySpan" parameterType="Map" resultType="Map" >
+	
+	
+	</select>
+	
+	<!-- 즐찾 메일함 -->
+	<select id="mailFindByFav" parameterType="Map" resultType="Map" >
+	
+	
+	</select>
+	
+	<!-- 휴지통 메일 -->
+	<select id="mailByTrash" parameterType="Map" resultType="Map" >
+	
+	
+	</select>
+	
+	<!-- 전체 메일 목록 -->
+	<select id="mailByLists" parameterType="Map" resultType="Map" >
 		
 	
 	</select>
+	
+	
 	
 	
 </mapper>
