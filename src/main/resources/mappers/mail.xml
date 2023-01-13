@@ -27,5 +27,23 @@
 
 <mapper namespace="mappers.mail">
 
+	<!-- 받은 메일함 가져오기 -->
+	<select id="mailFindByReceive" parameterType="Map" resultType="Map">
+		SELECT mail_no,
+			   m_id,
+			   mail_mark,
+			   mail_check,
+			   mail_type,
+			   mail_title,
+			   mail_regidate
+		FROM mail;
+	</select>
+	
+	<!-- 보낸 메일함 가져오기 -->
+	<select id="mailFindBySend" parameterType="Map" resultType="Map">
+		
+	
+	</select>
+	
 	
 </mapper>
