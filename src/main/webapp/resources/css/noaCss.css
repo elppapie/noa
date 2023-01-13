@@ -16,9 +16,19 @@
 * {
 	font-family:'NanumGothicCoding', "Manrope", sans-serif;
 }
-
 .mifa {
 	width:30px !important;
+}
+
+/* login.jsp - start */
+.fsu-lg{
+  font-size: 2rem !important;
+}
+.fsu-m{
+  font-size: 1.35rem !important;
+}
+.fsu-sm{
+  font-size: 1rem !important;
 }
 .main-panel {
   width: 100% !important;
@@ -43,9 +53,19 @@
   width: 90%;
   height: auto;
 }
+.logo-img-div{
+  padding: 20px 35px;
+}
+.logo-txt-div{
+  margin-top: -50px;
+  padding: 15px 35px;
+}
 .emp-description{
   text-align: center;
   color: #5f6368;
   font-size: 1rem;
   line-height: 1.5rem;
+  background-color: #cccccc45;
+  border-radius: 10px;
 }
+/* login.jsp - end */

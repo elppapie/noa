@@ -33,33 +33,35 @@
   <!-- font-awesome Kit Code -->
   <script src="https://kit.fontawesome.com/672ea2e509.js" crossorigin="anonymous"></script>
 </head>
-<body>
-  <div class="container-scroller"> 
-      <div class="main-panel">
-        <div class="content-wrapper d-flex justify-content-center ">
-          <div class="row flex-grow" style="height: auto;">
-            <div class="col-sm-6 d-flex align-items-stretch">
+<body> 
+      <div class="main-panel mp-height">
+        <div class="content-wrapper d-flex justify-content-center">
+          <div class="d-flex py-5">
+          <div class="row flex-grow" >
+            <div class="col-sm-6 d-flex align-items-stretch px-5">
               <div class="grid-margin stretch-card flex-grow">
                 <div class="card card-rounded">
                   <div class="card-body d-flex flex-column justify-content-center">
-                    <div>
-                      <img src="${path}/resources/images/logo-removebg-preview.png" class="mx-auto d-block loginpage-logo-img" alt="노아 이미지 로고"/>
+                    <div class="logo-img-div">
+                      <img src="${path}/resources/images/logo-removebg-preview.png" class="loginpage-logo-img mx-auto d-block " alt="노아 이미지 로고"/>
                     </div>
-                    <div>
+                    <div class="logo-txt-div">
                       <img src="${path}/resources/images/textlogo-NodeArchive.svg" class="mx-auto d-block loginpage-logo-img" alt="노아 텍스트 로고"/>
                     </div>
-                    <p class="emp-description mt-2">
-                      우리 노드아카이브 그룹웨어는 재택근무에 특화된 그룹웨어 서비스를 제공합니다
-                    </p>
+                    <div class="d-flex justify-content-center">
+                      <p class="emp-description mt-2 px-5 py-3">
+                        우리 노드아카이브 그룹웨어는 재택근무에 특화된 그룹웨어 서비스를 제공합니다.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>    
             </div>
-            <div class="col-sm-6 d-flex align-items-stretch">
+            <div class="col-sm-6 d-flex align-items-stretch px-5">
               <div class="grid-margin stretch-card flex-grow">
                 <div class="card card-rounded">
                   <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                    <h2 class="card-title"> NodeArchive에 로그인 </h2>
+                    <h2 class="card-title fsu-lg"> 로그인 </h2>
                     <p class="card-description">
                       ID와 비밀번호를 입력하세요 <i class="fa fa-light fa-question-circle-o" title='"아이디@기업도메인"형식의 ID를 입력하세요&nbsp;'></i>
                     </p>
@@ -77,18 +79,18 @@
                       </div>
                       <div class="form-group">  
                         <input type="text" class="form-control flex-grow-1" placeholder="비밀번호"/>
-                        <button type="submit" class="btn btn-secondary mt-2 btn-submit-fitX">로그인</button>
+                        <button type="submit" class="btn btn-secondary mt-2 btn-submit-fitX fsu-sm">로그인</button>
                         <div class="d-flex align-items-baseline">
                           <div class="col-6">
                             <div class="form-check mx-sm-2">
                               <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input"/> 로그인 상태 유지
+                                <input type="checkbox" class="form-check-input fsu-sm"/> 로그인 상태 유지
                               </label>
                             </div>
                           </div>
                           <div class="col-6">
-                            <a class="find-id-pwd">ID, 비밀번호 찾기</a>
-                            <a class="find-id-pwd">내 기업 등록하기</a>
+                            <a class="find-id-pwd fsu-sm">ID, 비밀번호 찾기</a>
+                            <a class="find-id-pwd fsu-sm">내 기업 등록하기</a>
                           </div>
                         </div>
                       </div>
@@ -99,10 +101,11 @@
               </div>    
             </div>
           </div>
+          </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-		<footer class="footer" style="height:100%;">
+        <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2021. All rights reserved.</span>
@@ -113,8 +116,6 @@
       <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
-  </div>
-  <!-- container-scroller -->
 
   <!-- plugins:js -->
   <script src="${path}/resources/vendors/js/vendor.bundle.base.js"></script>
@@ -136,6 +137,12 @@
   <script src="${path}/resources/js/dashboard.js"></script>
   <script src="${path}/resources/js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
+  <script>
+    var availHeightPX = window.screen.availHeight + "px";
+    $(".mp-height").css("height",availHeightPX);
+    var logoWidthPX = $(".loginpage-logo-img").width() - 10 + "px";
+    $('.emp-description').css("width",logoWidthPX);
+  </script>
 </body>
 
 </html>
