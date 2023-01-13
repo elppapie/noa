@@ -135,7 +135,7 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 			public Integer doInTransaction(TransactionStatus status) {
 				
 				//글번호에 따른 모든 댓글 삭제
-				int deletedCommentCount=tdao.deleteByNo(map);
+				int deletedCommentCount=tdao.deleteByProjNo(map);
 
 				//해당 원본 글 삭제
 				dao.delete(map);

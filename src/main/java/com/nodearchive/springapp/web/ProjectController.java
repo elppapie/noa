@@ -119,19 +119,6 @@ public class ProjectController {
 		return "project/view.noa";
 	}
 	
-	//프로젝트 삭제 (get)
-	@RequestMapping("/delete.kosmo")
-	public String deleteProject(
-			//Authentication auth,
-			@RequestParam Map map, 
-			Model model) {
-		
-		
-		int deleteProject = projectService.delete(map);
-		model.addAttribute("deleteProject", deleteProject);
-		//삭제 후 목록 페이지로 반환
-		return "project/list.noa";
-	}
 	
 	//프로젝트 수정(post)
 	@RequestMapping("/edit.kosmo")
@@ -159,6 +146,21 @@ public class ProjectController {
 		//수정 완료 후 해당 프로젝트 상세보기 페이지로 이동
 		return "project/view.noa";
 	}
+	
+	//프로젝트 삭제 (get)
+	@RequestMapping("/delete.kosmo")
+	public String deleteProject(
+			//Authentication auth,
+			@RequestParam Map map, 
+			Model model) {
+		
+		
+		int deleteProject = projectService.delete(map);
+		model.addAttribute("deleteProject", deleteProject);
+		//삭제 후 목록 페이지로 반환
+		return "project/list.noa";
+	}
+		
 	
 	//*****프로젝트 멤버 그룹 설정 관련 메소드 추가 필요 *****
 	/*
