@@ -251,4 +251,7 @@
 </tbody>
 </table>
 --%>
+
+<a href="<c:url value="/Schedule/fullcalendar.kosmo"/>">fullcalendar 출력</a>
 </div>
+

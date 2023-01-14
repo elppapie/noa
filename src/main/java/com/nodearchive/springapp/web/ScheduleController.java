@@ -217,5 +217,13 @@ System.out.println("================일정 하나 출력 완료=================
 		return "schedule/Notice.noa";
 	}
 	
+	@RequestMapping("/fullcalendar.kosmo")
+	public String fullcalendar(
+			//Authentication auth,
+			
+			) {
+		return "schedule/FullCalendar.noa";
+	}
+	
 	
 }

@@ -29,6 +29,7 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	// 현재 시스템시간 
 	@Override
 	public List<Map> selectList(Map map, HttpServletRequest req) {
+		
 		//map에 넘어온 값은 아이디, 선택한 구간의 시작시간/끝시간
 		//사용자가 접속한 네트워크의 시간을 알아오면 좋겠지만 당장 모르겠으니 new Date()로 얻자
 		//넘어온 화면이 연/월/일인지 확인하는 flag도 같이 넘겨와야 구간을 그거에 맞춰서 자르지
@@ -178,6 +179,10 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	// 일정 입력용
 	@Override
 	public int insert(Map map) {
+		String sche_startdate = (String)map.get("sche_startdate_d")+" "+(String)map.get("sche_startdate_t");
+		String sche_enddate = (String)map.get("sche_enddate_d")+" "+(String)map.get("sche_enddate_t");
+		map.put("sche_startdate", sche_enddate);
+		map.put("sche_enddate", sche_enddate);
 		return dao.insertSche(map);
 	}
 	
