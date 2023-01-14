@@ -2,10 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
-
-
-
 <div class="container">
     
    <div class="jumbotron">
@@ -19,16 +15,21 @@
 		  <strong>Failure!</strong> ${InputError}
 		</div>
 	</c:if>
-	<form method="post" action="<c:url value="/views/bbs/Write.do"/>">  
+	<form method="post" action="<c:url value="/views/notice/Write.do"/>">  
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>    
       <div class="form-group">
-        <label><kbd class="lead">제목</kbd></label>
+        <label><kbd class="ios">제목</kbd></label>
         <input type="text" value="${param.title}" class="form-control" placeholder="제목을 입력하세요" name="title">
       </div>
       <div class="form-group">
-		<label><kbd class="lead">내용</kbd></label>
-		<textarea class="form-control" rows="5" name="content" placeholder="내용을 입력하세요">${param.content}</textarea>
+		<label><kbd class="ios">내용</kbd></label>
+		<textarea class="form-control w-100" rows="5" name="content" placeholder="내용을 입력하세요">${param.content}</textarea>
 	  </div>
-      <button type="submit" class="btn btn-light">등록</button>
+     <!--  <button type="submit" class="btn btn-light">등록</button> -->
+      
+      <div class="text-right mb-2">
+		<a href="<c:url value="/Schedule/notice.kosmo"/>" class="btn btn-light">등록</a>
+	</div>
+      
     </form>	
 </div>

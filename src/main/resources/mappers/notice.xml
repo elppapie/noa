@@ -66,7 +66,7 @@
 	-->
 	
 	<!-- 아이디 및 패스워드로 공지사항 글 조회 -->
-	<select id="memoFindMemberByIdAndPwd" parameterType="Map" resultType="int" >
+	<select id="noticeFindMemberByIdAndPwd" parameterType="Map" resultType="int" >
 		SELECT COUNT(*) FROM members WHERE m_id=#{m_id} AND m_password=#{m_password}
 	</select>
 	
@@ -84,7 +84,7 @@
 	</select>-->
 	
 	<!-- 아이디 별 글 등록 수 조회 -->
-	<select id="memoTotalRecordCount" parameterType="Map" resultType="int">
+	<select id="noticeTotalRecordCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*) FROM notice n JOIN members m ON m.id=n.id
 		<if test="searchColumn != null">
 		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
@@ -92,24 +92,26 @@
 	</select>
 	
 	<!-- 공지사항 글 등록 -->
-	<insert id="memoSave" parameterType="Map"  >
+	<insert id="noticeSave" parameterType="Map"  >
 		INSERT INTO notice VALUES(SEQ_NOTICE.NEXTVAL,#{n_title},#{n_content},DEFAULT,#{m_id})
 	</insert>
 	
 	<!-- 글 번호로 공지사항 글 조회 -->
-	<select id="memoFindRecordByNo" parameterType="Map" resultMap="memoDtoResult">
+	<!--  
+	<select id="memoFindRecordByNo" parameterType="Map" resultMap="NoticeDTO">
 		SELECT o.*, m_name 
 		FROM notice n JOIN members m ON n.id=m.id
 		WHERE n_no=#{n_no}
 	</select>
+	-->
 	
 	<!-- 공지사항 글 삭제 -->
-	<delete id="memoDelete" parameterType="Map">
+	<delete id="noticeDelete" parameterType="Map">
 		DELETE notice WHERE n_no=#{n_no}
 	</delete>
 	
 	<!-- 공지사항 글 수정 -->
-	<update id="memoUpdate" parameterType="Map">
+	<update id="noticeUpdate" parameterType="Map">
 		UPDATE notice SET n_title=#{n_title}, n_content=#{n_content} WHERE n_no=#{n_no}
 	</update> 
 	

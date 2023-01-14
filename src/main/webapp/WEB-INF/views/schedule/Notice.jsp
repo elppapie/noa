@@ -58,7 +58,8 @@
 	    <option value="name">작성자</option>	    
 	  </select>
       <input type="text" class="form-control mx-2 my-2" placeholder="검색어를 입력하세요" name="searchWord"/>      
-      <button type="submit" class="btn btn-light">검색</button>
+     <!--  <button type="submit" class="btn btn-light">검색</button> -->
+      <a href="<c:url value="/Notice/search.kosmo"/>" class="btn btn-light">검색</a>
     </form>
     
 </div>
