@@ -38,7 +38,7 @@
   <div>
     <div class="btn-wrapper">
       <a href="<c:url value="/Schedule/notice.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 공지사항(임시)</a>
-      <a href="#" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 일정추가</a>
+      <a href="<c:url value="/Schedule/write.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 일정추가</a>
       <a href="#" class="btn btn-otline-dark"><i class="fa-solid fa-magnifying-glass"></i> 일정검색</a>
       <a href="#" class="btn btn-primary text-white me-0"><i class="fa-solid fa-download"></i> 달력저장</a>
     </div>
@@ -50,6 +50,7 @@
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">2023 January <code>월간일정</code></h4>
+					<p>\${message} : ${message}</p>
                   <p class="card-description">
                     현재시간 <code>\${ }</code>
                   </p>

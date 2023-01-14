@@ -112,15 +112,6 @@ public class ScheduleController {
 		return "schedule/Year.noa";
 	}
 	
-	//일정 등록시(개인-디폴트)
-	@RequestMapping("/write.kosmo")
-	public String write(
-			//Authentication auth,
-			@RequestParam Map map
-			) {
-		return "schedule/Write.noa";
-	}
-	
 	//일정 클릭시
 	@RequestMapping("/view.kosmo")
 	public String view(
@@ -148,12 +139,54 @@ System.out.printf("[⚜] %s : %s%n","sche_enddate",oneSchedule.get("sche_enddate
 System.out.println("================일정 하나 출력 완료=====================");
 
 /////////////////////////////////////////////////////////////////////	
-		
-		
+
 		//해당 정보를 뷰페이지로 전달
 
 		//return "schedule/View.noa";
 		//테스트용 페이지 ↓
+		return "schedule/Month.noa";
+	}
+	
+	//일정 입력폼으로 이동(개인일정 디폴트)
+	//사람을 map에다가 저장해서 list에다가 담기
+	@RequestMapping("/write.kosmo")
+	public String write(
+			//Authentication auth,
+			@RequestParam Map map
+			) {
+		return "schedule/Write.noa";
+	}
+	
+	//일정 입력폼 제출하기
+	//사람을 map에다가 저장해서 list에다가 담기
+	@RequestMapping("/writeOk.kosmo")
+	public String writeOk(
+			Model model,
+			//Authentication auth,
+			@RequestParam Map map, // schedule 테이블의 컬럼명을 키값으로 각 입력값 받아옴
+			HttpServletRequest request
+			) {
+		//참조인 목록은 request 영역에 addAttribute로 list로 넣어서 받아와야할듯 - 자스 or request 속성에 하나씩 저장해서 여기서 list로 만들거나
+		//Write.jsp 페이지에서 
+		// [1] members 테이블 쫙 뿌려주거나(한 명씩 선택할 수 있게)
+		// [2] 팀/그룹 단위로 고르게 하거나
+////////////////////////////////////// test용 더미데이터 ////////////////////////////////////////////////
+		String [] strArr = {"kim1234@samsung.com","song1234@samsung.com","park1234@samsung.com"};
+		
+		List<ScheduleDTO> list = null;
+		for(String str:strArr) {
+			ScheduleDTO dto = new ScheduleDTO();
+			dto.setM_id(str);
+			list.add(dto);
+		}
+		//참조인 목록(List<ScheduleDTO>) map에 "refList" 키값으로 저장
+		map.put("refList", list);
+/////////////////////////////////////////////////////////////////////////////////////////////////		
+		
+		
+		scheduleService.insert(map);
+		model.addAttribute("message", "입력폼 작성 후 전송(등록)");		
+		
 		return "schedule/Month.noa";
 	}
 	

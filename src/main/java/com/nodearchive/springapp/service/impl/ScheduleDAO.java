@@ -58,14 +58,25 @@ public class ScheduleDAO {
 	
 	
 	// 일정 입력용 - 몇 개의 레코드가 영향을 받는지 반환
-	public int insertSche(Map map) {		
-		return template.delete("scheInsert",map);
+	public int insertSche(Map map) {
+		//Schedule 테이블에 레코드 1행 입력
+		template.insert("scheInsert",map);
+		//입력된 레코드의 DTO 가져오기(일정번호[sche_no] 가져오기용)
+		ScheduleDTO scheDto = template.selectOne("scheduleOneToDto",map);
+		int sche_no = scheDto.getSche_no();
+		//map에 저장된 참조인 리스트 꺼내기
+		List<ScheduleDTO> list = (List)map.get("refList");
+		//list에 저장된 ScheduleDTO들에 sche_no를 setter로 주입
+		for(ScheduleDTO sche:list) sche.setSche_no(sche_no);
+		//일정 참조인 등록 - 등록된 참조인 레코드 수 반환
+		return template.insert("scheInsertRef",list);
 	}
+	/*
 	// 일정 참조인 입력용 - 몇 개의 레코드가 영향을 받는지 반환
 	public int insertRef(Map map) {		
-		return template.delete("scheInsertRef",map);
+		return template.d e l e t e("scheInsertRef",map);
 	}
-	
+	*/
 	
 	
 	
