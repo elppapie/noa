@@ -26,7 +26,7 @@ public class NoticeController {
 	private NoticeServiceImpl noticeService;
 	
 	//공지목록
-	@RequestMapping(value="/List.do",method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value="/List.kosmo",method = {RequestMethod.GET,RequestMethod.POST})
 	public String list(
 			//@ModelAttribute("id") String id,//(씨큐리티 미 사용시)세션영역에서 id가져오기.스프링 씨큐리티 사용시 불필요
 			Authentication auth,//씨큐리티 사용시(인증된 사용자 정보가 들어있다)
