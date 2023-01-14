@@ -65,10 +65,12 @@
 	 </resultMap>
 	-->
 	
-	<!-- 
+	<!-- 아이디 및 패스워드가 일치하는 회원 조회 -->
 	<select id="memoFindMemberByIdAndPwd" parameterType="Map" resultType="int" >
-		SELECT COUNT(*) FROM member WHERE id=#{id} AND pwd=#{pwd}
+		SELECT COUNT(*) FROM members WHERE m_id=#{m_id} AND m_password=#{m_password}
 	</select>
+	
+	<!-- 공지사항 댓글 조회(구현예정) 
 	<select id="memoFindAll" parameterType="Map" resultType="memoDto">
 		SELECT * FROM (SELECT T.*,ROWNUM R FROM (SELECT o.*,name,(SELECT COUNT(*) FROM linecomments WHERE no=o.no) commentCount
 		FROM onememo o JOIN member m ON o.id=m.id
@@ -77,34 +79,40 @@
 		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
 		</if>
 		
-		
 		ORDER BY no DESC) T)
 		WHERE R BETWEEN #{start} AND #{end}		 
-	</select>
+	</select>-->
+	
+	<!-- 아이디 별 글 등록 수 조회 -->
 	<select id="memoTotalRecordCount" parameterType="Map" resultType="int">
-		SELECT COUNT(*) FROM onememo o JOIN member m ON m.id=o.id
+		SELECT COUNT(*) FROM notice n JOIN members m ON m.id=n.id
 		<if test="searchColumn != null">
 		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
 		</if>				
 	</select>
 	
-	
+	<!-- 공지사항 글 등록 -->
 	<insert id="memoSave" parameterType="Map"  >
-		INSERT INTO onememo VALUES(SEQ_ONEMEMO.NEXTVAL,#{title},#{content},DEFAULT,#{id})
+		INSERT INTO notice VALUES(SEQ_NOTICE.NEXTVAL,#{n_title},#{n_content},DEFAULT,#{m_id})
 	</insert>
+	
+	<!-- 글 번호로 공지사항 글 조회 -->
 	<select id="memoFindRecordByNo" parameterType="Map" resultMap="memoDtoResult">
-		SELECT o.*,name 
-		FROM onememo o JOIN member m ON o.id=m.id
-		WHERE no=#{no}
+		SELECT o.*, m_name 
+		FROM notice n JOIN members m ON n.id=m.id
+		WHERE n_no=#{n_no}
 	</select>
 	
+	<!-- 공지사항 글 삭제 -->
 	<delete id="memoDelete" parameterType="Map">
-		DELETE onememo WHERE no=#{no}
+		DELETE notice WHERE n_no=#{n_no}
 	</delete>
+	
+	<!-- 공지사항 글 수정 -->
 	<update id="memoUpdate" parameterType="Map">
-		UPDATE onememo SET title=#{title},content=#{content} WHERE no=#{no}
+		UPDATE notice SET n_title=#{n_title}, n_content=#{n_content} WHERE n_no=#{n_no}
 	</update> 
-	-->
+	
 	<!-- 스프링 씨큐리티 회원 입력용 -->
 	<insert id="saveUser" parameterType="Map">
 		INSERT INTO users VALUES(#{id},#{pass},#{name},DEFAULT,'ROLE_ADMIN')	
