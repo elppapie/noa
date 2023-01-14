@@ -65,7 +65,7 @@
 	 </resultMap>
 	-->
 	
-	<!-- 아이디 및 패스워드가 일치하는 회원 조회 -->
+	<!-- 아이디 및 패스워드로 공지사항 글 조회 -->
 	<select id="memoFindMemberByIdAndPwd" parameterType="Map" resultType="int" >
 		SELECT COUNT(*) FROM members WHERE m_id=#{m_id} AND m_password=#{m_password}
 	</select>
