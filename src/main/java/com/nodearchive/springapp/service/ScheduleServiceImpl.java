@@ -178,8 +178,7 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	// 일정 입력용
 	@Override
 	public int insert(Map map) {
-		dao.insertSche(map);
-		return 0;
+		return dao.insertSche(map);
 	}
 	
 	/*
@@ -187,7 +186,8 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		일정 참조인 입력용 테이블에 sche_no를 전달해야하는데...  
 	*/
 	
-	// 일정 참조인 입력용
+	/*
+	// 일정 참조인 입력용 - 일단은 일정 입력용에서 입력하는걸로 시도해보고 안되면 다시 살리기
 	public int insertRef(Map map) {
 		String sche_no="";
 		
@@ -198,13 +198,14 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 			Map mapForOne = null;
 			mapForOne.put("id",(map.get(Integer.toString(i+1))));
 			mapForOne.put("sche_no", sche_no);
-			dao.insertRef(mapForOne); //한사람씩 레코드에 넣음
+//			dao.i n s e r t R e f(mapForOne); //한사람씩 레코드에 넣음
 		}
 		
 		
 		return 0;
 	}
 	
+	*/
 
 	@Override
 	public int delete(Map map) {
