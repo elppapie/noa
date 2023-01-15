@@ -10,7 +10,7 @@ import com.nodearchive.springapp.service.utils.ListPagingData;
 
 
 //제너릭 인터페이스
-public interface ProjectService<T> {
+public interface TaskService<T> {
 
 	//멤버 확인용
 	boolean isSameMember(Map map);

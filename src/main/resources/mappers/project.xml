@@ -4,7 +4,7 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
     
-<mapper namespace="mapper.project">
+<mapper namespace="mappers.project">
 
 	<!--프로젝트 인서트(생성) - 캘린더 테이블 동시 생성-->
 	<!-- **프로젝트 시작일 - 마감일 TIMESTAMP 속성 인자 적용 필요 -->
@@ -56,8 +56,15 @@
 	</update>
 	
 	
-	<!-- 프로젝트 삭제 -->
+	<!-- 회원 체크용 -->
+	<select id="checkMember" parameterType="Map" resultType="String">
+		SELECT m_id FROM project WHERE project_no=#{project_no}
+	</select>
 	
+	<!-- 프로젝트 삭제 -->
+	<delete id="projectDelete" parameterType="Map" >
+		DELETE project WHERE project_no=#{project_no}
+	</delete>
 	
 	
 </mapper>

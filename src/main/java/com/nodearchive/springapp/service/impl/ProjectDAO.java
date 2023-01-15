@@ -37,11 +37,6 @@ public class ProjectDAO {
 		return template.insert("projectInsert",map);
 	}
 	
-	//delete
-	public int delete(Map map) {
-
-		return template.delete("delete",map);
-	}
 	
 	public int selectScheNo(int project_no) {
 		 int sche_no=-1; 
@@ -74,6 +69,19 @@ public class ProjectDAO {
 		//---------------------
 		return resultUpdate;
 	}
+	
+	//삭제 전 회원 체크용
+	public String checkMember(Map map) {
+		return template.selectOne("checkMember",map);
+	}
+	
+
+	//delete
+	public int projectDelete(Map map) {
+
+		return template.delete("projectDelete",map);
+	}
+	
 	
 	//read(select)
 	

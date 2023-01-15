@@ -97,9 +97,9 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	@Override
 	public int update(Map map) {
 		int project_no = (int) map.get("project_no");
-		System.out.println("project_no:"+project_no);
+		//System.out.println("project_no:"+project_no);
 		int sche_no = dao.selectScheNo(project_no);
-		System.out.println("2.sche_no:"+sche_no);
+		//System.out.println("2.sche_no:"+sche_no);
 		map.put("sche_no", sche_no);
 		return dao.update(map);
 	}
@@ -109,17 +109,29 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	//**SCHEDULE 테이블 키값 속성 변동시 수정 필요
 	public int selectScheNo(int project_no) {
 		int sche_no = dao.selectScheNo(project_no);
-		System.out.println("1.sche_no:"+sche_no);
+		//System.out.println("1.sche_no:"+sche_no);
 		return sche_no;
 	}
 	
 
+	//수정 삭제 요청시 등록자와 요청자가 같은지 확인
+	public boolean isSameMember(Map map) {
+		int reqProject = (int) map.get("project_no");
+		String reqMember = (String) map.get("m_id");
+		String respMember = dao.checkMember(map);
+		boolean result=true;
+		System.out.println(reqMember.equals(respMember));
+		if(reqMember.equals(respMember)) {
+			return result;
+		}
+		return result;
+	}
 	
 	
 	//트랜잭션 처리 관련 빈 주입 받기
 	@Autowired
 	private TransactionTemplate  transactionTemplate;
-	//글 번호에따른 댓글 삭제용 DAO주입 받기
+	//project_no에 따른 하위 업무 삭제용 DAO주입 받기
 	@Autowired
 	private TaskDAO tdao;
 
@@ -127,23 +139,27 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	@Override
 	public int delete(Map map) {
 	
-		int affected=0;//삭제된 댓글의 총 수 저장용
+		int affected=0;//삭제된 업무 총 수 저장용
 		//타입 파라미터<T>: 트랜잭션 처리 작업 후 반환할 타입으로 지정
 		affected=transactionTemplate.execute(new TransactionCallback<Integer>() {
 			//아래 메소드에 트랜잭션으로 처리할 작업들을 기술
 			@Override
 			public Integer doInTransaction(TransactionStatus status) {
+				int deletedTaskCount=0;
 				
-				//글번호에 따른 모든 댓글 삭제
-				int deletedCommentCount=tdao.deleteByProjNo(map);
-
-				//해당 원본 글 삭제
-				dao.delete(map);
+				//project_no에 따른 모든 하위 업무 삭제
+				//int deletedTaskCount=tdao.taskDeleteByProjNo(map);
+				tdao.deleteList(map);
+				System.out.println("업무 삭제 완료");
+				//해당 project 삭제
+				dao.projectDelete(map);
+				System.out.println("프로젝트 삭제 완료");
 				//doInTransaction()의 반환값이 execute()메소드의 반환값이다 
-				return deletedCommentCount;
+				return deletedTaskCount;
 			}
 		});
-		return 0;
+		
+		return affected;
 	}
 
 }

@@ -55,10 +55,7 @@ public class ProjectController {
 		map.put("m_id", "park1234@samsung.com");
 		int nowPage=1;
 		//-------------------------------------------
-		//-------------------------------------------
-		
-		
-		//-------------------------------------------
+
 		//ListPagingData<Map> projectList = 
 		projectService.selectList(map, req, nowPage);
 		model.addAttribute("projectList", map);
@@ -129,8 +126,8 @@ public class ProjectController {
 		
 		//[TEST]----------------------------
 		//테스트용 project / schedule 테이블 정보 입력
-		//실제 운영시 selectOne으로 불러온 기존 테이블 값을 map에 저장하여 사용함
-		map.put("project_no", 1);
+		//실제 운영시 selectScheNo으로 불러온 기존 테이블 값을 map에 저장하여 사용함
+		map.put("project_no",2);
 		map.put("project_name", "수정된 프로젝트 입니다");
 		map.put("m_id", "na1234@samsung.com");
 		map.put("sche_title", "프로젝트 수정됨");
@@ -154,9 +151,18 @@ public class ProjectController {
 			@RequestParam Map map, 
 			Model model) {
 		
-		
-		int deleteProject = projectService.delete(map);
-		model.addAttribute("deleteProject", deleteProject);
+		//[TEST]--------------------------------------
+		//test를 위한 유저 아이디 프로젝트 번호 저장
+		map.put("m_id","na1234@samsung.com");
+		map.put("project_no", 1);
+		//--------------------------------------------
+		boolean checkMember = projectService.isSameMember(map);
+		System.out.println("checkMember:"+checkMember);
+		if(checkMember) {
+			int deleteProject = projectService.delete(map);
+			model.addAttribute("deleteProject", deleteProject);
+		}
+		else System.out.println("해당 요청물의 작성자가 아닙니다.");
 		//삭제 후 목록 페이지로 반환
 		return "project/list.noa";
 	}
@@ -189,7 +195,6 @@ public class ProjectController {
 	}
 	*/
 	
-	//페이징을 위한 메소드 추가 필요
 	
 	
 }

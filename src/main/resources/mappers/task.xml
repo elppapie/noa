@@ -4,52 +4,32 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
     
-<mapper namespace="mapper.task">
+<mapper namespace="mappers.task">
 
-	<!--프로젝트 인서트(생성) - 캘린더 테이블 동시 생성-->
-	<!-- **프로젝트 시작일 - 마감일 TIMESTAMP 속성 인자 적용 필요 -->
+	<!-- 업무 생성 : 스케줄 테이블 동시 생성-->
 	<insert id="taskInsert" parameterType="Map">
 		INSERT ALL
-		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, #{sche_title}, #{sche_content}, SYSDATE, SYSDATE, SYSDATE, #{sche_mark}, #{sche_status}, #{sche_color})
-		  INTO project VALUES (SEQ_PROJ.NEXTVAL, #{m_id}, SEQ_SCHE.CURRVAL, #{project_name})
-		 SELECT * FROM DUAL
+		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, #{sche_title}, #{sche_content}, SYSDATE, SYSDATE, SYSDATE, #{sche_mark}, #{sche_status}, #{sche_color},'TASK')
+		  INTO task VALUES (SEQ_TASK.NEXTVAL, #{m_id}, #{project_no}, SEQ_SCHE.CURRVAL, #{task_name}, #{task_content}, #{task_category})
+		SELECT * FROM DUAL
 	</insert>
-
-	<!--
-	**project_no, m_id, sche_no, project_name, m_name, start_date, end_date 
-	-->
-	<select id="selectOne" parameterType="Map" resultType="Map">
-		SELECT T.*, s.sche_startdate, s.sche_enddate FROM 
-		(SELECT p.*, m.m_name FROM project p JOIN members m ON m.m_id = p.m_id)T
-		JOIN schedule s ON s.sche_no = T.sche_no WHERE T.sche_no=#{sche_no}
-	</select>
-
-	<!-- 프로젝트 SELECT LIST -->
-	<!-- 유저가 속한 프로젝트만 셀렉트하여 출력 -->
-	<select id="selectListById" parameterType="Map" resultType="Map">
-		SELECT T.*, s.sche_startdate, s.sche_enddate FROM 
-		(SELECT p.*, m.m_name FROM project p JOIN members m ON m.m_id = p.m_id)T
-		JOIN schedule s ON s.sche_no = T.sche_no WHERE T.m_id=#{m_id}
+	
+	<!-- 업무 상세보기 -->
+	<select id="selectOneTask" parameterType="Map" resultType="Map">
+		SELECT T1.*, s.sche_startdate, s.sche_enddate FROM 
+		(SELECT t.*, m.m_name FROM task t JOIN members m ON m.m_id = t.m_id)T1
+		JOIN schedule s ON s.sche_no = T1.sche_no WHERE T1.task_no=#{task_no}
 	</select>
 	
-	<!-- 프로젝트 레코드 수 카운트 (검색 포함) -->
-	<select id="taskTotalRecordCount" parameterType="Map" resultType="int">
-		SELECT COUNT(*) FROM project p JOIN members m ON m.m_id=p.m_id
-		<if test="searchColumn != null">
-		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
-		</if>			
-	</select>
 	
-
-	<!-- 프로젝트 테이블의 sche_no 값 구하기 -->
+	<!-- 수정용 sche_no 구하는 쿼리 -->
 	<select id="taskScheNo" parameterType="int" resultType="int">
-		SELECT sche_no FROM project WHERE project_no=#{project_no}
+		SELECT sche_no FROM task WHERE task_no=#{task_no}
 	</select>
 	
-	
-	<!-- 프로젝트 수정 -->
-	<update id="updateTaskTable" parameterType="Map" >
-		UPDATE project SET project_name=#{project_name},m_id=#{m_id} WHERE project_no=#{project_no}
+	<!-- 업무 수정 -->
+	<update id="updateTaskTable" parameterType="Map">
+		UPDATE task SET task_name=#{task_name},task_content=#{task_content},m_id=#{m_id} WHERE task_no=#{task_no}
 	</update>
 	<update id="updateScheduleTable" parameterType="Map" >
 		UPDATE schedule SET sche_startdate=#{sche_startdate},sche_enddate=#{sche_enddate} WHERE sche_no=#{sche_no}
@@ -57,12 +37,12 @@
 	
 	
 	<!-- 업무 하나 삭제 -->
-	<delete id="deleteTask">
-	
+	<delete id="deleteOneTask" parameterType="Map">
+		DELETE task WHERE task_no=#{task_no}
 	</delete>
 	
 	<!-- 프로젝트 삭제시 하위 업무 리스트 전체 삭제 -->
-	<delete id="taskDeleteByProjNo" parameterType="Map" >
+	<delete id="deleteTaskList" parameterType="Map">
 		DELETE task WHERE project_no=#{project_no}
 	</delete>
 	

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nodearchive.springapp.service.AddressService;
 import com.nodearchive.springapp.service.ProjectService;
+import com.nodearchive.springapp.service.TaskService;
+import com.nodearchive.springapp.service.TaskServiceImpl;
 import com.nodearchive.springapp.service.impl.ProjectDTO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 
@@ -20,78 +22,38 @@ import com.nodearchive.springapp.service.utils.ListPagingData;
 public class TaskController {
 
 	@Autowired
-	private ProjectService<Map> projectService;
-	
-	/*
-	@RequestMapping("/list.kosmo")
-	public String listProject(
-			//Authentication auth,
-			@RequestParam Map map, 
-			HttpServletRequest req,
-			Model model,
-			int nowPage) {
-		
-		ListPagingData<ProjectDTO> projectList = projectService.selectList(map, req, nowPage);
-		model.addAttribute("projectList", projectList);
-		return "project/list.noa";
-	}*/
-	
-	//업무 목록(get)
-	@RequestMapping("/list.kosmo")
-	public String listTask(
-			@RequestParam Map map, 
-			HttpServletRequest req,
-			Model model) {
-		
-		int nowPage=1;
-		//ListPagingData<ProjectDTO> taskList = projectService.selectList(map, req, nowPage);
-		//model.addAttribute("taskList", taskList);
-		//업무 목록 페이지로 이동
-		return "task/list.noa";
-	} 
-	
+	private TaskService taskService;
+
 	//업무 생성(post)
 	@RequestMapping("/create.kosmo")
 	public String createTask(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
-		
-		int createTask = projectService.insert(map);
+		//--------------------------------------------------------
+		//[TEST]테스트를 위한 유저 아이디 저장
+		System.out.println("업무 생성 시작");
+		map.put("m_id", "park1234@samsung.com");
+		map.put("project_no", 2);
+		//[TEST]테스트를 위한 나머지 인자 저장
+		map.put("sche_title", "업무 생성");
+		map.put("sche_content", "업무2");
+		//map.put("sche_startdate", "2023-01-08 00:00:00.000");
+		//map.put("sche_enddate", "2023-01-08 00:00:00.000");
+		map.put("sche_mark", 0);
+		map.put("sche_status", 0);
+		map.put("sche_color", "RED");
+
+		map.put("task_name", "2023 타겟");
+		map.put("task_content", "타겟 swat 분석 정리");
+		map.put("task_category", '0');
+		//--------------------------------------------------------
+		int createTask = taskService.insert(map);
 		model.addAttribute("createTask", createTask);
 		//업무 목록 페이지로 이동
-		return "task/view.noa";
+		return "task/list.noa";
 	} 
-	
-	//업무 수정(psot)
-	@RequestMapping("/update.kosmo")
-	public String updateTask(
-			//Authentication auth,
-			@RequestParam Map map, 
-			Model model) {
 		
-		
-		int updateTask = projectService.update(map);
-		model.addAttribute("updateTask", updateTask);
-		//업무 등록 페이지로 이동
-		return "task/view.noa";
-	} 
-	
-	//업무 분배(psot) : 업무 수행할 멤버 지정 
-	//- 테이블 저장 방식/서비스페이지 로직 고민 필요
-	@RequestMapping("/allot.kosmo")
-	public String allotTask(
-			//Authentication auth,
-			@RequestParam Map map, 
-			Model model) {
-		
-		
-		int allotTask = projectService.update(map);
-		model.addAttribute("allotTask", allotTask);
-		//업무 등록 페이지로 이동할지 상세보기 페이지로 이동할지 고민 필요
-		return "task/view.noa";
-	} 
-	
 	//업무 상세보기(get)
 	@RequestMapping("/view.kosmo")
 	public String viewTask(
@@ -99,20 +61,53 @@ public class TaskController {
 			@RequestParam Map map, 
 			Model model) {
 		
-		ProjectDTO viewTask = (ProjectDTO) projectService.selectOne(map);
-		model.addAttribute("viewTask", viewTask);
+		//[TEST]---------------------------------
+		map.put("task_no", 6);
+		//---------------------------------------
+		
+		model.addAttribute("selectOneTask", taskService.selectOne(map));
 		//업무 등록 페이지로 이동
 		return "task/view.noa";
 	}
 	
-	//업무 삭제(get)
+	
+	//업무 수정(psot)
+	@RequestMapping("/edit.kosmo")
+	public String updateTask(
+			//Authentication auth,
+			@RequestParam Map map, 
+			Model model) {
+		
+		//[TEST]----------------------------
+		//테스트용 task / schedule 테이블 정보 수정
+		//실제 운영시 selectOne으로 불러온 기존 테이블 값을 map에 저장하여 사용함
+		map.put("task_no", 6);
+		map.put("task_name", "수정된 업무 입니다");
+		map.put("task_content", "수정된 업무 입니다");
+		map.put("m_id", "na1234@samsung.com");
+		map.put("sche_startdate", "2023-01-30 15:20:24");
+		map.put("sche_enddate", "2023-01-30 15:20:24");
+		//----------------------------------
+		
+		int editTask = taskService.update(map);
+		model.addAttribute("editTask", editTask);
+		//수정 완료 후 해당 프로젝트 상세보기 페이지로 이동
+		return "task/view.noa";
+	} 
+	
+	
+	//업무 하나 삭제(get)
 	@RequestMapping("/delete.kosmo")
 	public String deleteTask(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
 		
-		int deleteTask = projectService.delete(map);
+		//[TEST]-----------------------------------
+		map.put("task_no", 6);
+		//-----------------------------------------
+		
+		int deleteTask = taskService.delete(map);
 		model.addAttribute("deleteTask", deleteTask);
 		//업무 등록 페이지로 이동
 		return "task/list.noa";
