@@ -37,7 +37,7 @@
 			   mail_title,
 			   mail_regidate
 		FROM mail
-		WHERE mail_type=#{0};
+		WHERE mail_type=#{0}
 	</select>
 	
 	<!-- 보낸 메일함 -->
@@ -50,7 +50,7 @@
 			   mail_title,
 			   mail_regidate
 		FROM mail
-		WHERE mail_type=#{1};
+		WHERE mail_type=#{1}
 	
 	</select>
 	
@@ -64,7 +64,7 @@
 			   mail_title,
 			   mail_regidate
 		FROM mail
-		WHERE mail_type=#{2};
+		WHERE mail_type=#{2}
 	
 	</select>
 	
@@ -78,7 +78,7 @@
 			   mail_title,
 			   mail_regidate
 		FROM mail
-		WHERE mail_type=#{3};
+		WHERE mail_type=#{3}
 	
 	</select>
 	
@@ -102,11 +102,7 @@
 	
 	<!-- 전체 메일 목록 -->
 	<select id="mailByLists" parameterType="Map" resultType="Map" >
-		
-	
-	</select>
-	
-	
-	
-	
+		SELECT mail_no,m_id,mail_mark,mail_check,mail_type,mail_title,mail_regidate
+		FROM MAIL	
+	</select>	
 </mapper>
