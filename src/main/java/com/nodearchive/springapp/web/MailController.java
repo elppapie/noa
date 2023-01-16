@@ -1,23 +1,37 @@
 package com.nodearchive.springapp.web;
 
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-//@Controller
+import com.nodearchive.springapp.service.MailService;
+import com.nodearchive.springapp.service.MailServiceImpl;
+
+@Controller
 @RequestMapping("/Mail")
 public class MailController {
 
+	@Autowired
+	private MailServiceImpl mService;
+	
 	//받은 메일함
 	@RequestMapping("/mailView.kosmo")
 	public String mailView(
 			//Authentication auth,
-			@RequestParam Map map
+			@RequestParam Map map,
+			HttpServletRequest req
 			) {
 		
+		List<Map> mailList = mService.selectList(map, req);
+		req.setAttribute("receviemail", mailList);
 		return "/mail/received.noa";
 		
 	}

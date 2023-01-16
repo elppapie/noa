@@ -37,7 +37,7 @@
 			   mail_title,
 			   mail_regidate
 		FROM mail
-		WHERE mail_type=#{0}
+		WHERE mail_type='0'
 	</select>
 	
 	<!-- 보낸 메일함 -->
