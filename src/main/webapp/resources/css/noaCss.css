@@ -92,7 +92,7 @@
     font-size: 0.687rem;
     line-height: 10px;
 }
-#sidebar > ul > li:nth-child(4) > a > i.fa.fa-solid.fa-up-right-from-square{
+.load-immediate-icon{
 	font-size: 0.65rem;
 	text-align:top;
 }

@@ -439,7 +439,7 @@
               <i class="menu-icon mifa fa fa-color-gray fa-light fa-comment"></i>
               <span class="menu-title">메신저</span>
               <i class="menu-chat-sidebar"></i>
-              <i class="fa fa-solid fa-up-right-from-square"></i>
+              <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
               <!-- <i class="menu-arrow"></i>  
                -->
             </a>
@@ -527,10 +527,10 @@
           <li class="nav-item">
             <a class="nav-link" href="#" aria-expanded="false" aria-controls="form-elements">
             <!--  data-bs-toggle="collapse"  -->
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-camera-web"></i>
+              <i class="menu-icon mifa fa fa-duotone fa-video"></i>
               <span class="menu-title">화상회의</span>
               <i class="menu-chat-sidebar"></i>
-              <i class="fa fa-solid fa-up-right-from-square"></i>
+              <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
               <!-- <i class="menu-arrow"></i>  
                -->
             </a>
