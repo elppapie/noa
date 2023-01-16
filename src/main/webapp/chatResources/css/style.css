@@ -18,8 +18,8 @@
 @import "screens/chat.css";
 
 main {
-  height: 200vh;
-  padding-top: 100px;
+  height: 255vh;
+  padding-top: 45px;
 }
 
 .position-relative {

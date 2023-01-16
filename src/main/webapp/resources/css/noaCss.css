@@ -33,6 +33,9 @@
 .fsu-sm{
   font-size: 1rem !important;
 }
+.fsu-xsm{
+	font-size: .75rem !important;
+}
 .main-panel {
   width: 100% !important;
 }
@@ -93,9 +96,24 @@
 	font-size: 0.65rem;
 	text-align:top;
 }
-
-
-
+.chat-pages-txt-logo{
+    height: 30px;
+}
+.fg-1{
+    flex-grow: 1;
+}
+.bg-chat-green{
+    background-color: #2db400;
+}
+.show-in-oneline{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+}
+.hover-style-pointer{
+    cursor: pointer;
+}
 /* chat end */
 
 

@@ -26,8 +26,13 @@
 }
 
 .user-component__subtitle {
-  font-size: 17px;
+  font-size: 14px;
   color: rgba(0, 0, 0, 0.5);
+  margin-top: 8px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 
 .user-component__avatar--xl {

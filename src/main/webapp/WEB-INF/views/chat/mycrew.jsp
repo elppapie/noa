@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- 뷰 페이지 -->    
+<c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="res" value="${pageContext.request.contextPath}/chatResources"/>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,32 +19,31 @@
     <div class="status-bar">
       <div class="status-bar__column">
         <div>
-          <a href="javascript:openNOAMain('${path}/home.kosmo')">
-            <img src="${path}/resources/images/textlogo-NodeArchive.svg" alt="text-logo" style="width:100%;height:100%;"/>
-        	</a>
+          <a href="#">
+            <img src="${path}/resources/images/textlogo-NodeArchive.svg" alt="text-logo" class="chat-pages-txt-logo"/>
+          </a>
         </div>
       </div>
-  	  <div class="status-bar__column"></div>
+      <div class="status-bar__column"></div>
       <div class="status-bar__column">
-        <i class="fa fa-color-chatGreen fa-comment" style="padding-right:8px;"></i>
+        <a href="#"> <!-- friendList.kosmo 링크 걸기 -->
+          <i class="fa fa-color-chatGreen fa-comment " style="padding-right:8px;"> messanger</i>
+        </a>
       </div>
     </div>
-    <header class="screen-header">
-      <h1 class="screen-header__title">회사이름</h1>
-      <div class="screen-header__icons">
-        <span><i class="fas fa-user-plus fa-lg"></i></span>
-        <span><i class="fas fa-cog fa-lg"></i></span>
-      </div>
-    </header>
+    
     <main class="mycrew-screen">
       <label for="crew-search-bar-form">
         <form id="crew-search-bar-form">
           <div class="position-relative">
-            <input id="crew-search-bar" placeholder="Search" />
-            <i class="fab fa-sistrix fa-lg position-absolute"></i>
+            <input id="crew-search-bar" placeholder="검색" />
+            <a href="#"> <!-- 검색 기능으로 이동. ~~~.kosmo -->
+              <i class="fab fa-sistrix fa-lg position-absolute"></i>
+            </a>
           </div>
         </form>
       </label>
+<!-- 내 정보 불러오기 시작 -->
       <div class="user-component">
         <div class="user-component__column">
           <img
@@ -47,39 +51,43 @@
             class="user-component__avatar user-component__avatar--xl"
           />
           <div class="user-component__text">
-            <div class="user-component__title">사용자이름, 상태</div> 
-            <div class="user-component__subtitle">상태메세지</div>
+            <div class="user-component__title">여기에 구성원 이름 m_name</div>
+            <div class="user-component__subtitle check-str-length">여기에 상태메세지를 작성하는데 글자수가 너무 길면 뒤에가 ...으로 바뀌도록 css를 추가했어요</div>
           </div>
         </div>
-        <div class="user-component"></div>
       </div>
+<!-- 내 정보 불러오기 끝 -->      
+
+<!-- 채팅그룹 불러오기 시작 -->      
       <div class="crew-screen__channel">
         <div class="crew-screen__channel__header">
-          <span>그룹이름</span>
+          <span>Messanger Group</span>
           <i class="fas fa-chevron-up fa-xs"></i>
         </div>
 
+        <!-- 구성원 1명 시작 -->
         <div class="user-component">
           <div class="user-component__column">
             <img
               src="https://media.glassdoor.com/sqll/599602/naver-squarelogo-1429700032474.png"
               class="user-component__avatar user-component__avatar--sm"
             />
-            
             <div class="user-component__text">
               <div class="user-component__title user-component__title--not-bold">
-                그룹내 사원이름, 상태
+                m_name
               </div>
-              <div class="user-component__subtitle">상태메세지</div>
+              <div class="user-component__subtitle check-str-length">여기에 상태메세지를 작성하는데 글자수가 너무 길면 뒤에가 ...으로 바뀌도록 css를 추가했어요</div>
             </div>
           </div>
           <div class="user-component">
-            <span>2</span>
+            <span>2?</span>
             <i class="fas fa-chevron-right fa-xs"></i>
           </div>
         </div>
- 
+        <!-- 구성원 1명 끝 -->
+
       </div>
+<!-- 채팅그룹 불러오기 끝 -->            
     </main>
 
     <nav class="nav">
@@ -115,5 +123,6 @@
       src="https://kit.fontawesome.com/6478f529f2.js"
       crossorigin="anonymous"
     ></script>
+    <script src="${path}/chatResources/js/noaChatJS.js"></script>
   </body>
 </html>

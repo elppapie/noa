@@ -1,3 +1,15 @@
+@font-face {
+	font-family: 'NanumGothicCoding';
+	font-style: noraml;
+	font-weight: 400;
+	src: local(''),
+		url('../../fonts/NanumGothicCoding-Regular.ttf'),
+		url('../../fonts/NanumGothicCoding/NanumGothicCoding-Bold.ttf');
+}
+.reply > textarea {
+	font-family:'NanumGothicCoding';
+}
+
 header {
   width: 100%;
   position: fixed;
@@ -84,7 +96,8 @@ header {
 }
 
 .message-row--own .message__bubble {
-  background-color: rgba(158, 255, 231, 0.582);
+  background-color: rgba(49, 194, 27, 0.904);
+  color: aliceblue;
   border-top-right-radius: 0px;
   border-top-left-radius: 15px;
 }
@@ -96,27 +109,52 @@ header {
   background-color: white;
   display: flex;
   justify-content: space-between;
-  padding: 5px 25px;
+  /* padding: 5px 25px; */
+  padding: 5px 54px 5px 5px;
   align-items: center;
   box-sizing: border-box;
 }
 
 .reply .reply__column:first-child {
-  width: 10%;
+  width: 15%;
 }
 
-.reply .reply__column:last-child {
-  width: 90%;
+.reply .reply__column:nth-child(2) {
+  width: 85%;
   position: relative;
 }
 
-.reply input {
+/* input */
+.reply textarea {
   padding: 10px;
   width: 100%;
   border: var(--main-border);
-  border-radius: 20px;
+  border-radius: 10px;
   transition: all 0.3s ease-in-out;
+  resize: none;
+  line-height: 1rem;
 }
+/* Let's get this party started */
+.reply textarea::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+.reply textarea::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+/* Handle */
+.reply textarea::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: rgba(45,180,0,0.8); 
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+.reply textarea::-webkit-scrollbar-thumb:window-inactive {
+background: rgba(45,180,0,0.8); 
+}
+
 
 .reply__column:last-child > i {
   position: absolute;
@@ -124,17 +162,19 @@ header {
   top: 10px;
 }
 
-.reply__column:last-child button {
+/* .reply__column:last-child button { */
+.reply > button {
   position: absolute;
   right: 0;
-  top: 5px;
+  /* top: 18.9px; */
+  right: 4px;
 }
 
 .reply__column:last-child > i {
   right: 40px;
 }
 
-.reply__column button {
+.reply > button {
   background-color: var(--green);
   border: none;
   width: 25px;
@@ -159,12 +199,14 @@ header {
 }
 
 .reply:focus-within .reply__column:first-child,
-.reply:focus-within .fa-smile-wink,
-.reply:focus-within button {
-  opacity: 0;
-}
+.reply:focus-within .fa-smile-wink { /*.reply:focus-within button*/ 
+  opacity: 100;
+} 
+.reply:focus-within button{
+  opacity: 50;
+} 
 
-.reply:focus-within input {
-  width: 92vw;
-  transform: translateX(-13%);
-}
+/* .reply:focus-within input {
+  width: 85vw;
+  transform: translateX(-15%);
+} */

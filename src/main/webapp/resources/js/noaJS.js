@@ -10,7 +10,7 @@ function openChatMain(path,m_id) {
     var height=650;
     window.open(path
         ,"메신저"
-        ,"left="+(availWidth-width)+",top="+(availHeight-height)+",width="+width+",height="+height+""
+        ,"left="+(availWidth-width)+",top="+(availHeight-height)+",width="+width+",height="+height 
         )
 }
 

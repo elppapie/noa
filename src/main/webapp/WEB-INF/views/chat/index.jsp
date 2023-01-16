@@ -25,7 +25,7 @@
       </div>
   	  <div class="status-bar__column"></div>
       <div class="status-bar__column">
-        <i class="fa fa-color-chatGreen fa-comment" style="padding-right:8px;"></i>
+        <i class="fa fa-color-chatGreen fa-comment" style="padding-right:8px;"> messanger</i>
       </div>
     </div>
 
