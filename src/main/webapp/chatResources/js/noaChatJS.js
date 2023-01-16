@@ -10,16 +10,3 @@ function openNOAMain(path,m_id) {
         )    	
 }
 //------end------
-
-//this function for chat.jsp pages ------start------
-var myChatTextArea = document.querySelector("#myChatTextArea123");
-var myChatButton = document.querySelector('#myChatButton123');
-myChatTextArea.onkeydown = function(e) {
-    if (e.keyCode==13) {
-        if(!e.shiftKey){
-        e.preventDefault();
-        myChatForm123.submit();
-        }
-    }
-};
-//------end------

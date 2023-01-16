@@ -133,5 +133,17 @@
       crossorigin="anonymous"
     ></script>
     <script src="${path}/chatResources/js/noaChatJS.js"></script>
+    <script>
+	    var myChatTextArea = document.querySelector("#myChatTextArea123");
+	    var myChatButton = document.querySelector('#myChatButton123');
+	    myChatTextArea.onkeydown = function(e) {
+	        if (e.keyCode==13) {
+	            if(!e.shiftKey){
+	            e.preventDefault();
+	            myChatForm123.submit();
+	            }
+	        }
+	    };
+    </script>
   </body>
 </html>
