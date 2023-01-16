@@ -516,6 +516,10 @@ CREATE TABLE REPORT
 	REPORT_NO number NOT NULL,
 	-- 리포트 작성자
 	M_ID varchar2(50) NOT NULL,
+	-- 리포트 제목
+	REPORT_NAME nvarchar2(100) NOT NULL,
+	-- 리포트 코멘트
+	REPORT_COMMENT nvarchar2(2000) NOT NULL,
 	-- 리포트 생성일
 	REPORT_REGIDATE date DEFAULT SYSDATE NOT NULL,
 	-- 리포트 시작일
