@@ -1,5 +1,6 @@
 package com.nodearchive.springapp.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,10 @@ public interface ProjectService<T> {
 
 	//멤버 확인용
 	boolean isSameMember(Map map);
+	//프로젝트 참여멤버 입력용
+	int insertMember(List<Map> list);
+	//프로젝트 참여멤버 목록용
+	T selectMember(Map map);
 	
 	//목록용
 	ListPagingData<T> selectList(Map map,HttpServletRequest req,int nowPage);

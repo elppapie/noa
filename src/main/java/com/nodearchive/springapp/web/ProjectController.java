@@ -1,8 +1,12 @@
 package com.nodearchive.springapp.web;
 
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nodearchive.springapp.service.ProjectService;
+import com.nodearchive.springapp.service.ProjectServiceImpl;
 import com.nodearchive.springapp.service.impl.ProjectDTO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 
@@ -168,20 +173,58 @@ public class ProjectController {
 	}
 		
 	
-	//*****프로젝트 멤버 그룹 설정 관련 메소드 추가 필요 *****
-	/*
+	//프로젝트 멤버 리스트 추가
+	@RequestMapping("/mlist.kosmo")
+	public String memberList(
+			//Authentication auth,
+			HttpServletRequest request,
+			@RequestParam Map map, 
+			Model model){
+		
+		
+		List<Map> members=new Vector<Map>();
+		Map row = new HashMap<>();
+		
+		//[TEST]------------------------------------------
+		//row.put("project_no", 2);
+		//String[] memberArray = {"hong1234@samsung.com","park1234@samsung.com"};
+		//------------------------------------------------
+		
+		//프론트 엔드에서 전달 받는 member 리스트를 배열에 저장
+		String[] memberArray = request.getParameterValues("member");
+		//확장for문으로 member를 인자로 전달할 list에 저장
+		for(String oneMember:memberArray) {
+			row = new HashMap<>();
+			row.put("project_no", map.get("project_no"));
+			row.put("m_id", oneMember);
+			members.add(row);
+		}
+	
+		int insertProjM = projectService.insertMember(members);
+		model.addAttribute("insertProjM",insertProjM );
+		return "project/list.noa";
+	}
+	
 	//멤버 리스트 불러오기(get)
-	@RequestMapping("/view.kosmo")
+	@RequestMapping("/viewmlist.kosmo")
 	public String viewMember(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
 		
-		addrServiceImpl<ScheduleDTO> viewMember = addrService.selectGroup(map);
-		model.addAttribute("viewMember", viewMember);
+		//[TEST]---------------------------------
+		map.put("project_no", 2);
+		//---------------------------------------
+		
+		Map projMember = (Map) projectService.selectMember(map);
+		model.addAttribute("projMember", projMember);
 		return "project/view.noa";
 	}
+		
 	
+	
+	//*****프로젝트 멤버 그룹 설정 관련 메소드 추가 필요 *****
+	/*
 	//참여자 검색 및 선택(get)
 	@RequestMapping("/member.kosmo")
 	public String selectMember(

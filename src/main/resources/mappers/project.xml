@@ -10,7 +10,7 @@
 	<!-- **프로젝트 시작일 - 마감일 TIMESTAMP 속성 인자 적용 필요 -->
 	<insert id="projectInsert" parameterType="Map">
 		INSERT ALL
-		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, #{sche_title}, #{sche_content}, SYSDATE, SYSDATE, SYSDATE, #{sche_mark}, #{sche_status}, #{sche_color})
+		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, #{sche_title}, #{sche_content}, SYSDATE, SYSDATE, SYSDATE, #{sche_mark}, #{sche_status}, #{sche_color}, 'PROJECT')
 		  INTO project VALUES (SEQ_PROJ.NEXTVAL, #{m_id}, SEQ_SCHE.CURRVAL, #{project_name})
 		 SELECT * FROM DUAL
 	</insert>
@@ -66,5 +66,18 @@
 		DELETE project WHERE project_no=#{project_no}
 	</delete>
 	
+	<!-- 프로젝트 참여 인원리스트 입력 -->
+	<insert id="projectMList" parameterType="java.util.List">
+		<foreach collection="list" item="item" open="INSERT ALL" close="" separator=" ">
+			INTO proj_m_list(project_no, m_id)
+			VALUES(#{item.project_no}, #{item.m_id})
+		</foreach>
+		SELECT * FROM DUAL
+	</insert>
 	
+	<!-- 프로젝트별 참여 인원 리스트 불러오기 -->
+	<select id="getProjectMList" parameterType="Map" resultType="Map">
+		SELECT m_id FROM proj_m_list WHERE project_no=#{project_no}
+	</select>
 </mapper>
+

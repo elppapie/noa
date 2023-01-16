@@ -161,5 +161,21 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 		
 		return affected;
 	}
+	
+	//project 참여 멤버 리스트 입력
+	@Override
+	public int insertMember(List list) {
+		int affected=0;
+		dao.insertMember(list);
+		return affected;
+	}
+	
+	//project 참여 멤버 리스트 불러오기
+	@Override
+	public Map selectMember(Map map) {
+		
+		return (Map) dao.selectMember(map);
+	}
+	
 
 }

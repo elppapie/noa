@@ -82,7 +82,14 @@ public class ProjectDAO {
 		return template.delete("projectDelete",map);
 	}
 	
+	//insertMember
+	public int insertMember(List list) {
+		return template.insert("projectMList",list);
+	}
 	
-	//read(select)
+	//selectMember
+	public List selectMember(Map map) {
+		return template.selectList("getProjectMList",map);
+	}
 	
 }
