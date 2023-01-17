@@ -36,5 +36,18 @@
 		<url-pattern>*.kosmo</url-pattern>
 	</servlet-mapping>
 	
+	<filter>
+    <filter-name>CharacterEncoding</filter-name> <!-- filter-name은 임의로-->
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+        <!-- param-name과 param-value은 아래처럼-->
+        <param-name>encoding</param-name><!--setEncoding()호출-->
+        <param-value>UTF-8</param-value>
+    </init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>CharacterEncoding</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping> 
 	
 </web-app>
