@@ -82,7 +82,7 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	@Override
 	public int insert(Map map) {
 		
-		int newProj = dao.save(map);
+		int newProj = dao.Insert(map);
 		//[TEST]------------------------------------------------
 		System.out.println("project_no:"+map.get("project_no"));
 		System.out.println("project_name"+map.get("project_name"));
@@ -97,10 +97,10 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	@Override
 	public int update(Map map) {
 		int project_no = (int) map.get("project_no");
-		//System.out.println("project_no:"+project_no);
 		int sche_no = dao.selectScheNo(project_no);
-		//System.out.println("2.sche_no:"+sche_no);
-		map.put("sche_no", sche_no);
+		if(isSameMember(map)==true) {
+			map.put("sche_no", sche_no);
+		}
 		return dao.update(map);
 	}
 	
@@ -109,11 +109,9 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	//**SCHEDULE 테이블 키값 속성 변동시 수정 필요
 	public int selectScheNo(int project_no) {
 		int sche_no = dao.selectScheNo(project_no);
-		//System.out.println("1.sche_no:"+sche_no);
 		return sche_no;
 	}
 	
-
 	//수정 삭제 요청시 등록자와 요청자가 같은지 확인
 	public boolean isSameMember(Map map) {
 		int reqProject = (int) map.get("project_no");
@@ -126,7 +124,6 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 		}
 		return result;
 	}
-	
 	
 	//트랜잭션 처리 관련 빈 주입 받기
 	@Autowired
@@ -148,7 +145,6 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 				int deletedTaskCount=0;
 				
 				//project_no에 따른 모든 하위 업무 삭제
-				//int deletedTaskCount=tdao.taskDeleteByProjNo(map);
 				tdao.deleteList(map);
 				System.out.println("업무 삭제 완료");
 				//해당 project 삭제

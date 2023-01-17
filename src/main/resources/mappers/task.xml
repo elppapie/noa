@@ -15,34 +15,51 @@
 	</insert>
 	
 	<!-- 업무 상세보기 -->
-	<select id="selectOneTask" parameterType="Map" resultType="Map">
+	<select id="taskSelectOne" parameterType="Map" resultType="Map">
 		SELECT T1.*, s.sche_startdate, s.sche_enddate FROM 
 		(SELECT t.*, m.m_name FROM task t JOIN members m ON m.m_id = t.m_id)T1
 		JOIN schedule s ON s.sche_no = T1.sche_no WHERE T1.task_no=#{task_no}
 	</select>
 	
+	<!-- 페이징을 위한 업무 레코드 수 카운트 (검색 포함) -->
+	<select id="taskTotalRecordCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM task t JOIN members m ON m.m_id=t.m_id
+		<if test="searchColumn != null">
+		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
+		</if>			
+	</select>
+	
+	<!-- 지정 기간내 업무 리스트 구하기 : 리포트 생성용-->
+	<select id="taskSelectListByDate" parameterType="Map">
+		SELECT t.*,sche_startdate,sche_enddate FROM task t JOIN schedule s ON t.sche_no = s.sche_no 
+		WHERE s.sche_startdate>=#{set_startdate} AND #{set_enddate}>=s.sche_startdate
+	</select>
 	
 	<!-- 수정용 sche_no 구하는 쿼리 -->
-	<select id="taskScheNo" parameterType="int" resultType="int">
+	<select id="taskGetScheNo" parameterType="int" resultType="int">
 		SELECT sche_no FROM task WHERE task_no=#{task_no}
 	</select>
 	
+	<!-- 회원 체크용 -->
+	<select id="taskCheckMember" parameterType="Map" resultType="String">
+		SELECT m_id FROM task WHERE task_no=#{task_no}
+	</select>
+	
 	<!-- 업무 수정 -->
-	<update id="updateTaskTable" parameterType="Map">
+	<update id="taskUpdateTTable" parameterType="Map">
 		UPDATE task SET task_name=#{task_name},task_content=#{task_content},m_id=#{m_id} WHERE task_no=#{task_no}
 	</update>
-	<update id="updateScheduleTable" parameterType="Map" >
+	<update id="taskUpdateSTable" parameterType="Map" >
 		UPDATE schedule SET sche_startdate=#{sche_startdate},sche_enddate=#{sche_enddate} WHERE sche_no=#{sche_no}
 	</update>
 	
-	
 	<!-- 업무 하나 삭제 -->
-	<delete id="deleteOneTask" parameterType="Map">
+	<delete id="taskDeleteOne" parameterType="Map">
 		DELETE task WHERE task_no=#{task_no}
 	</delete>
 	
-	<!-- 프로젝트 삭제시 하위 업무 리스트 전체 삭제 -->
-	<delete id="deleteTaskList" parameterType="Map">
+	<!-- 프로젝트 삭제시 자동으로 하위업무 리스트 전체 삭제 -->
+	<delete id="taskDeleteList" parameterType="Map">
 		DELETE task WHERE project_no=#{project_no}
 	</delete>
 	

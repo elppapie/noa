@@ -13,31 +13,26 @@ public class ProjectDAO {
 	@Autowired
 	private SqlSessionTemplate template;
 
-	//페이징을 위한 전체 리스트 수 - 검색시 select되는 레코드 수
-	public int getTotalRecordCount(Map map) {
+	//insert
+	public int Insert(Map map) {
+		return template.insert("projectInsert",map);
+	}
 		
-		return template.selectOne("projectTotalRecordCount",map);
+	//selectOne
+	public Map findRecordByNo(Map map) {
+		return template.selectOne("projectSelectOne", map);
 	}
 
 	//selectList
 	public List findRecordByName(Map map) {
-		
-		return template.selectList("selectListById",map);
+		return template.selectList("projectSelectListById",map);
+	}
+	
+	//페이징을 위한 전체 리스트 수 - 검색시 select되는 레코드 수
+	public int getTotalRecordCount(Map map) {		
+		return template.selectOne("projectTotalRecordCount",map);
 	}
 
-	//selectOne
-	public Map findRecordByNo(Map map) {
-		
-		return template.selectOne("selectOne", map);
-	}
-	
-	//insert
-	public int save(Map map) {
-	
-		return template.insert("projectInsert",map);
-	}
-	
-	
 	public int selectScheNo(int project_no) {
 		 int sche_no=-1; 
 		 return template.selectOne("projectScheNo", project_no);
@@ -47,11 +42,10 @@ public class ProjectDAO {
 	public int update(Map map) {
 		int resultUpdate=0;
 		if(resultUpdate==0) {
-			template.update("updateProjectTable",map);
+			template.update("projectUpdatePTable",map);
 			resultUpdate++;
-			template.update("updateScheduleTable",map);
+			template.update("projectUpdateSTable",map);
 			resultUpdate++;
-			System.out.println("resultUpdate:"+resultUpdate);
 		}
 		
 		//[TEST]---------------
@@ -72,24 +66,22 @@ public class ProjectDAO {
 	
 	//삭제 전 회원 체크용
 	public String checkMember(Map map) {
-		return template.selectOne("checkMember",map);
+		return template.selectOne("projectCheckMember",map);
 	}
 	
-
 	//delete
 	public int projectDelete(Map map) {
-
 		return template.delete("projectDelete",map);
 	}
 	
 	//insertMember
 	public int insertMember(List list) {
-		return template.insert("projectMList",list);
+		return template.insert("projectSetMList",list);
 	}
 	
 	//selectMember
 	public List selectMember(Map map) {
-		return template.selectList("getProjectMList",map);
+		return template.selectList("projectGetMList",map);
 	}
 	
 }

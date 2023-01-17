@@ -132,7 +132,7 @@ public class ProjectController {
 		//[TEST]----------------------------
 		//테스트용 project / schedule 테이블 정보 입력
 		//실제 운영시 selectScheNo으로 불러온 기존 테이블 값을 map에 저장하여 사용함
-		map.put("project_no",2);
+		map.put("project_no",10);
 		map.put("project_name", "수정된 프로젝트 입니다");
 		map.put("m_id", "na1234@samsung.com");
 		map.put("sche_title", "프로젝트 수정됨");
@@ -238,6 +238,6 @@ public class ProjectController {
 	}
 	*/
 	
-	
+	//+프로젝트 진행률 구하는 로직 추가 필요
 	
 }

@@ -10,11 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.nodearchive.springapp.service.AddressService;
 import com.nodearchive.springapp.service.ProjectService;
 import com.nodearchive.springapp.service.TaskService;
 import com.nodearchive.springapp.service.TaskServiceImpl;
-import com.nodearchive.springapp.service.impl.ProjectDTO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 
 @Controller
@@ -70,6 +68,20 @@ public class TaskController {
 		return "task/view.noa";
 	}
 	
+	//설정한 기간동안의 업무 리스트 구하기
+	@RequestMapping("/setDate.kosmo")
+	public String setDate(
+			//Authentication auth,
+			@RequestParam Map map,
+			HttpServletRequest req,
+			Model model,
+			int nowPage) {
+		
+		ListPagingData<Map> selectTaskList = taskService.selectList(map, req, nowPage);
+		model.addAttribute("selectTaskList", selectTaskList);
+		//리포트 작성 페이지로 이동
+		return "task/list.noa";
+	}
 	
 	//업무 수정(psot)
 	@RequestMapping("/edit.kosmo")
@@ -91,7 +103,7 @@ public class TaskController {
 		
 		int editTask = taskService.update(map);
 		model.addAttribute("editTask", editTask);
-		//수정 완료 후 해당 프로젝트 상세보기 페이지로 이동
+		//수정 완료 후 해당 업무 상세보기 페이지로 이동
 		return "task/view.noa";
 	} 
 	

@@ -18,7 +18,7 @@
 	<!--
 	**project_no, m_id, sche_no, project_name, m_name, start_date, end_date 
 	-->
-	<select id="selectOne" parameterType="Map" resultType="Map">
+	<select id="projectSelectOne" parameterType="Map" resultType="Map">
 		SELECT T.*, s.sche_startdate, s.sche_enddate FROM 
 		(SELECT p.*, m.m_name FROM project p JOIN members m ON m.m_id = p.m_id)T
 		JOIN schedule s ON s.sche_no = T.sche_no WHERE T.sche_no=#{sche_no}
@@ -26,7 +26,7 @@
 
 	<!-- 프로젝트 SELECT LIST -->
 	<!-- 유저가 속한 프로젝트만 셀렉트하여 출력 -->
-	<select id="selectListById" parameterType="Map" resultType="Map">
+	<select id="projectSelectListById" parameterType="Map" resultType="Map">
 		SELECT T.*, s.sche_startdate, s.sche_enddate FROM 
 		(SELECT p.*, m.m_name FROM project p JOIN members m ON m.m_id = p.m_id)T
 		JOIN schedule s ON s.sche_no = T.sche_no WHERE T.m_id=#{m_id}
@@ -40,24 +40,22 @@
 		</if>			
 	</select>
 	
-
 	<!-- 프로젝트 테이블의 sche_no 값 구하기 -->
 	<select id="projectScheNo" parameterType="int" resultType="int">
 		SELECT sche_no FROM project WHERE project_no=#{project_no}
 	</select>
 	
-	
 	<!-- 프로젝트 수정 -->
-	<update id="updateProjectTable" parameterType="Map" >
+	<update id="projectUpdatePTable" parameterType="Map" >
 		UPDATE project SET project_name=#{project_name},m_id=#{m_id} WHERE project_no=#{project_no}
 	</update>
-	<update id="updateScheduleTable" parameterType="Map" >
+	<update id="projectUpdateSTable" parameterType="Map" >
 		UPDATE schedule SET sche_startdate=#{sche_startdate},sche_enddate=#{sche_enddate} WHERE sche_no=#{sche_no}
 	</update>
 	
 	
 	<!-- 회원 체크용 -->
-	<select id="checkMember" parameterType="Map" resultType="String">
+	<select id="projectCheckMember" parameterType="Map" resultType="String">
 		SELECT m_id FROM project WHERE project_no=#{project_no}
 	</select>
 	
@@ -67,7 +65,7 @@
 	</delete>
 	
 	<!-- 프로젝트 참여 인원리스트 입력 -->
-	<insert id="projectMList" parameterType="java.util.List">
+	<insert id="projectSetMList" parameterType="java.util.List">
 		<foreach collection="list" item="item" open="INSERT ALL" close="" separator=" ">
 			INTO proj_m_list(project_no, m_id)
 			VALUES(#{item.project_no}, #{item.m_id})
@@ -76,7 +74,7 @@
 	</insert>
 	
 	<!-- 프로젝트별 참여 인원 리스트 불러오기 -->
-	<select id="getProjectMList" parameterType="Map" resultType="Map">
+	<select id="projectGetMList" parameterType="Map" resultType="Map">
 		SELECT m_id FROM proj_m_list WHERE project_no=#{project_no}
 	</select>
 </mapper>
