@@ -34,6 +34,11 @@
   <link rel="shortcut icon" href="${path}/resources/images/logo-removebg-preview.png" />
   <!-- font-awesome Kit Code -->
   <script src="https://kit.fontawesome.com/672ea2e509.js" crossorigin="anonymous"></script>
+  <!-- bootstrap 4 cdn -->
+<!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">   -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
   <div class="container-scroller"> 
@@ -483,18 +488,13 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#main-calendar" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" href="${path}/Schedule/month.kosmo" aria-expanded="false" aria-controls="form-elements">
+            <!--  data-bs-toggle="collapse"  -->
               <i class="menu-icon mifa fa fa-color-gray fa-light fa-calendar-check"></i>
               <span class="menu-title">캘린더</span>
-              <i class="menu-arrow"></i>
+              <i class="menu-chat-sidebar"></i>
+              <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
             </a>
-            <div class="collapse" id="main-calendar">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/Schedule/month.kosmo">일정</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">스케쥴(임시)</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">스케쥴(임시)</a></li>
-              </ul>
-            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#main-todo" aria-expanded="false" aria-controls="form-elements">
