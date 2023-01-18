@@ -71,17 +71,20 @@ public class ProjectDAO {
 	
 	//delete
 	public int projectDelete(Map map) {
-		return template.delete("projectDelete",map);
+		int affected =template.delete("projectDelete",map); 
+		return affected;
 	}
 	
 	//insertMember
 	public int insertMember(List list) {
-		return template.insert("projectSetMList",list);
+		int affected = template.insert("projectSetMList",list);
+		return affected;
 	}
 	
 	//selectMember
 	public List selectMember(Map map) {
-		return template.selectList("projectGetMList",map);
+		List mlist = template.selectList("projectGetMList",map);
+		return mlist;
 	}
 	
 }

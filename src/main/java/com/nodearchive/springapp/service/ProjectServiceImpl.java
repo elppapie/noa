@@ -13,7 +13,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.nodearchive.springapp.service.impl.ProjectDAO;
-import com.nodearchive.springapp.service.impl.ProjectDTO;
 import com.nodearchive.springapp.service.impl.TaskDAO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 import com.nodearchive.springapp.service.utils.PagingUtil;
@@ -71,10 +70,11 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	//selectOne
 	@Override
 	public Map selectOne(Map map) {
-		Map record=dao.findRecordByNo(map);
-		
-		//[TEST] Project 선택했을때 가져올 값 확인
-		//project_no로 데이터 가져옴
+
+		int project_no = Integer.parseInt(map.get("project_no").toString());
+		int sche_no = dao.selectScheNo(project_no);
+		map.put("sche_no", sche_no);
+		Map record = dao.findRecordByNo(map);
 		return record;
 	}
 
@@ -90,18 +90,17 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 		//------------------------------------------------------		
 		return newProj;
 	}
-
-
 	
 	//update
 	@Override
 	public int update(Map map) {
-		int project_no = (int) map.get("project_no");
+		int project_no = Integer.parseInt(map.get("project_no").toString());
 		int sche_no = dao.selectScheNo(project_no);
 		if(isSameMember(map)==true) {
 			map.put("sche_no", sche_no);
 		}
-		return dao.update(map);
+		int record = dao.update(map);
+		return record;
 	}
 	
 	//해당 프로젝트의 sche_no 구하기 
@@ -114,13 +113,13 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	
 	//수정 삭제 요청시 등록자와 요청자가 같은지 확인
 	public boolean isSameMember(Map map) {
-		int reqProject = (int) map.get("project_no");
-		String reqMember = (String) map.get("m_id");
+		int reqProject = Integer.parseInt(map.get("project_no").toString());
+		String reqMember = map.get("login_Id").toString();
 		String respMember = dao.checkMember(map);
-		boolean result=true;
+		boolean result=false;
 		System.out.println(reqMember.equals(respMember));
 		if(reqMember.equals(respMember)) {
-			return result;
+			result=true;
 		}
 		return result;
 	}
@@ -161,16 +160,15 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 	//project 참여 멤버 리스트 입력
 	@Override
 	public int insertMember(List list) {
-		int affected=0;
-		dao.insertMember(list);
+		int affected=dao.insertMember(list);
 		return affected;
 	}
 	
 	//project 참여 멤버 리스트 불러오기
 	@Override
-	public Map selectMember(Map map) {
-		
-		return (Map) dao.selectMember(map);
+	public List selectMember(Map map) {
+		List mlist = dao.selectMember(map);
+		return mlist;
 	}
 	
 

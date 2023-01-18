@@ -18,7 +18,7 @@ public interface ProjectService<T> {
 	//프로젝트 참여멤버 입력용
 	int insertMember(List<Map> list);
 	//프로젝트 참여멤버 목록용
-	T selectMember(Map map);
+	List selectMember(Map map);
 	
 	//목록용
 	ListPagingData<T> selectList(Map map,HttpServletRequest req,int nowPage);

@@ -49,7 +49,7 @@
 	<update id="projectUpdatePTable" parameterType="Map" >
 		UPDATE project SET project_name=#{project_name},m_id=#{m_id} WHERE project_no=#{project_no}
 	</update>
-	<update id="projectUpdateSTable" parameterType="Map" >
+	<update id="projectUpdateSTable" parameterType="Map">
 		UPDATE schedule SET sche_startdate=#{sche_startdate},sche_enddate=#{sche_enddate} WHERE sche_no=#{sche_no}
 	</update>
 	
