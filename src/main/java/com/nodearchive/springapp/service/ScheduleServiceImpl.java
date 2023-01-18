@@ -167,6 +167,7 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	// 일정 상세보기용(일정 하나 클릭시)
 	// 로그인한 사람의 권한 확인
 	public Map view(Map map) {
+		System.out.println("[ ⚜ ] 서비스에서 DAO로 넘어가기 전" + map);
 		return dao.view(map);
 	}
 	// 일정 참조인 목록보기
@@ -179,11 +180,25 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	// 일정 입력용
 	@Override
 	public int insert(Map map) {
+		
+		// 파라미터로 넘어왔던 값들 중에서 
 		String sche_startdate = (String)map.get("sche_startdate_d")+" "+(String)map.get("sche_startdate_t");
 		String sche_enddate = (String)map.get("sche_enddate_d")+" "+(String)map.get("sche_enddate_t");
+		
+		System.out.println("[ ⚜ ] 시작일자 한 칸 띄고 시작시간"+sche_startdate);
+		System.out.println("[ ⚜ ] 마감일자 한 칸 띄고 마감시간"+sche_enddate);
+		
 		map.put("sche_startdate", sche_enddate);
 		map.put("sche_enddate", sche_enddate);
-		return dao.insertSche(map);
+		
+		
+		
+		int record = dao.insertSche(map);
+		// (우선은)메세지 출력 - 상황에 따라 request 객체 반환해도 되고? 매개변수로 받아서 사용해도 되고?
+		if(record ==0) System.out.println("일정 입력 실패~~");
+		else  System.out.println("일정 입력성공, 참조인 몇 명 입력했어?"+record);
+			
+		return record;
 	}
 	
 	/*
@@ -222,11 +237,33 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 
 	@Override
 	public int update(Map map) {
-		// TODO Auto-generated method stub
-		return 0;
+		// 파라미터로 넘어왔던 값들 중에서 
+		String sche_startdate = (String)map.get("sche_startdate_d")+" "+(String)map.get("sche_startdate_t");
+		String sche_enddate = (String)map.get("sche_enddate_d")+" "+(String)map.get("sche_enddate_t");
+		System.out.println("[⚜]==== 서비스: update :"+map.get("sche_title"));
+		System.out.println("[ ⚜ ] 서비스의 update 시작일자 한 칸 띄고 시작시간"+sche_startdate);
+		System.out.println("[ ⚜ ] 서비스의 update 마감일자 한 칸 띄고 마감시간"+sche_enddate);
+		System.out.println("[ ⚜ ] update 마감일자 한 칸 띄고 마감시간"+sche_enddate);
+		// key=value 에서 String 타입을 int 타입으로 변환
+//		int sche_status = (int)map.get("sche_status");
+//		map.put("sche_status", sche_status);
+		
+		map.put("sche_startdate", sche_startdate);
+		map.put("sche_enddate", sche_enddate);
+		
+		int record = dao.updateSche(map);
+		// (우선은)메세지 출력 - 상황에 따라 request 객체 반환해도 되고? 매개변수로 받아서 사용해도 되고?
+		if(record ==0) System.out.println("일정 입력 실패~~");
+		else  System.out.println("일정 입력성공, 참조인 몇 명 입력했어?"+record);
+			
+		return record;
 	}
 
 	
+	//fullCalendar 사용
+	public List<Map> useFullCalendar(){
+		return dao.useFullCalendar();
+	}
 
 	
 	

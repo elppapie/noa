@@ -77,14 +77,17 @@
 	<!-- #{sche_no} 일정번호 전달 -->
 	<!-- #{id} 로그인한 사람의 아이디 전달 / 권한때 필요할듯 -->
 	<!-- 일정 하나만 띄울거니까 id로도 WHERE문 제한해야함 -->
+	
+	<!-- 일단 아이디 넣는 건 빼고, 최고권한자(ORDER BY position_code) rn 1띄우기 // -->
 	<select id="scheFindRecordByNo" parameterType="Map" resultType="Map">		
-		SELECT m.m_name, p.position_name, sr.m_id, s.*
-		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
+		SELECT *
+		FROM ( SELECT T.*, ROWNUM rn FROM ( SELECT * FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
     		JOIN members m ON m.m_id = sr.m_id
     		JOIN position p ON p.position_code = m.position_code
 		WHERE     
-    		s.sche_no = #{sche_no} AND
-    		m.m_id = #{id}
+    		s.sche_no = #{sche_no}
+    	ORDER BY p.position_code ) T )
+    	WHERE rn = 1
 	</select>
 	
 	<!-- 하나의 일정에 연관된 사람들 목록 (여러명일 경우...만 하는 건 안되고 한 사람이라도 이걸로 데려와야할듯)-->
@@ -108,60 +111,144 @@
 			#{sche_title},
 			#{sche_content},
 			SYSTIMESTAMP,
-			#{sche_startdate},
-			#{sche_enddate},
+			#{sche_startdate,jdbcType=TIMESTAMP},
+			#{sche_enddate,jdbcType=TIMESTAMP},
 			'0',
 			#{sche_status},
 			#{sche_color}		
 		)
-		
+<!--  		
+		<foreach item="dto" collection="list" open="INSERT ALL" separator=" ">
+			INTO sche_ref(
+				m_id,
+				sche_no,
+				sr_regidate			
+			)
+			VALUES
+			(
+				#{dto.m_id},
+				#{dto.sche_no},
+				SYSTIMESTAMP
+			)
+		</foreach>	
+-->	
 	</insert>
 	<!-- 일정 인원 입력용 -->
-	<insert id="scheInsertRef" parameterType="Map">
-		INSERT INTO sche_ref VALUES(
-			#{id},
-			#{sche_no},
-			SYSTIMESTAMP
-		)
+	<!-- List<ScheduleDTO>로 전달해서 ScheduleDTO.sche_no 로 번호를 받음 -->
+	<!-- 
+	근데 DTO로 반환받았으면 반환받았지 DTO로 반환받았지 파라미터를 설정한다니
+	해당 DTO를 채워주는 sql문도 필요 // 대신 일정 수정시 재활용 가능해짐 currval 안 써도 돼서
+	-->
+	<!--  -->
+	<insert id="scheInsertRef" parameterType="List">
+		<foreach item="dto" collection="list" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+			INTO sche_ref(
+				m_id,
+				sche_no,
+				sr_regidate	
+			)
+			VALUES
+			(
+				'${dto.m_id}',
+				#{dto.sche_no},
+				SYSTIMESTAMP
+			)
+		</foreach>
 	</insert>
 	
-	<!-- 일정 삭제용 
-	삭제권한은 어떻게 설정하지
-	-->
+
+	<!-- Schedule 테이블에서 PK값으로 일정(레코드) 하나 DTO로 가져오기 -->
+	<!-- 특정 sche_no가 전달되면 해당 sche_no에 해당하는 일정을, 안 전달되면 가장 최근의 일정을 반환 -->
+ <!--  
+	<select id="scheduleOneToDto" parameterType="Map" resultType="ScheduleDTO">
+		SELECT * 
+		FROM schedule 
+		WHERE sche_no = 
+		<choose>
+			<when test="sche_no != null">
+				#{sche_no}
+			</when>
+			<otherwise>
+				SEQ_SCHE.CURRVAL
+			</otherwise>
+		</choose>
+	</select>
+-->
+
+  
+	<select id="scheduleOneToDto" parameterType="Map" resultType="com.nodearchive.springapp.service.impl.ScheduleDTO">
+		SELECT * 
+		FROM schedule 
+		WHERE sche_no = 
+		<choose>
+			<when test="sche_no != null">
+				#{sche_no}
+			</when>
+			<otherwise>
+				SEQ_SCHE.CURRVAL
+			</otherwise>
+		</choose>
+	</select>
+
+
+
+	<!-- 일정 삭제용 // 삭제권한은 어떻게 설정하지 -->
 	<delete id="scheDelete" parameterType="Map">
 		DELETE schedule WHERE sche_no = #{sche_no} 
 	</delete>
 	
+	<!-- 일정 참조인 삭제용 // 이건 단독 쿼리로 둬야할듯 -->
+	<delete id="scheDeleteRef" parameterType="Map">
+		DELETE sche_ref WHERE sche_no = #{sche_no}
+	</delete>
+	
 	<!-- 일정 수정용 -->
+	<!-- 잘되는지 확인하고 입력폼도 같이 고칠것 -->
 	<update id="scheUpdate" parameterType="Map">
 		UPDATE schedule SET
 			sche_title = #{sche_title},
 			sche_content = #{sche_content},
-			sche_startdate = #{sche_startdate},
-			sche_enddate = #{sche_enddate},
+			sche_startdate = TO_TIMESTAMP(#{sche_startdate},'YYYY-MM-DD HH24:MI:SS FF1'),
+			sche_enddate = TO_TIMESTAMP(#{sche_enddate},'YYYY-MM-DD HH24:MI:SS FF1'),
 			sche_color = #{sche_color},
+			sche_status = TO_NUMBER(#{sche_status})
+		WHERE sche_no = #{sche_no}
+	</update>
+	
+	<!-- 일정 완료상태 수정용 // 일정 수정폼이 아닌 밖에서 설정 가능하도록 -->
+	<update id="scheUpdateState" parameterType="Map">
+		UPDATE schedule SET
 			sche_status = #{sche_status}
 		WHERE sche_no = #{sche_no}
 	</update>
 	
-	<!-- 일정 완료처리용 // 일정 수정폼이 아닌 밖에서 설정 가능하도록 -->
-	<update id="scheUpdateState" parameterType="Map">
-		UPDATE schedule SET
-			sche_status = #{status}
-		WHERE sche_no = #{sche_no}
-	</update>
 	
-	
-	
-	<!-- 일정 총 검색 개수 -->
+ 	
+	<!-- 일정 총 검색 개수 
 	<select id="scheTotalCountRemains" parameterType="Map">
+		SELECT *
+		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
+		WHERE m_id = #{id}
+	</select>	
+-->
 	
+	<!-- fullCalendar에서 가져오기 -->
+	<select id="fullCalendarAllSchedule" resultType="Map">
+		SELECT * from schedule
 	</select>
 	
 	
 	
+	<!--  -->
+	<!--  -->
+	<!--  -->
+	<!--  -->	
+	<!--  -->
+	<!--  -->	
+	<!--  -->
+	<!--  -->
 	
-	
+		
 	<select id="warehouse">
 		<!-- 스케줄 작성자의 권한(뷰 페이지에서 확인가능)과 일정 작성자의 권한 비교용 -->
 		<!--  -->
@@ -174,14 +261,47 @@
 		<!-- 스케줄 작성자의 권한(뷰 페이지에서 확인가능)과 일정 작성자의 권한 비교용 -->
 		
 		
-		    	WHERE     
+		
+		WHERE     
     		sche_startdate BETWEEN TO_TIMESTAMP(#{sche_start,jdbcType=TIMESTAMP},'YYYY-MM-DD HH24:MI:SS') AND TO_TIMESTAMP(#{sche_end},'YYYY-MM-DD HH24:MI:SS') AND
     		sche_enddate BETWEEN TO_TIMESTAMP(#{sche_start},'YYYY-MM-DD HH24:MI:SS') AND TO_TIMESTAMP(#{sche_end},'YYYY-MM-DD HH24:MI:SS') AND
     		m.m_id = #{id}
+    	
+		<!-- scheFindRecordByNo 의 내용임 /밑에꺼 지울 예정이라 백업-->
+    	SELECT *
+		FROM ( SELECT T.*, ROWNUM rn FROM ( SELECT * FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
+    		JOIN members m ON m.m_id = sr.m_id
+    		JOIN position p ON p.position_code = m.position_code
+		WHERE     
+    		s.sche_no = #{sche_no,jdbcType=NUMERIC}
+    	ORDER BY p.position_code ) T )
+    	WHERE rn = 1
+    		<!-- <choose>
+	    		<when test="#{id} != null">
+	    			AND m.m_id = #{id, jdbcType=NVARCHAR}
+	    		</when>
+	    		<otherwise>
+	    		</otherwise>
+    		</choose>
+    		-->
 	</select>
-	
-	
-
+	<!--  
+	<insert id="scheInsertRef" parameterType="List">
+		<foreach item="dto" collection="list" open="INSERT ALL" separator=" ">
+			INTO sche_ref(
+				m_id,
+				sche_no,
+				sr_regidate	
+			)
+			VALUES
+			(
+				'${dto.m_id}',
+				#{dto.sche_no},
+				SYSTIMESTAMP
+			)
+		</foreach>
+	</insert>
+	-->
 
 	<!-- 스프링 씨큐리티 회원 입력용 -->
 	<insert id="saveUser" parameterType="Map">
