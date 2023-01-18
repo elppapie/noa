@@ -410,6 +410,10 @@ CREATE TABLE MEMBERS
 	M_PROFILE_MSG nvarchar2(2000),
 	-- 남은 연차수
 	M_SPARE_ANNUAL number(3) NOT NULL,
+	-- 메일 인증용 난수 키
+	M_MAIL_KEY varcar2(50) NOT NULL,
+	-- 메일 인증여부 저장용 컬럼: 0=미인증, 1=인증완료
+	M_MAIL_AUTH number(1) NOT NULL DEFAULT 0,
 	PRIMARY KEY (M_ID)
 );
 
