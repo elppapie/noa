@@ -594,7 +594,7 @@ CREATE TABLE TASK
 	-- 업무 담당자
 	M_ID varchar2(50) NOT NULL,
 	-- 프로젝트 일련번호
-	PROJECT_NO number NOT NULL,
+	PROJECT_NO number NOT NULL DEFAULT 0,
 	-- 일정 일련번호
 	SCHE_NO number NOT NULL,
 	-- 업무명
