@@ -20,7 +20,6 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	
 	@Autowired
 	private ScheduleDAO dao;
-	
 	@Autowired
 	private AddressDAO addrdao;
 	

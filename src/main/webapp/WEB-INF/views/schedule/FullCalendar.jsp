@@ -50,19 +50,19 @@ $(function(){
 
 document.addEventListener('DOMContentLoaded', function() {
 	var hiii = '${calendarList}';
-	var hoo = '${calendarList[1]["SCHE_TITLE"]}';
+//	var hoo = '${calendarList[1]["SCHE_TITLE"]}';
 	
 	console.log(hiii);
-	console.log('typeof hiii:'+typeof hiii);
-	console.log(typeof hiii[1]);
-	console.log(hoo);
-	console.log(typeof hoo);
-	console.log(typeof hoo[1]);
-	console.log(hoo[1]);
-	console.log("이거되려나:"+'${calendarList[1]["SCHE_CONTENT"]}')
+//	console.log('typeof hiii:'+typeof hiii);
+//	console.log(typeof hiii[1]);
+//	console.log(hoo);
+//	console.log(typeof hoo);
+//	console.log(typeof hoo[1]);
+//	console.log(hoo[1]);
+//	console.log("이거되려나:"+'${calendarList[1]["SCHE_CONTENT"]}')
 	
-	console.log(hiii[1]["SCHE_TITLE"]);
-	console.log(hiii[1].SCHE_TITLE);
+//	console.log(hiii[1]["SCHE_TITLE"]);
+//	console.log(hiii[1].SCHE_TITLE);
 	
 	$(function(){
 		var request = $.ajax({

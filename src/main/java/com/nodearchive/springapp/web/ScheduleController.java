@@ -249,10 +249,10 @@ public class ScheduleController {
 		model.addAttribute("message", "입력폼 작성 후 전송(등록)");
 		
 		System.out.println("[ ⚜ ] 참조인 몇명등록됨? (test때는 3명):"+howManyRefs);
-		//fullcalendar에 뿌려줄 데이터 호출
-		fullcalendarData(); //jsonArr(List)를 반환해줌
+		
 		
 		return "schedule/FullCalendar.noa";
+		// 이 페이지에서 fullCalendarData 호출함
 	}
 	
 	//일정 검색시
@@ -265,6 +265,7 @@ public class ScheduleController {
 		return "schedule/Search.noa";
 	}
 	
+	//은지님 페이지 이동
 	@RequestMapping("/notice.kosmo")
 	public String notice(
 			//Authentication auth,
@@ -280,8 +281,8 @@ public class ScheduleController {
 			@RequestParam Map map,
 			HttpServletRequest request
 			) {
-			List<Map> calendar = null;
-			calendar = scheduleService.useFullCalendar();
+		System.out.println("풀캘린더 만나러 갑니다~~★");
+			List<Map> calendar = scheduleService.useFullCalendar();
 			request.setAttribute("calendarList",calendar);
 
 		return "schedule/FullCalendar.noa";
@@ -290,6 +291,7 @@ public class ScheduleController {
 	@ResponseBody
 	@RequestMapping("/fullcalendarData.kosmo")
 	public List<Map> fullcalendarData() {
+			//fullCalendar.jsp에서 이 메소드를 호출해서 정보를 받아옴
 			//System.out.println("일단 컨트롤러로 이동은 성공: <c:url> ");
 			//구현하고 나서 service로 로직 옮기기
 		
