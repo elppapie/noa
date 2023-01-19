@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 public interface ChatService<T> {
 	
 	//메신저 로그인
-	int authMember(Map map);
+	//int authMember(Map map);
 	
 	//목록
-	List selectList(Map map);
+	//List selectList(Map map);
 	
 	//상세보기
-	T selectOne(Map map);
+	//T selectOne(Map map);
 	
 	//입력-수정-삭제
 	int insert(Map map);

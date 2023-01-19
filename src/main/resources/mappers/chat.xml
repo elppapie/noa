@@ -8,23 +8,159 @@
 <mapper namespace="mappers.chat">
 	
 	<!-- 메신저 로그인 -->
+	<!-- 회원일 경우 1 반환 -->
 	<select id="chatLogin" parameterType="Map" resultType="int">
-		SELECT COUNT(*) FROM members WHERE M_ID=#{username} AND M_PASSWORD=#{password}
+		SELECT COUNT(*) FROM members WHERE m_id=#{username} AND M_PASSWORD=#{password}
 	</select>
 
-	<!--  -->
+
+	<!-- 사용자의 정보 조회 -->
+	<!-- 나중에 필요한 정보만 SELECT 하는걸로 수정(아직 뭐가 필요한지 확실X)  -->
+	<select id="selectMyInfo" parameterType="Map" resultType="Map">
+		SELECT * FROM members WHERE m_id=#{username}
+	</select>
+	
+	
+	<!-- 메신저 그룹명 조회-->
+	<!-- |GROUP_NAME| -->
+	<select id="selectGroupName" parameterType="Map" resultType="Map">
+		select group_name from emp_group WHERE group_separator='채팅그룹' AND m_id=#{username}
+	</select>
+	
+	
+	<!-- 메신저 그룹에 저장한 친구의 정보 조회 -->
+	<!-- GROUP_NAME | M_PROFILE_IMG | M_NAME | M_STATUS | M_PROFILE_MSG | TEAM_NAME | POSITION_NAME | M_ID | GROUP_NO -->
 	<select id="selectFriendsList" parameterType="Map" resultType="Map">
 		SELECT eg.GROUP_NAME, T.*
 		FROM EMP_GROUP eg,
-		(SELECT mm.* ,gml.group_no 그룹번호
-		FROM GROUP_M_LIST gml ,
-		(SELECT m.M_PROFILE_IMG 프로필사진, m.M_NAME 이름, m.M_STATUS 상태, m.M_PROFILE_MSG 상태메세지, t.TEAM_NAME 부서, p.POSITION_NAME 직급, m.m_id 아이디
+		  (SELECT mm.* ,gml.group_no
+		   FROM GROUP_M_LIST gml ,
+		      (SELECT m.M_PROFILE_IMG, m.M_NAME, m.M_STATUS, m.M_PROFILE_MSG, t.TEAM_NAME, p.POSITION_NAME, m.m_id
+		       FROM members m
+		       JOIN team t ON t.team_no=m.team_no
+		       JOIN position p ON p.position_code=m.position_code
+		      ) mm
+		   WHERE mm.m_id=gml.m_id)T
+		WHERE T.group_no=eg.group_no AND eg.group_separator='채팅그룹' AND eg.m_id=#{username}
+		ORDER BY group_name
+	</select>
+	
+	
+	<!-- 사용자의 기업에 존재하는 부서들(전체 목록용) -->
+	<select id="selectDeptName" parameterType="Map" resultType="Map">
+		SELECT d.dept_name, d.dept_code
+		FROM dept d
+		WHERE (SELECT emp_code FROM members where m_id=#{username})=d.emp_code
+	</select>
+	
+	
+	<!-- 사용자 기업에 존재하는 팀들(전체목록용) -->
+	<select id="selectTeamName" parameterType="Map" resultType="Map">
+		SELECT * FROM team
+	</select>
+	
+	
+	<!-- 전체직원 정보조회(전체목록용) -->
+	<select id="selectAllMember" parameterType="Map" resultType="Map">
+		SELECT * FROM members
+	</select>
+	
+	
+	<!-- 회사 구성원 검색 (자동완성)목록 -->
+	<!-- 사원이름, 팀명, 직급 내에서 검색어로 자동완성 목록 생성 -->
+	<!-- M_NAME | TEAM_NAME | POSITION_NAME | M_ID | M_PRIVATE_CONTACT -->
+	<select id="searchMembers" parameterType="Map" resultType="Map">
+		SELECT m_name, t.team_name, p.position_name, m_id,m_private_contact 
 		FROM members m
 		JOIN team t ON t.team_no=m.team_no
 		JOIN position p ON p.position_code=m.position_code
-		) mm
-		where mm.아이디=gml.m_id)T
-		WHERE T.그룹번호=eg.group_no AND eg.group_separator='채팅그룹' AND eg.m_id=#{username}
+		WHERE m.emp_code=(SELECT emp_code FROM members WHERE m_id=#{username})  
+		AND m_name LIKE '%' ||  #{value} || '%' OR t.team_name LIKE '%' ||  #{value} || '%' OR p.position_name LIKE '%' ||  #{value} || '%'
 	</select>
+	
+	
+	<!-- 메신저 그룹 생성 -->
+	<insert id="addGroup" parameterType="Map" >
+		INSERT INTO emp_group VALUES(SEQ_CHAT.NEXTVAL,'hong1234@samsung.com','그룹이름',SYSDATE,'채팅그룹')
+	</insert>
+	
+	<!-- 메신저 그룹이름 수정 -->
+	<update id="updateGroup" parameterType="Map">
+		UPDATE emp_group SET group_name='변경할 그룹 이름' WHERE group_name='그룹번호'
+	</update>
+	
+	<!-- 메신저 그룹 구성원 추가 -->
+	<insert id="insertMember" parameterType="Map">
+		INSERT INTO group_m_list VALUES('추가될 직원의 아이디','그룹번호',SYSDATE)
+	</insert>
+	
+	<!-- 메신저 그룹 구성원 삭제 -->
+	<delete id="deleteMember" parameterType="Map">
+		DELETE FROM group_m_list WHERE group_no='삭제될 그룹 넘버' AND m_id='삭제할 멤버 아이디'
+	</delete>
+	
+	<!-- 메신저 그룹 삭제 -->
+	<delete id="deleteGroup" parameterType="Map">
+		DELETE FROM emp_group WHERE group_no='삭제할 그룹 넘버'
+	</delete>
+	
+	<!-- 메신저 채팅목록 조회 -->
+	<!-- CHAT_NO | M_ID | CHAT_REGIDATE | CHAT_NAME -->
+	<select id="selectChatsList" parameterType="Map" resultType="Map">
+		SELECT c.*, cm.cm_content, cm.cm_regidate 
+		FROM chat_m_list cml
+		JOIN chat c ON c.chat_no=cml.chat_no
+        JOIN chat_msg cm ON cm.chat_no=c.chat_no
+		WHERE cml.m_id=#{username} AND cm_no=(SELECT max(cm_no) FROM chat_msg)
+		<!-- 
+		SELECT c.* 
+		FROM chat_m_list cml
+		JOIN chat c ON c.chat_no=cml.chat_no
+		WHERE cml.m_id=#{username}
+		-->
+	</select>
+	
+	<!-- 선택한 채팅방정보 조회 -->
+	<select id="selectChat" parameterType="Map" resultType="Map">
+		SELECT * from chat WHERE chat_no=#{chat_no}
+	</select>
+	
+	<!-- 선택한 채팅방 참여자리스트 및 참여자정보 조회 -->
+	<select id="selectChatMember" parameterType="Map" resultType="Map">
+		SELECT m.*
+		FROM chat_m_list cml
+		JOIN members m ON m.m_id=cml.m_id
+		WHERE chat_no=#{chat_no}
+	</select>
+	
+	<!-- 선택한 채팅방의 메세지 -->
+	<!-- CM_NO | M_ID | CHAT_NO | CM_CONTENT | CM_REGIDATE | M_NAME -->
+	<select id="selectChatMsg" parameterType="Map" resultType="Map">
+		SELECT cm.*, m.m_name 
+		FROM chat_msg cm
+		JOIN members m on m.m_id=cm.m_id
+		WHERE chat_no=#{chat_no}
+		ORDER BY cm.cm_regidate
+	</select>
+	
+	<!-- 채팅방 생성 -->
+	<insert id="createChat" parameterType="Map">
+		INSERT INTO chat VALUES(SEQ_CHAT.NEXTVAL,"사용자 아이디","채팅방이름",SYSDATE)
+	</insert>
+	
+	<!-- 채팅방 참여자 리스트 생성 -->
+	<insert id="createChatMemberList" parameterType="Map">
+		INSERT INTO chat_m_list VALUES('참여자 아이디','채팅방번호',SYSDATE)
+	</insert>
+	
+	<!-- 채팅방 수정 -->
+	<update id="updateChat">
+		UPDATE chat SET chat_name='변경할 채팅방 이름' WHERE chat_no='채팅방번호'
+	</update>
+	
+	<!-- 채팅방 나가기 -->
+	<delete id="deleteChat">
+		DELETE FROM chat_m_list WHERE group_no='삭제할 그룹 넘버' AND m_id='리스트에서 삭제될 아이디(사용자)'
+	</delete>
 
 </mapper>

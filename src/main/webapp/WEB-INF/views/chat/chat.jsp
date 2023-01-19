@@ -28,7 +28,7 @@
       </div>
       <div class="status-bar__column"></div>
       <div class="status-bar__column">
-        <a href="#"> <!-- friendList.kosmo 링크 걸기 -->
+        <a href="${path}/Chat/chatList.kosmo"> <!-- chatList.kosmo 링크 걸기 -->
           <i class="fa fa-color-chatGreen fa-comment " style="padding-right:8px;"> messanger</i>
         </a>
       </div>
@@ -42,7 +42,7 @@
         </a>
       </div>
       <div class="alt-header__column fg-1" style="padding-left: 10px; padding-right: 10px;">
-        <h1 class="alt-header__title show-in-oneline fsu-m" >여기에 채팅방 이름을 적는데 길면</h1>
+        <h1 class="alt-header__title show-in-oneline fsu-m" >${chat['CHAT_NAME']}</h1>
       </div>
       <div class="alt-header__column" style="width: 70px;">
         <span><i class="fas fa-search fa-lg"></i></span>
@@ -55,56 +55,46 @@
     <main class="chat-screen" style="padding-top:95px">
 
       <!-- 하루가 지날 때마다 생기는 타임라인 -->
-      <div class="chat_timestamp">Tuseday, Jun 20, 2020</div>
+      <div class="chat_timestamp">2023년 1월 20일 금요일</div>
 
+	  <c:forEach var="msg" items="${chat_msg}">
 <!-- 상대방 챗 하나 시작 -->
-      <div class="message-row-margin">
-        <div class="message-row">
-          <!-- 프로필사진 -->
-          <img
-            src="https://media.glassdoor.com/sqll/599602/naver-squarelogo-1429700032474.png"
-          />
-          <div class="message-row__content">
-            <!-- 이름 m_name -->
-            <span class="message__author">m_name</span>
-            <div class="message__info">
-              <span class="message__bubble">Hi! I'm your memo. </span>
-              <span class="message__time">12:00</span>
-            </div>
-          </div>
-        </div>
-      </div>
-<!-- 상대방 챗 하나 끝 -->
-      
+      	<c:if test="${msg['M_ID'] != sessionScope.username}" var="notMine">
+	      <div class="message-row-margin">
+	        <div class="message-row">
+	          <!-- 프로필사진 -->
+	          <img
+	            src="https://media.glassdoor.com/sqll/599602/naver-squarelogo-1429700032474.png"
+	          />
+	          <div class="message-row__content">
+	            <!-- 이름 m_name -->
+	            <span class="message__author">${msg['M_NAME']}</span>
+	            <div class="message__info">
+	              <span class="message__bubble">${msg['CM_CONTENT']}</span>
+	              <span class="message__time">${msg['CM_REGIDATE']}</span>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </c:if>  
+<!-- 상대방 챗 하나 끝 -->      
       
 <!-- 내 챗 하나 시작 >> 내 챗에는 -own 이 붙음. -->
-      <div class="message-row-margin">
-        <div class="message-row message-row--own">
-          <div class="message-row__content">
-            <div class="message__info">
-              <span class="message__time">12:02</span>
-              <span class="message__bubble">My youtube channel</span>
-            </div>
-          </div>
-        </div>
-      </div>
+	    <c:if test="${! notMine}">
+	      <div class="message-row-margin">
+	        <div class="message-row message-row--own">
+	          <div class="message-row__content">
+	            <div class="message__info">
+	              <span class="message__time">${msg['CM_REGIDATE']}</span>
+	              <span class="message__bubble">${msg['CM_CONTENT']}</span>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </c:if>
 <!-- 내 챗 하나 끝 -->
-      
-<!-- 내 챗 하나 시작 -->
-      <div class="message-row-margin">
-        <div class="message-row message-row--own">
-          <div class="message-row__content">
-            <div class="message__info">
-              <span class="message__time">12:02</span>
-              <span class="message__bubble"
-                >https://www.youtube.com/<br />channel/UC8B8z9BHiwmEmNEqDpDNd8Q</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-<!-- 내 챗 하나 끝 -->
-      
+	  </c:forEach>
+	        
       <form class="reply" name="myChatForm123">
 
         <!-- 하단 첨부파일 버튼 시작 -->

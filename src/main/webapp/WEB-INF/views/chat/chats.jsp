@@ -71,54 +71,34 @@
       <div class="crew-screen__channel" >
         
         <!-- 채팅방 시작 -->
-        <div class="user-component">
-          <a href="#" class="fg-1">  <!-- 누르면 해당 채팅방으로 이동 -->
-            <div class="user-component__column"> 
-              <img
-                src="https://media.glassdoor.com/sqll/599602/naver-squarelogo-1429700032474.png"
-                class="user-component__avatar user-component__avatar--sm"
-              />
-              <div class="user-component__text">
-                <div class="user-component__title user-component__title--not-bold">
-                  채팅방 이름 chat_name
-                </div>
-                <div class="user-component__subtitle check-str-length">여기에 마지막 채팅 내용이 써질 겁니다...</div>
-              </div>
-            </div>
-          </a>
-          <div class="user-component">
-            <a href="#"> <!-- 설정 모달 띄우기 -->
-              <i class="fa fa-light fa-gear"></i>
-            </a>
-          </div>
-        </div>
+        <c:forEach var="chat" items="${record}">
+	        <div class="user-component">
+	          <a href="${path}/Chat/chat.kosmo?chat_no=${chat['CHAT_NO']}">  <!-- 누르면 해당 채팅방으로 이동 -->
+	            <div class="user-component__column"> 
+	              <img
+	                src="https://media.glassdoor.com/sqll/599602/naver-squarelogo-1429700032474.png"
+	                class="user-component__avatar user-component__avatar--sm"
+	              />
+	              <div class="user-component__text">
+	                <div class="user-component__title user-component__title--not-bold">
+	                  ${chat['CHAT_NAME']}
+	                </div>
+	                <div class="user-component__subtitle check-str-length">${chat['CM_CONTENT']}</div>
+	              </div>
+	              <div class="user-component-chats-info">
+		            <span class="user-component__time">${chat['CM_REGIDATE']}</span>
+		            <div class="badge">1</div>
+		          </div>
+	            </div>
+	          </a>
+	          <div class="user-component">
+	            <a href="#"> <!-- 설정 모달 띄우기 -->
+	              <i class="fa fa-light fa-gear"></i>
+	            </a>
+	          </div>
+	        </div>
+        </c:forEach> 
         <!-- 채팅방 끝 -->
-
-        <!-- 채팅방 시작 -->
-        <div class="user-component">
-          <a href="#" class="fg-1">  <!-- 누르면 해당 채팅방으로 이동 -->
-            <div class="user-component__column"> 
-              <img
-                src="https://media.glassdoor.com/sqll/599602/naver-squarelogo-1429700032474.png"
-                class="user-component__avatar user-component__avatar--sm"
-              />
-              <div class="user-component__text">
-                <div class="user-component__title user-component__title--not-bold">
-                  채팅방 이름 chat_name
-                </div>
-                <div class="user-component__subtitle check-str-length">여기에 마지막 채팅 내용이 써질 겁니다...</div>
-              </div>
-            </div>
-          </a>
-          <div class="user-component">
-            <a href="#"> <!-- 설정 모달 띄우기 -->
-              <i class="fa fa-light fa-gear"></i>
-            </a>
-          </div>
-        </div>
-        <!-- 채팅방 끝 -->
-
-
       </div>
 <!-- 채팅그룹 불러오기 끝 -->            
     </main>
@@ -126,12 +106,12 @@
     <nav class="nav">
       <ul class="nav__list">
         <li class="nav__btn">
-          <a class="nav__link" href="mycrew.html"
+          <a class="nav__link" href="${path}/Chat/friendList.kosmo"
             ><i class="far fa-user fa-lg"></i
           ></a>
         </li>
         <li class="nav__btn">
-          <a class="nav__link" href="chats.html">
+          <a class="nav__link" href="${path}/Chat/chatList.kosmo">
             <span class="nav__notification">1</span>
             <i class="fas fa-comments fa-lg"></i
           ></a>
