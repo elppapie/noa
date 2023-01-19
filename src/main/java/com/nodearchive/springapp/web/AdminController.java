@@ -117,7 +117,7 @@ map.put("m_id", "song1234@samsung.com");
 		// |memberList | String형 배열로 선택했던 구성원들 받아오기 - map에 담기
 		// RequestParam의 map으로 전달되는 정보
 		// |enroll | (부서일때) = |dept_name |m_dept_leader | (팀일때) = |team_name |m_team_leader |
-		// |등록분류  |			|부서이름 	   |부서 리더		  |			|팀이름		|팀 리더		  |
+		// |등록분류  |			|부서이름 	  |부서 리더	     |			|팀이름		|팀 리더		  |
 			
 ////////////////////////////////////테스트용 아이디 전달 원래는 세션에서 가져와야///////////////////////////////////////////////////
 map.put("m_id", "song1234@samsung.com"); //map.put("m_id", session.get("아이디 저장할 키값");

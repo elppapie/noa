@@ -28,7 +28,7 @@
       </div>
       <div class="status-bar__column"></div>
       <div class="status-bar__column">
-        <a href="${path}/Chat/chatList.kosmo"> <!-- chatList.kosmo 링크 걸기 -->
+        <a href="#"> <!--friendList.kosmo 링크 걸기 -->
           <i class="fa fa-color-chatGreen fa-comment " style="padding-right:8px;"> messanger</i>
         </a>
       </div>
@@ -37,7 +37,7 @@
 <!-- 채팅방 헤더 시작 -->
     <header class="alt-header alt-header__color" >
       <div class="alt-header__column" style="width: 30px;">
-        <a href="chats.html">
+        <a href="${path}/Chat/chatList.kosmo">
           <i class="fas fa-angle-left fa-3x"></i>
         </a>
       </div>

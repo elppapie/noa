@@ -2,6 +2,7 @@ package com.nodearchive.springapp.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -200,5 +201,37 @@ public class AdminServiceImpl implements AdminService<Map>{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public OrganizationDTO getOrgAdmin(Map map) {
+		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
+		map.put("emp_code", addrDao.getEmpCodeByMId(map));
+		//기업의 부서 얻어오기 
+		//<Map> dept_code=부서코드, dept_name=부서명, m_dept_leader=부서책임자, dept_leader_name=부서책임자이름 의 List컬렉션 
+		//|dept_code |dept_name |dept_leader_id      |dept_leader_name |
+		// 부서코드    |부서명     | 부서책임자 아이디      |  부서책임자 이름
+		List<Map> deptList = adminDao.getDeptOrg(map);
+		
+		//부서별 팀 얻어오기
+		List<String> deptCodeList = new Vector<>();
+		deptList.forEach(t->deptCodeList.add(t.get("dept_code").toString()));
+		
+		//<Map> dept_code=부서코드, team_no=팀일련번호, team_name=팀명, m_team_leader=팀책임자, team_leader_name=팀책임자이름의 List컬렉션
+		List<Map> teamList = adminDao.getTeamOrg(deptCodeList);
+
+		//팀별 팀 구성원 얻어오기
+		//리스트 컬렉션에 팀 일련번호 넣기
+		List<Integer> teamNoList = new Vector<>();
+		teamList.forEach(t->teamNoList.add(Integer.parseInt(t.get("team_no").toString())));
+		//teamMembersList
+		//|team_no |m_id       |m_name   |m_profile_img |position_name |
+		// 팀 번호  | 팀원 아이디  | 팀원이름  |프로필사진링크   | 직급명        |
+		List<Map> teamMembersList = addrDao.getTeamMembers(teamNoList);
+
+		OrganizationDTO dto = new OrganizationDTO();
+		dto.setDeptList(deptList);
+		dto.setTeamList(teamList);
+		dto.setTeamMembersList(teamMembersList);
+		return dto;
+	}////////////getOrg()
 
 }

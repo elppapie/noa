@@ -14,6 +14,7 @@
 <style>
 	.iamnothref{
 		text-decoration:none;
+		color:white;
 	}
 
 </style>
@@ -46,11 +47,11 @@
 							<th class="col-1">부서명</th>
 							<th class="col-1">부서책임자(연락처)</th>
 							<th class="col-1">부서 생성일</th>
-							<th class="col-1">부서 소속 팀</th>
+							<%-- <th class="col-1">부서 소속 팀</th>--%>
 							<th class="col-1">부서 소속 인원(수)</th>
 							<th class="col-1">
 								<div class="btn btn-primary btn-lg">
-									<a href="<c:url value='/Admin/enroll.kosmo?emp_code=${emp_code}&enroll=dept'/>">
+									<a class="iamnothref" href="<c:url value='/Admin/enroll.kosmo?emp_code=${emp_code}&enroll=dept'/>">
 									신규 부서 추가
 									</a>
 								</div>
@@ -71,7 +72,7 @@
 							<c:forEach var="dept" items="${deptList}">
 								<tr>
 									<td>${dept["dept_name"]}</td>
-									<td>${dept["dept_leader_name"]}(${dept["dept_leader_id"]})</td>
+									<td>${dept["dept_leader_name"]}(${dept["dept_leader_contact"]})</td>
 									<td>${dept["dept_regidate"]}</td>
 									<td class="text-left">
 									<%-- 	<c:forTokens var="team" items="${teamList}" delims=", ">
@@ -121,7 +122,7 @@
 							<th class="col-1">팀 소속 인원(수)</th>
 							<th class="col-1">
 								<div class="btn btn-primary btn-lg">
-									<a href="<c:url value='/Admin/enroll.kosmo?emp_code=${emp_code}&enroll=team'/>">
+									<a  class="iamnothref" href="<c:url value='/Admin/enroll.kosmo?emp_code=${emp_code}&enroll=team'/>">
 									신규 팀 추가
 									</a>
 								</div>

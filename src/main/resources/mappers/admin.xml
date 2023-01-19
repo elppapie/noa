@@ -42,10 +42,43 @@
 		WHERE emp_code = #{emp_code}
 	</select>
 	
+	<!-- 기업의 부서 조회하기: #{emp_code}=조회할 기업 -->
+	<select id="adminGetDeptOrg" parameterType="Map" resultType="Map">
+		SELECT  dept_code "dept_code", dept_name "dept_name", 
+			(SELECT m_id FROM members m JOIN team t ON m.team_no=t.team_no WHERE m_dept_leader IS NULL AND t.dept_code=d.dept_code
+		    ) "dept_leader_id", 
+		    (SELECT m_name FROM members mm JOIN team t ON mm.team_no=t.team_no WHERE m_dept_leader IS NULL AND t.dept_code=d.dept_code
+		    ) "dept_leader_name",
+		    (SELECT m_private_contact FROM members mmm JOIN team t ON mmm.team_no=t.team_no WHERE m_dept_leader IS NULL AND t.dept_code=d.dept_code
+		    ) "dept_leader_contact"
+			dept_regidate		    		    
+		FROM dept d JOIN emp e ON d.emp_code=e.emp_code
+		WHERE e.emp_code=#{emp_code}
+		ORDER BY dept_name
+	</select>
 	
+	<!-- 부서별 팀 조회하기 -->
+	<select id="adminGetTeamOrg" parameterType="List" resultType="Map">
+		SELECT tt.TEAM_NO "team_no", tt.TEAM_NAME "team_name", d.dept_code "dept_code" , d.dept_name,
+			(SELECT m_id FROM members m JOIN team t ON m.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_id", 
+		    (SELECT m_name FROM members mm JOIN team t ON mm.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_name",
+		    (SELECT m_private_contact FROM members mm JOIN team t ON mm.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_contact",
+		    tt.team_regidate
+		FROM team tt JOIN dept d ON tt.dept_code=d.dept_code
+		WHERE d.dept_code IN 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>	
 	
-	
-	
+	<select id="adminGetDeptMemberNum" parameterType="List" resultType="Map">
+		SELECT dept_code, count(dept_code) AS dept_total
+		FROM members m JOIN team t ON m.team_no = t.team_no
+		WHERE 
+	</select>
 	
 	
 	<insert id="insertDept" parameterType="Map">
