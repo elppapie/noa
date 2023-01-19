@@ -45,18 +45,17 @@ public class ReportDAO {
 		return resultUpdate;
 	}
 
-
 	//deleteOne - 하나의 리포트 삭제
 	public int deleteOne(Map map) {
 		int resultDelete = 0;
-		template.delete("reportDeleteOne",map);
+		resultDelete=template.delete("reportDeleteOne",map);
 		return resultDelete;
 	}
 	
 	//deleteList - 리포트 리스트 삭제
 	public int deleteList(List list) {
 		int resultDelete = 0;
-		template.delete("reportDeleteList",list);
+		resultDelete=template.delete("reportDeleteList",list);
 		return resultDelete;
 	}
 
@@ -67,7 +66,8 @@ public class ReportDAO {
 
 	//selectMember
 	public List selectMember(Map map) {
-		return template.selectList("reportGetMList",map);
+		List mlist = template.selectList("reportGetMList",map);
+		return mlist;
 	}
 
 }

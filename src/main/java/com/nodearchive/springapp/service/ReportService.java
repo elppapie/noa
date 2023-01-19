@@ -18,7 +18,7 @@ public interface ReportService<T> {
 	//리포트 공유멤버 추가용
 	int insertMember(List list);
 	//리포트 공유멤버 목록용
-	T selectMember(Map map);
+	List selectMember(Map map);
 	
 	//목록용
 	ListPagingData<T> selectList(Map map,HttpServletRequest req,int nowPage);
@@ -30,7 +30,5 @@ public interface ReportService<T> {
 	int update(Map map);
 	int deleteOne(Map map);
 	int deleteList(List list);
-	
-
 	
 }

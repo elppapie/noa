@@ -23,35 +23,32 @@ public class ReportController {
 	@Autowired
 	private ReportService<Map> reportService;
 	
-	//리포트 생성(post)
+	//리포트 생성(post) - 테스트 완
 	@RequestMapping("/create.kosmo")
 	public String createReport(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
-		
-		//[TEST]--------------------------
-		map.put("m_id", "kim1234@samsung.com");
-		map.put("report_name", "1월 3주차 주간 보고");
-		map.put("report_commet", "간략한 코멘트");
-		map.put("report_startdate", "2023-01-15");
-		map.put("report_enddate", "2023-01-20");
-		//--------------------------------
-		
+	
 		int createReport = reportService.insert(map);
 		model.addAttribute("createReport", createReport);
 		//리포트 상세 보기 페이지로 이동
 		return "report/view.noa";
 	}
 	
-	//리포트 목록(get)
+	//리포트 목록(get) - 테스트 완
 	@RequestMapping("/list.kosmo")
 	public String reportMain(
 			//Authentication auth,
 			HttpServletRequest req,
-			int nowPage,
+			@RequestParam(required = false,defaultValue = "1") int nowPage,
 			@RequestParam Map map, 
 			Model model) {
+		
+		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
+		//UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		//map.put("loginId", userDetails.getUsername());
+				
 		
 		ListPagingData<Map> selectListReport = reportService.selectList(map, req, nowPage);
 		model.addAttribute("selectListReport", selectListReport);
@@ -59,7 +56,7 @@ public class ReportController {
 		return "report/list.noa";
 	}
 	
-	//리포트 상세보기(get)
+	//리포트 상세보기(get) - 테스트 완
 	@RequestMapping("/view.kosmo")
 	public String viewReport(
 			//Authentication auth,
@@ -73,7 +70,7 @@ public class ReportController {
 	}
 		
 	
-	//리포트 수정(post)
+	//리포트 수정(post) - 테스트 완
 	@RequestMapping("/edit.kosmo")
 	public String updateReport(
 			//Authentication auth,
@@ -86,7 +83,7 @@ public class ReportController {
 		return "report/view.noa";
 	}
 	
-	//리포트 하나 삭제(post)
+	//리포트 하나 삭제(post) - 테스트 완
 	@RequestMapping("/delete.kosmo")
 	public String deleteReportOne(
 			//Authentication auth,
@@ -99,7 +96,7 @@ public class ReportController {
 		return "report/list.noa";
 	}
 	
-	//리포트 리스트 삭제(post)
+	//리포트 리스트 삭제(post) 테스트 완
 	@RequestMapping("/deleteList.kosmo")
 	public String deleteReportList(
 			//Authentication auth,
@@ -112,12 +109,7 @@ public class ReportController {
 		
 		//프론트에서 전달하는 리포트 리스트를 배열에 저장
 		String[] reportArray = request.getParameterValues("report");
-		
-		//[TEST]--------------------------------
-		//String[] reportArray = {"4","5"};
-		//--------------------------------------
-		
-		//확장for문으로 member를 인자로 전달할 list에 저장
+		//확장for문으로 report_no를 인자로 전달할 list에 저장
 		for(String oneReport:reportArray) {
 			row = new HashMap<>();
 			int report_no = Integer.parseInt(oneReport);
@@ -132,7 +124,7 @@ public class ReportController {
 	}
 
 	
-	//리포트 공유 수신자 그룹 설정 기능
+	//리포트 공유 수신자 그룹 설정 기능 - 테스트 완
 	@RequestMapping("/mlist.kosmo")
 	public String sendReport(
 			//Authentication auth,
@@ -142,11 +134,6 @@ public class ReportController {
 		
 		List<Map> members=new Vector<Map>();
 		Map row = new HashMap<>();
-		
-		//[TEST]------------------------------------------
-		//row.put("report_no", 2);
-		//String[] memberArray = {"hong1234@samsung.com","park1234@samsung.com"};
-		//------------------------------------------------
 		
 		//프론트 엔드에서 전달 받는 member 리스트를 배열에 저장
 		String[] memberArray = request.getParameterValues("member");
@@ -159,24 +146,18 @@ public class ReportController {
 			members.add(row);
 		}
 	
-		int insertReportM = reportService.insertMember(members);
-		model.addAttribute("insertReportM",insertReportM );
+		model.addAttribute("insertReportM",reportService.insertMember(members));
 		return "report/list.noa";
 	}
 	
-	//멤버 리스트 불러오기(get)
+	//멤버 리스트 불러오기(get) - 테스트 완
 	@RequestMapping("/viewmlist.kosmo")
 	public String viewMember(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
 		
-		//[TEST]---------------------------------
-		map.put("report_no", 2);
-		//---------------------------------------
-		
-		Map reportMember = (Map) reportService.selectMember(map);
-		model.addAttribute("reportMember", reportMember);
+		model.addAttribute("reportMember", reportService.selectMember(map));
 		return "report/view.noa";
 	}
 
@@ -194,6 +175,19 @@ public class ReportController {
 		//리포트 목록 페이지로 이동
 		return "report/list.noa";
 	}
+	
+	[테스트 용]
+	@RequestMapping(value="/project.kosmo",produces = "text/html; charset=UTF-8")
+	public String testProject(
+			//Authentication auth,
+			@RequestParam Map map, 
+			HttpServletRequest req,
+			Model model
+			) {
+		return "/Project/Project";
+		//return "/Project/Project123.noa";
+	}
+	
 	*/
 	
 }

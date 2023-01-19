@@ -17,6 +17,8 @@ public interface TaskService<T> {
 	
 	//목록용
 	ListPagingData<T> selectList(Map map,HttpServletRequest req,int nowPage);
+	//ListPagingData<T> selectListByDate(Map map, HttpServletRequest req, int nowPage);
+	//ListPagingData<Map> selectListById(Map map, HttpServletRequest req, int nowPage);
 	
 	//상세보기용]
 	T selectOne(Map map);
@@ -25,5 +27,9 @@ public interface TaskService<T> {
 	int delete(Map map);
 	int update(Map map);
 	int selectScheNo(int project_no);
+
+	
+
+	
 	
 }

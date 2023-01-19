@@ -16,23 +16,34 @@ public class TaskDAO {
 	
 	//insert
 	public int insert(Map map) {
-		return template.insert("taskInsert",map);
+		int affected=template.insert("taskInsert",map);
+		return affected;
 	}
 	
 	//read(selectOne)
 	public Map findRecordByNo(Map map) {
-		return template.selectOne("taskSelectOne", map);
+		Map record = template.selectOne("taskSelectOne", map);
+		return record;
 	}
 	
 	public int getTotalRecordCount(Map map) {
 		return template.selectOne("taskTotalRecordCount",map);
 	}
 	
-	//selectList
+	public List getTotalTask(Map map) {
+		return template.selectList("taskFindAllList",map);
+	}
+/*
+	//selectList - by date
 	public List selectTaskByDate(Map map) {
 		return template.selectList("taskSelectListByDate", map);
 	}
 	
+	//selectList - by id
+	public List selectTaskById(Map map) {
+		return template.selectList("taskSelectListById",map);
+	}
+	*/
 	//수정용 sche_no 구하는 메소드
 	public int selectScheNo(int task_no) {
 		 int sche_no=-1; 
@@ -71,5 +82,7 @@ public class TaskDAO {
 	public String checkMember(Map map) {
 		return template.selectOne("taskCheckMember",map);
 	}
+
+	
 
 }

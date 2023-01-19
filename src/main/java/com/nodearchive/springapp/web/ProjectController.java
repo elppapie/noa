@@ -49,7 +49,7 @@ public class ProjectController {
 	}
 	
 	
-	//프로젝트 생성(post) - /Project/create.kosmo / 테스트 완료
+	//프로젝트 생성(post) - /Project/create.kosmo / - 테스트 완료
 	@RequestMapping("/create.kosmo")
 	public String createProject(
 			//Authentication auth,
@@ -68,7 +68,7 @@ public class ProjectController {
 		return "forward:project/list.noa";
 	}
 	
-	//프로젝트 상세보기(get)-테스트 완료
+	//프로젝트 상세보기(get) - 테스트 완료
 	@RequestMapping("/view.kosmo")
 	public String viewProject(
 			//Authentication auth,
@@ -79,7 +79,6 @@ public class ProjectController {
 		//상세보기 페이지로 이동
 		return "project/view.noa";
 	} 
-	
 	
 	//프로젝트 수정(post) - 테스트 완
 	@RequestMapping("/edit.kosmo")
@@ -114,7 +113,7 @@ public class ProjectController {
 	}
 		
 	
-	//프로젝트 멤버 리스트 추가 테스트 완
+	//프로젝트 멤버 리스트 추가 - 테스트 완
 	@RequestMapping("/mlist.kosmo")
 	public String memberList(
 			//Authentication auth,
@@ -168,18 +167,5 @@ public class ProjectController {
 	*/
 	
 	//+프로젝트 진행률 구하는 로직 추가 필요
-	
-	//+테스트용 
-	/*
-	@RequestMapping(value="/project.kosmo",produces = "text/html; charset=UTF-8")
-	public String testProject(
-			//Authentication auth,
-			@RequestParam Map map, 
-			HttpServletRequest req,
-			Model model
-			) {
-		return "/Project/Project";
-		//return "/Project/Project123.noa";
-	}
-	*/
+
 }

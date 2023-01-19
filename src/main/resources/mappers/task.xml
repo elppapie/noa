@@ -21,18 +21,42 @@
 		JOIN schedule s ON s.sche_no = T1.sche_no WHERE T1.task_no=#{task_no}
 	</select>
 	
-	<!-- 페이징을 위한 업무 레코드 수 카운트 (검색 포함) -->
+	<!-- 페이징을 위한 업무 레코드 수 카운트  -->
 	<select id="taskTotalRecordCount" parameterType="Map" resultType="int">
-		SELECT COUNT(*) FROM task t JOIN members m ON m.m_id=t.m_id
-		<if test="searchColumn != null">
-		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
-		</if>			
+		SELECT COUNT(*) FROM(
+			SELECT T2.*,s.sche_startdate, s.sche_enddate FROM
+				(SELECT t.* FROM
+					(SELECT PROJECT_NO FROM PROJ_M_LIST pml 
+						WHERE pml.m_id=#{loginId})T1
+						JOIN TASK t ON t.project_no=T1.project_no
+					WHERE t.project_no=T1.project_no)T2
+					JOIN SCHEDULE s ON s.sche_no = T2.sche_no
+				WHERE s.sche_no = T2.sche_no
+			<if test="searchColumn != null and searchColumn != ''">
+				AND (${searchColumn} LIKE '%' || #{searchWord} || '%')
+			</if>
+			<if test="set_startdate != null and set_startdate != ''">
+				AND (s.sche_startdate>=#{set_startdate} AND #{set_enddate}>=s.sche_startdate)
+			</if>
+		)
 	</select>
 	
-	<!-- 지정 기간내 업무 리스트 구하기 : 리포트 생성용-->
-	<select id="taskSelectListByDate" parameterType="Map">
-		SELECT t.*,sche_startdate,sche_enddate FROM task t JOIN schedule s ON t.sche_no = s.sche_no 
-		WHERE s.sche_startdate>=#{set_startdate} AND #{set_enddate}>=s.sche_startdate
+	<!-- 페이징을 위한 업무 리스트 출력 (검색 포함 - 문자열) -->
+	<select id="taskFindAllList" parameterType="Map" resultType="Map">
+		SELECT T2.*,s.sche_startdate, s.sche_enddate FROM
+			(SELECT t.* FROM
+				(SELECT PROJECT_NO FROM PROJ_M_LIST pml 
+					WHERE pml.m_id=#{loginId})T1
+					JOIN TASK t ON t.project_no=T1.project_no
+				WHERE t.project_no=T1.project_no)T2
+				JOIN SCHEDULE s ON s.sche_no = T2.sche_no
+			WHERE s.sche_no = T2.sche_no
+			<if test="searchColumn != null and searchColumn != ''">
+				AND (${searchColumn} LIKE '%' || #{searchWord} || '%')	
+			</if>
+			<if test="set_startdate != null and set_startdate != ''">
+				AND (s.sche_startdate>=#{set_startdate} AND #{set_enddate}>=s.sche_startdate)
+			</if>
 	</select>
 	
 	<!-- 수정용 sche_no 구하는 쿼리 -->

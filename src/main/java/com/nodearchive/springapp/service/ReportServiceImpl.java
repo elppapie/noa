@@ -13,7 +13,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.nodearchive.springapp.service.impl.ProjectDAO;
-import com.nodearchive.springapp.service.impl.ProjectDTO;
 import com.nodearchive.springapp.service.impl.ReportDAO;
 import com.nodearchive.springapp.service.impl.TaskDAO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
@@ -57,6 +56,9 @@ public class ReportServiceImpl implements ReportService<Map>{
 		if(map.containsKey("searchWord")) {
 			searchString+="searchColumn="+map.get("searchColumn")+"&searchWord="+map.get("searchWord")+"&";
 		}
+		if(map.containsKey("set_startdate")) {
+			searchString+="set_startdate="+map.get("set_startdate")+"&set_enddate="+map.get("set_enddate")+"&";
+		}
 		
 		//페이징 표시 문자열 얻기
 		String pagingString=PagingUtil.pagingBootStrapStyle(
@@ -77,7 +79,6 @@ public class ReportServiceImpl implements ReportService<Map>{
 	//selectOne
 	@Override
 	public Map selectOne(Map map) {
-		
 		//report_no로 데이터 가져옴
 		return dao.findRecordByNo(map);
 	}
@@ -85,8 +86,8 @@ public class ReportServiceImpl implements ReportService<Map>{
 	//isSameMember
 	//수정 삭제 요청시 등록자와 요청자가 같은지 확인
 	public boolean isSameMember(Map map) {
-		int reqProject = (int) map.get("report_no");
-		String reqMember = (String) map.get("m_id");
+		int reqProject = Integer.parseInt(map.get("report_no").toString());
+		String reqMember = map.get("m_id").toString();
 		String respMember = dao.checkMember(map);
 		boolean result=true;
 		//System.out.println(reqMember.equals(respMember));
@@ -110,7 +111,12 @@ public class ReportServiceImpl implements ReportService<Map>{
 	//deleteOne
 	@Override
 	public int deleteOne(Map map) {
-		return dao.deleteOne(map);
+		int affacted=0;
+		boolean checkResult=isSameMember(map);
+		if(checkResult ==true) {
+			affacted=dao.deleteOne(map);
+		}
+		return affacted;
 	}
 
 	//deleteList
@@ -127,10 +133,9 @@ public class ReportServiceImpl implements ReportService<Map>{
 
 	//selectMember
 	@Override
-	public Map selectMember(Map map) {
-		return (Map)dao.selectMember(map);
+	public List selectMember(Map map) {
+		List mlist = dao.selectMember(map);
+		return mlist;
 	}
 
-
-	
 }

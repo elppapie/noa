@@ -6,7 +6,7 @@
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
-<tiles:insertAttribute name="top"/>
+
 
 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
 <!----Main Page의 Nav 메뉴 작성---->
@@ -16,30 +16,48 @@
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
 		<!-- 여기서 EL로 찍어보면!!! -->
 		<%Map map = new HashMap<>(); %>
-		<form class="form-inline" method="POST" action="<c:url value='/Project/create.kosmo'/>">
-			<label>아이디</label> 
-			<input type="text" name="project_no" class="form-control mx-2" value="" /> 
-			<input type="text" name="login_Id" class="form-control mx-2" value="" /> 
-			<input type="text" name="project_name" class="form-control mx-2" value="" />
-			<input type="text" name="sche_startdate" class="form-control mx-2" value="" /> 
-			<input type="text" name="sche_enddate" class="form-control mx-2" value="" />
-			<input type="text" name="sche_mark" class="form-control mx-2" value="" /> 
-			<input type="text" name="sche_status" class="form-control mx-2" value="" />
-			<input type="text" name="sche_color" class="form-control mx-2" value="" />
-			<input type="text" name="sche_status" class="form-control mx-2" value="" />
-			<input type="text" name="sche_color" class="form-control mx-2" value="" /> 
+		<form class="form-inline" method="POST" action="<c:url value='/Task/list.kosmo'/>"> 
+			<input type="text" name="loginId" class="form-control mx-2"/> 
+			<input type="text" name="set_startdate" class="form-control mx-2"  />
+			<input type="text" name="set_enddate" class="form-control mx-2"  />
+			<input type="text" name="searchColumn" class="form-control mx-2" />
+			<input type="text" name="searchWord" class="form-control mx-2" /> 
+			
 			<input type="submit" class="btn btn-danger mx-2" value="로그인" />
 		</form>
-	1: ${projMember}
-	<!-- 2: ${selectOneProject.PROJECT_NAME} -->
+		1.${selectTaskList}
+		2.${selectTaskList.lists}
+		
+	1: ${selectListReport.lists}
+	2: ${selectListReport.map}
+	3: ${selectListReport[lists]}
+
+	<!-- 2: ${selectOneProject.PROJECTloginId_NAME} -->
+			<input type="text" name="set_startdate" class="form-control mx-2"  />
+			<input type="text" name="set_enddate" class="form-control mx-2"  />
+			<input type="text" name="searchColumn" class="form-control mx-2" value="" />
+			<input type="text" name="searchWord" class="form-control mx-2" value="" /> 
+			<input type="text" name="report_name" class="form-control mx-2"  />
+			<input type="text" name="report_comment" class="form-control mx-2"  />
+			<input type="text" name="report_startdate" class="form-control mx-2"  />
+			<input type="text" name="report_enddate" class="form-control mx-2"  />
+			<input type="text" name="report_commet" class="form-control mx-2"  />
+			<input type="text" name="report_startdate" class="form-control mx-2"  />
+			<input type="text" name="report_enddate" class="form-control mx-2"  />
 			
+			<input type="text" name="task_no" class="form-control mx-2" value="" /> 
+			
+			
+			<input type="text" name="task_name" class="form-control mx-2" value="" />
+			<input type="text" name="task_content" class="form-control mx-2" value="" />
+			<input type="text" name="task_category" class="form-control mx-2" value="" /> 
 	
 	
-	
-		<form action="<c:url value='/Project/mlist.kosmo'/>" method="post">
+		<form action="<c:url value='/Report/mlist.kosmo'/>" method="post">
+			
 			<div class="form-group">
 				<label><kbd class="lead">멤버 선택</kbd></label>
-				<input type="text" name="project_no" class="form-control mx-2" value="" />
+				<input type="text" name="report_no" class="form-control mx-2" value="" />
 				<div class="d-flex">
 					<div class="custom-control custom-checkbox">
 						<input type="checkbox" class="custom-control-input" name="member"
@@ -65,7 +83,7 @@
 			</div>
 			<button type="submit" class="btn btn-primary">확인</button>
 		</form>
-		1. ${insertProjM}
+		1. ${reportMember}
 	</div>
 </div>
 

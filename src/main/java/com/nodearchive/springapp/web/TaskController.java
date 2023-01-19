@@ -1,6 +1,9 @@
 package com.nodearchive.springapp.web;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,84 +25,58 @@ public class TaskController {
 	@Autowired
 	private TaskService taskService;
 
-	//업무 생성(post)
+	//업무 생성(post) - 테스트 완
+	//프로젝트 하위 업무는 project_no = 해당 프로젝트 번호
+	//개인 업무는 project_no = 0
 	@RequestMapping("/create.kosmo")
 	public String createTask(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
-		//--------------------------------------------------------
-		//[TEST]테스트를 위한 유저 아이디 저장
-		System.out.println("업무 생성 시작");
-		map.put("m_id", "park1234@samsung.com");
-		map.put("project_no", 2);
-		//[TEST]테스트를 위한 나머지 인자 저장
-		map.put("sche_title", "업무 생성");
-		map.put("sche_content", "업무2");
-		//map.put("sche_startdate", "2023-01-08 00:00:00.000");
-		//map.put("sche_enddate", "2023-01-08 00:00:00.000");
-		map.put("sche_mark", 0);
-		map.put("sche_status", 0);
-		map.put("sche_color", "RED");
-
-		map.put("task_name", "2023 타겟");
-		map.put("task_content", "타겟 swat 분석 정리");
-		map.put("task_category", '0');
-		//--------------------------------------------------------
-		int createTask = taskService.insert(map);
-		model.addAttribute("createTask", createTask);
+		
+		model.addAttribute("createTask", taskService.insert(map));
 		//업무 목록 페이지로 이동
 		return "task/list.noa";
 	} 
 		
-	//업무 상세보기(get)
+	//업무 상세보기(get) - 테스트 완
 	@RequestMapping("/view.kosmo")
 	public String viewTask(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
 		
-		//[TEST]---------------------------------
-		map.put("task_no", 6);
-		//---------------------------------------
-		
 		model.addAttribute("selectOneTask", taskService.selectOne(map));
 		//업무 등록 페이지로 이동
 		return "task/view.noa";
 	}
 	
-	//설정한 기간동안의 업무 리스트 구하기
-	@RequestMapping("/setDate.kosmo")
-	public String setDate(
+	//업무 리스트 구하기 - 문자열, 날짜 검색 기능 - 테스트 완
+	@RequestMapping("/list.kosmo")
+	public String selectTasks(
 			//Authentication auth,
 			@RequestParam Map map,
 			HttpServletRequest req,
 			Model model,
-			int nowPage) {
+			@RequestParam(required = false,defaultValue = "1") int nowPage) {
 		
+		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
+		//UserDetails userD  etails=(UserDetails)auth.getPrincipal();
+		//map.put("login_Id", userDetails.getUsername());
+		System.out.println("loginId_C:"+map.get("loginId"));
 		ListPagingData<Map> selectTaskList = taskService.selectList(map, req, nowPage);
 		model.addAttribute("selectTaskList", selectTaskList);
-		//리포트 작성 페이지로 이동
-		return "task/list.noa";
+		//리포트 작성 페이지로 .0. 이동
+		//return "task/list.noa";
+		return "/Project/Project";
 	}
 	
-	//업무 수정(psot)
+	//업무 수정(psot) - 테스트 완
 	@RequestMapping("/edit.kosmo")
 	public String updateTask(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
-		
-		//[TEST]----------------------------
-		//테스트용 task / schedule 테이블 정보 수정
-		//실제 운영시 selectOne으로 불러온 기존 테이블 값을 map에 저장하여 사용함
-		map.put("task_no", 6);
-		map.put("task_name", "수정된 업무 입니다");
-		map.put("task_content", "수정된 업무 입니다");
-		map.put("m_id", "na1234@samsung.com");
-		map.put("sche_startdate", "2023-01-30 15:20:24");
-		map.put("sche_enddate", "2023-01-30 15:20:24");
-		//----------------------------------
 		
 		int editTask = taskService.update(map);
 		model.addAttribute("editTask", editTask);
@@ -108,20 +85,16 @@ public class TaskController {
 	} 
 	
 	
-	//업무 하나 삭제(get)
+	//업무 하나 삭제(get) - 테스트 완
 	@RequestMapping("/delete.kosmo")
 	public String deleteTask(
 			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
 		
-		//[TEST]-----------------------------------
-		map.put("task_no", 6);
-		//-----------------------------------------
-		
 		int deleteTask = taskService.delete(map);
 		model.addAttribute("deleteTask", deleteTask);
-		//업무 등록 페이지로 이동
+		//업무 목록 페이지로 이동
 		return "task/list.noa";
 	} 
 	

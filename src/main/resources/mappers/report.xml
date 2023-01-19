@@ -11,17 +11,35 @@
 		INSERT INTO report VALUES(SEQ_REPORT.NEXTVAL, #{m_id}, #{report_name}, #{report_commet}, SYSDATE, #{report_startdate},#{report_enddate}) 
 	</insert>
 
-	<!-- 페이징을 위한 리포트 레코드 수 카운트:(문자열 검색포함) -->
+	<!-- 페이징을 위한 리포트 레코드 수 카운트:(사용자, 칼럼 문자열, 기간 검색포함) -->
 	<select id="reportGetTotalRecordCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*) FROM report r JOIN members m ON m.m_id=r.m_id
-		<if test="searchColumn != null">
-		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
-		</if>			
+		WHERE r.m_id=#{loginId}
+		<if test="searchColumn != null and searchColumn != ''">
+		AND ${searchColumn} LIKE '%' || #{searchWord} || '%'		
+		</if>	
+		<if test="set_startdate != null and set_startdate != ''">
+		OR (r.report_regidate>=#{set_startdate} AND #{set_enddate}>=r.report_regidate)
+		</if>		
 	</select>
 
-	<!-- 리포트 리스트:(기간 검색포함) -->
-	<select id="reportSelectListByDate" parameterType="Map">
-		SELECT * FROM report r WHERE r.report_regidate>=#{set_startdate} AND #{set_enddate}>=r.report_regidate
+	<!-- 리포트 리스트:(사용자, 칼럼 문자열, 기간 검색포함) -->
+	<select id="reportSelectListByDate" parameterType="Map" resultType="Map">
+		SELECT r.*,m.m_name FROM report r JOIN members m ON m.m_id=r.m_id
+		WHERE r.m_id=#{loginId}
+		<if test="(searchColumn != null and searchColumn !='')or(set_startdate != null and set_startdate != '')">
+			AND(
+			<if test="searchColumn != null and searchColumn !=''">
+				(${searchColumn} LIKE '%' || #{searchWord} || '%')		
+				<if test="set_startdate != null and set_startdate != ''">
+					OR(r.report_regidate>=#{set_startdate} AND #{set_enddate}>=r.report_regidate)
+				</if>
+			</if>
+			<if test="!(searchColumn != null and searchColumn !='') and (set_startdate != null and set_startdate != '')">
+				r.report_regidate>=#{set_startdate} AND #{set_enddate}>=r.report_regidate
+			</if>
+			)
+		</if>
 	</select>
 
 	<!-- 리포트 상세보기 -->
