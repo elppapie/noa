@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Mapping 파일에 기재된 SQL을 호출하기 위한 인터페이스 -->
+     
+<mapper namespace="mappers.approval"> 
+ 
+<!-- id="메서드명" 
+     parameterType="매개변수 파일의 경로" 
+     resultTyple="자료형"
+   	 insert, update, delete의 경우에는 int 반환이므로 Mybatis가 자동처리 (생략 가능)
+   	 Mybatis에서 변수는 #{ }으로 표현한다
+-->    
+
+<!-- Main /////////////////////////////////////////////////////////////// -->
+<!-- 결재 상태 -->
+<!-- 문서리스트[상태(status): 임시(0) 대기(1) 진행중(2) 완료(3) 반려(4) ] -->
+
+<!-- 결재대기-->
+<select id="approvalCount_YET" parameterType="Map" resultType="int">
+	SELECT COUNT(*) FROM APPROVER WHERE APPROVER_STATUS='대기'
+</select>
+<!-- 결재중 -->
+<select id="approvalCount_UNDER" parameterType="Map" resultType="int">
+	SELECT COUNT(*) FROM APPROVER WHERE APPROVER_STATUS='진행중'
+</select>
+<!-- 결재완료-->
+<select id="approvalCount_DONE" parameterType="Map" resultType="int">
+	SELECT COUNT(*) FROM APPROVER WHERE APPROVER_STATUS='완료'
+</select>
+<!--메인화면 결재 수신 목록(내가 결재해야 할 리스트)  결재자: 대기(1) 진행중(2) 완료(3) 반려(4)-->
+<select id="getRecentList"  parameterType="Map" resultType="Map">
+		SELECT a.approval_code , m.m_name , a.af_name , a.approval_title , a.approval_regidate , v.approver_status 
+		FROM APPROVAL a, members m, APPROVER v
+		WHERE m.m_id = a.m_id 
+        AND a.m_id  = v.m_id
+        AND v.m_id = 'song1234@samsung.com'
+        <!-- 로그인한 '나'가 송길동일 때 -->       
+</select>
+
+<!-- Write /////////////////////////////////////////////////////////////// -->
+
+
+<!-- View /////////////////////////////////////////////////////////////// -->
+<!-- 상세정보 결재/반려 -->
+<select id="read" parameterType="Map" resultType="Map">
+	SELECT a.approval_code , m.m_name , a.af_name, a.approval_title, a.approval_regidate , a.approval_status
+	FROM APPROVAL a, members m
+	WHERE m.m_id = a.m_id 
+	AND approval_code = #{approval_code}
+</select>
+<!-- 상세정보 내가 요청한 결재 -->
+<select id="check" parameterType="Map" resultType="Map">
+	SELECT a.approval_code , m.m_name , a.af_name, a.approval_title, a.approval_regidate , a.approval_status
+	FROM APPROVAL a, members m
+	WHERE m.m_id = a.m_id 
+	AND approval_code = #{approval_code}
+</select>
+<!-- 상세정보 임시보관함에서 -->
+<select id="tempcheck" parameterType="Map" resultType="Map">
+	SELECT a.approval_code , m.m_name , a.af_name, a.approval_title, a.approval_regidate , a.approval_status
+	FROM APPROVAL a, members m
+	WHERE m.m_id = a.m_id 
+	AND approval_code = #{approval_code}
+</select>
+<!-- Approval /////////////////////////////////////////////////////////////// -->
+<!-- 결재하기(기안자) -1. 모든 사원 정보 뿌려주기-->
+<!--  
+<select id="selectMember" resultType="com.nodearchive.springapp.service.impl.membersDTO" >
+	SELECT d.DEPT_NAME 부서, m.M_NAME 이름, p.POSITION_NAME 직급
+	FROM DEPT d, MEMBERS m, POSITION p
+	WHERE d.EMP_CODE=m.EMP_CODE
+	AND p.POSITION_CODE=m.POSITION_CODE
+</select>
+-->
+<!-- 
+<![CDATA[
+
+쿼리 내용
+
+]]> 
+-->
+<!-- 결재하기(결재자) -2.결재자 리스트 -->
+<!-- [결재순위 문서번호 부서 이름 직급 아이디] -->
+<!--  
+<select id="selectMember">
+    SELECT ver.APPROVER_PRIORITY 결재순위, ver.APPROVAL_CODE 문서번호, d.DEPT_NAME 부서, m.M_NAME 이름, p.POSITION_NAME 직급 ,ver.M_ID 아이디
+	FROM APPROVER ver, DEPT d, MEMBERS m, POSITION p
+	WHERE ver.m_id=m.m_id
+	AND d.EMP_CODE=m.EMP_CODE
+	AND p.POSITION_CODE=m.POSITION_CODE
+    ORDER BY APPROVAL_CODE ASC;
+</select>
+-->
+
+<!-- TempSave /////////////////////////////////////////////////////////////// -->
+<!-- 임시저장 -->
+<!--<select id="tempSave">
+
+</select>
+ -->
+<!-- 임시저장함 (결재문서) 삭제 -->
+<delete id = "deleteTemp" parameterType="int">
+	delete from APPROVER where approval_code = #{approval_code} 
+</delete>
+<!-- 기안하기 id = "approvereq" "com.nodearchive.springapp.service.impl.ApproverDTO"-->
+
+<!-- 임시보관함삭제 deleteTemp -->
+<!-- 결재대기문서 결재하기 confirmdraft -->
+
+<!-- List /////////////////////////////////////////////////////////////// -->
+
+<!-- 문서리스트[상태(status) 기안자: 임시(0) 대기(1) 진행중(2) 완료(3) 반려(4) ] -->
+<!-- 문서리스트[상태(status) 결재자: 대기(1) 진행중(2) 완료(3) 반려(4) ] -->
+<!-- [글번호 기안자 종류 제목 기안일 상태](컬럼추가(임시 대기 진행중 완료 반려)하기) -->
+<!-- 전체 리스트 -->
+<select id="applist" parameterType="Map" resultType="Map">
+		SELECT a.approval_code , m.m_name , a.af_name, a.approval_title, a.approval_regidate , a.approval_status
+		FROM APPROVAL a, members m
+		WHERE m.m_id = a.m_id 
+</select>
+<!--  [상태(status): 기안자 입장 : 임시(0) 대기(1) 진행중(2) 완료(3) 반려(4) ]-->
+<!-- 임시 리스트 - 임시(0) -->
+<select id="templist" parameterType="Map" resultType="Map">
+		SELECT a.approval_code, m.m_name, a.af_name, a.approval_title, a.approval_regidate, a.approval_status
+		FROM APPROVAL a, members m
+		WHERE m.m_id = a.m_id 
+        AND a.approval_status='임시'
+</select>
+<!-- 대기 리스트 대기(1) -->
+<select id="waitlist" parameterType="Map" resultType="Map">
+		SELECT a.approval_code, m.m_name, a.af_name, a.approval_title, a.approval_regidate, a.approval_status
+		FROM APPROVAL a, members m
+		WHERE m.m_id = a.m_id 
+        AND a.approval_status='대기'
+</select>
+<!-- 진행 리스트 진행중(2) -->
+<select id="onlist" parameterType="Map" resultType="Map">
+		SELECT a.approval_code 글번호, m.m_name 기안자, a.af_name 종류, a.approval_title 제목, a.approval_regidate 기안일, a.approval_status 상태
+		FROM APPROVAL a, members m
+		WHERE m.m_id = a.m_id 
+        AND a.approval_status='진행중'
+</select>
+<!-- 완료 리스트 완료(3) -->
+<select id="comlist" parameterType="Map" resultType="Map">
+		SELECT a.approval_code 글번호, m.m_name 기안자, a.af_name 종류, a.approval_title 제목, a.approval_regidate 기안일, a.approval_status 상태
+		FROM APPROVAL a, members m
+		WHERE m.m_id = a.m_id 
+        AND a.approval_status='완료'
+</select>
+<!-- 반려 리스트 반려(4) -->
+<select id="rejectlist" parameterType="Map" resultType="Map">
+		SELECT a.approval_code 글번호, m.m_name 기안자, a.af_name 종류, a.approval_title 제목, a.approval_regidate 기안일, a.approval_status 상태
+		FROM APPROVAL a, members m
+		WHERE m.m_id = a.m_id 
+        AND a.approval_status='반려'
+</select>
+
+
+</mapper>

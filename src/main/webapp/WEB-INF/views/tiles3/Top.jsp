@@ -31,7 +31,7 @@
   <!-- custom style -->
   <link rel="stylesheet" href="${path}/resources/css/noaCss.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="${path}/resources/images/logo-removebg-preview.png" />
+  <link rel="shortcut icon" href="${path}/resources/images/logo-noa-messanger.png" />
   <!-- font-awesome Kit Code -->
   <script src="https://kit.fontawesome.com/672ea2e509.js" crossorigin="anonymous"></script>
   <!-- bootstrap 4 cdn -->
@@ -464,10 +464,11 @@
               <span class="menu-title">근태관리</span>
               <i class="menu-arrow"></i>
             </a>
-            
-            
             <div class="collapse" id="main-attendance">
               <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="${path}/">세부기능1</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
                  <li class="nav-item"><a class="nav-link" href="${path}/Attendance/dailylist.kosmo">출퇴근 관리</a></li>
                 <li class="nav-item"><a class="nav-link" href="${path}/Attendance/monthlylist.kosmo">월 근무내역</a></li>
                 <li class="nav-item"><a class="nav-link" href="${path}/">휴가 신청</a></li>
@@ -489,6 +490,15 @@
                 <li class="nav-item"> <a class="nav-link" href="${path}/Approval/templist.kosmo">임시문서함</a></li>
               </ul>
             </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="${path}/Notice/List.kosmo" aria-expanded="false" aria-controls="form-elements">
+            <!--  data-bs-toggle="collapse"  -->
+              <i class="menu-icon mifa fa fa-color-gray fa-light fa-book"></i>
+              <span class="menu-title">공지사항</span>
+              <i class="menu-chat-sidebar"></i>
+              <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="${path}/Schedule/month.kosmo" aria-expanded="false" aria-controls="form-elements">
@@ -528,7 +538,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link fullscreen" target="_top" href="http://192.168.0.36:3000/" aria-expanded="false" aria-controls="form-elements" onclick='openWebRTCMain()'>
             <!--  data-bs-toggle="collapse"  -->
               <i class="menu-icon mifa fa fa-duotone fa-video"></i>
               <span class="menu-title">화상회의</span>

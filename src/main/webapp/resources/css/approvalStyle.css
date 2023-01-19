@@ -1,0 +1,196 @@
+@charset "UTF-8";
+
+section > .EPay-index_section {
+  margin-left: 70px;
+  border: 1px solid transparent;
+  width: 200px;
+  float: left;
+  font-size: 20px;
+  position: fixed;
+  height: 100%;
+  background: white;
+  border-right: 2.5px solid rgb(88, 107, 141);
+}
+
+.EPay-index_section li {
+  cursor: pointer;
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+.EPay-index_section li>ul {
+  position: absolute;
+  width: 200px;
+  padding: 0;
+  display: none;
+  margin: 0;
+}
+
+.EPay-index_section li>div {
+  display: none;
+  font-size: 15px;
+}
+
+/* section2 부분*/
+
+section > .index_section2 h2{
+  margin-left: 450px;
+  font-size: 35px;
+  font-weight: 900;
+  line-height: 100px;
+  margin-top: 0; 
+}
+
+#e-pay-status{
+  padding-left: 450px;
+}
+
+#e-pay-status span {
+  border: 1px solid lightgrey;
+  display: inline-block;
+  text-align: center;
+  width: 447px;
+  height: 300px;
+  font-size: 40px;
+  border-radius: 8px;
+  color: rgb(59, 211, 39);
+}
+
+#e-pay-status span>div{
+  color: black;
+  padding-top: 70px;
+  font-size: 70px;
+}
+
+section > .index_section2 table{
+  margin-left: 450px;
+  line-height: 40px;
+  width: 1350px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+
+#e-pay-list th{
+  border-bottom: 1px solid black;
+}
+
+#e-pay-list td{
+  border-bottom: 1px solid lightgrey;
+  border-right: 1px dotted lightgrey;
+  border-radius: 5px;
+}
+
+.index_section2-form1{
+  padding-top: 70px;
+}
+
+.index_section2-form1 h2{
+  font-size: 50px;
+  margin-bottom: 10;
+  text-align: center;
+  margin: 0px 160px 0px 0px;
+}
+#table1{
+  padding-left: 1250px;
+  padding-bottom: 40px;
+}
+
+#table1 th{
+  background: lightgrey;
+}
+
+#table2{
+  text-align: center;
+  width: 1020px;
+  margin-left: 500px;
+}
+
+#table2 td{
+  border: 1px solid;
+}
+
+#table2 input{
+  text-align: center;
+  font-size: 25px;
+  font-weight: 700;
+  border: none;
+}
+
+#table2 button{
+  border-radius: 30px;
+  font-size: 20px;
+  background: none;
+}
+
+#table2 textarea{
+  border: none;
+}
+
+.index_section2-form1 #table1 td{
+  text-align: center;
+  height: 50px;
+}
+
+	table input{
+        font-size: 30px;
+        width: 100%;
+        height: 100%; 
+        border: none; 
+        text-align: center;
+    }
+
+    #button{
+        text-align: center;
+        padding-left: 210px;
+        margin-bottom: 40px;
+    }
+
+    button {
+        border-radius: 8px;
+        background: none;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    /* modal css */
+
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal .bg {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modalBox {
+        position: absolute;
+        background-color: #fff;
+        width: 800px;
+        height: 700px;
+        padding: 15px;
+    }
+
+    .modalBox .closeBtn-out {
+        display: block;
+        width: 80px;
+    }
+
+    .modalBox .closeBtn-in {
+        float: left;
+        display: block;
+        width: 80px;
+    }
+
+    .hidden {
+        display: none;
+    }
