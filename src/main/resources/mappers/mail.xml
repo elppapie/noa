@@ -50,7 +50,7 @@
 			   mail_title,
 			   mail_regidate
 		FROM mail
-		WHERE mail_type=#{1}
+		WHERE mail_type='1'
 	
 	</select>
 	
@@ -64,7 +64,7 @@
 			   mail_title,
 			   mail_regidate
 		FROM mail
-		WHERE mail_type=#{2}
+		WHERE mail_type='2'
 	
 	</select>
 	
@@ -78,7 +78,7 @@
 			   mail_title,
 			   mail_regidate
 		FROM mail
-		WHERE mail_type=#{3}
+		WHERE mail_type='3'
 	
 	</select>
 	
