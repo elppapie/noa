@@ -12,26 +12,26 @@
 		<tbody class="table-sm">
 			<tr>
 				<th class="w-25 bg-dark text-white text-center">번호</th>
-				<td>${record.no}</td>
+				<td>${record.n_no}</td>
 			</tr>
 			<tr>
 				<th class="w-25 bg-dark text-white text-center">글쓴이</th>
-				<td>${record.name }</td>
+				<td>${record.m_name }</td>
 			</tr>
 			<tr>
 				<th class="w-25 bg-dark text-white text-center">작성일</th>
-				<td>${record.postDate}</td>
+				<td>${record.n_regidate}</td>
 			</tr>
 
 			<tr>
 				<th class="w-25 bg-dark text-white text-center">제목</th>
-				<td>${record.title}</td>
+				<td>${record.n_title}</td>
 			</tr>
 			<tr>
 				<th class="bg-dark text-white text-center" colspan="2">내 용</th>
 			</tr>
 			<tr>
-				<td colspan="2">${record.content }</td>
+				<td colspan="2">${record.n_content }</td>
 			</tr>
 		</tbody>
 	</table>
@@ -43,11 +43,11 @@
 		<!-- 세션영역에 있는 아이디값 가져오기 -->
 		<!-- 씨큐리티 적용시 -->
 		<c:set var="sessionId"><sec:authentication property="principal.username"/> </c:set>
-		<c:if test="${sessionId==record.id }">
-			<a href="<c:url value="/views/notice/Edit.do?no=${record.no}"/>"
+		<c:if test="${sessionId==record.m_id }">
+			<a href="<c:url value="/views/notice/Edit.do?no=${record.n_no}"/>"
 			class="btn btn-success">수정</a> 
 			<a
-			href="javascript:isDelete(${record.no})" class="btn btn-success">삭제</a>
+			href="javascript:isDelete(${record.n_no})" class="btn btn-success">삭제</a>
 		
 		</c:if>
 		
@@ -60,7 +60,7 @@
 		class="form-inline col-sm-12 d-flex justify-content-center mt-3">
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" /> <input type="hidden" name="no"
-			value="${record.no}" />
+			value="${record.n_no}" />
 		<!-- 댓글 수정용 -->
 		<input type="hidden" name="lno" /> <input type="text" id="linecomment"
 			name="linecomment" class="form-control mx-2 w-50"
@@ -238,10 +238,10 @@
 	});
 	
 	
-	//메모글 삭제
+	//글 삭제
 	function isDelete(no){
 		if(confirm("삭제 할래요?")){
-			location.replace("<c:url value="/onememo/bbs/Delete.do?no="/>"+no);
+			location.replace("<c:url value="/views/notice/Delete.do?no="/>"+no);
 		}
 	}
 	

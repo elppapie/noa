@@ -34,7 +34,7 @@
 		 id: select 요소의 resultMap속성에 설정해줄 식별자    
 	 -->
 	 <!--
-	 <resultMap type="memoDto" id="memoDtoResult">
+	 <resultMap type="noticeDto" id="noticeDtoResult">
 	 	 
 		property:자바빈(OneMemoDTO)의 속성명
 		column:테이블의 컬럼(조회(SELECT)결과의 컬럼명들 의미)
@@ -43,10 +43,9 @@
 	 	<result property="no" column="no"/>
 	 	<result property="title" column="title"/>
 	 	<result property="content" column="content"/>
-	 	<result property="postDate" column="postDate"/>
+	 	<result property="regidate" column="regidate"/>
 	 	<result property="id" column="id"/>
 	 	<result property="name" column="name"/>
-	 	<result property="commentCount" column="commentCount"/>
 	 	-->
 	 	<!-- 
 		1:N관계 매핑용
@@ -65,35 +64,44 @@
 	 </resultMap>
 	-->
 	
-	<!-- 아이디 및 패스워드로 공지사항 글 조회 -->
+	<!-- 아이디 및 패스워드로 공지사항 글 조회 ok -->
 	<select id="noticeFindMemberByIdAndPwd" parameterType="Map" resultType="int" >
 		SELECT COUNT(*) FROM members WHERE m_id=#{m_id} AND m_password=#{m_password}
 	</select>
 	
-	<!-- 공지사항 댓글 조회(구현예정) 
-	<select id="memoFindAll" parameterType="Map" resultType="memoDto">
-		SELECT * FROM (SELECT T.*,ROWNUM R FROM (SELECT o.*,name,(SELECT COUNT(*) FROM linecomments WHERE no=o.no) commentCount
-		FROM onememo o JOIN member m ON o.id=m.id
-		
-		<if test="searchColumn != null">
-		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
-		</if>
-		
-		ORDER BY no DESC) T)
-		WHERE R BETWEEN #{start} AND #{end}		 
-	</select>-->
+	<!-- 공지사항 조회 *-->
+	<select id="noticeFindAll" parameterType="Map" resultType="Map"> 
+		SELECT n_no
+			 , m_id
+		     , n_title
+		     , n_content
+		     , to_char(n_regidate,'YYYY-MM-DD') AS n_regidate
+		     
+		FROM notice
+		ORDER BY n_no desc 
+	</select>
 	
-	<!-- 아이디 별 글 등록 수 조회 -->
+	<!-- 아이디 별 글 등록 수 조회 ok-->
 	<select id="noticeTotalRecordCount" parameterType="Map" resultType="int">
-		SELECT COUNT(*) FROM notice n JOIN members m ON m.id=n.id
+		SELECT COUNT(*) FROM notice n JOIN members m ON m.m_id=n.m_id
+		
 		<if test="searchColumn != null">
 		WHERE ${searchColumn} LIKE '%' || #{searchWord} || '%'		
 		</if>				
 	</select>
 	
-	<!-- 공지사항 글 등록 -->
-	<insert id="noticeSave" parameterType="Map"  >
-		INSERT INTO notice VALUES(SEQ_NOTICE.NEXTVAL,#{n_title},#{n_content},DEFAULT,#{m_id})
+	<!-- 공지사항 글 등록 ok -->
+	<insert id="noticeSave" parameterType="Map">
+
+		INSERT INTO notice VALUES (
+		SEQ_NOTICE.NEXTVAL,
+		#{m_id},
+		#{n_title},
+		#{n_content},
+		SYSDATE,
+		0
+		)
+	
 	</insert>
 	
 	<!-- 글 번호로 공지사항 글 조회 -->
@@ -105,18 +113,18 @@
 	</select>
 	-->
 	
-	<!-- 공지사항 글 삭제 -->
+	<!-- 공지사항 글 삭제 ok-->
 	<delete id="noticeDelete" parameterType="Map">
 		DELETE notice WHERE n_no=#{n_no}
 	</delete>
 	
-	<!-- 공지사항 글 수정 -->
+	<!-- 공지사항 글 수정 ok-->
 	<update id="noticeUpdate" parameterType="Map">
 		UPDATE notice SET n_title=#{n_title}, n_content=#{n_content} WHERE n_no=#{n_no}
 	</update> 
 	
 	<!-- 스프링 씨큐리티 회원 입력용 -->
 	<insert id="saveUser" parameterType="Map">
-		INSERT INTO users VALUES(#{id},#{pass},#{name},DEFAULT,'ROLE_ADMIN')	
+		INSERT INTO users VALUES(#{id},#{pass},#{name},DEFAULT,'ROLE_ADMIN')
 	</insert>
 </mapper>

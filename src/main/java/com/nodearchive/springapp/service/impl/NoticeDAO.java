@@ -55,36 +55,18 @@ public class NoticeDAO {
 	 */
 	//회원 여부 판단용
 	public boolean findMemberByIdAndPwd(Map map) {
-		//스프링 지원 마이바티스 API(SqlSessionTemplate) 미 사용시
-		//1]SqlSession얻기
-		SqlSession session= sqlMapper.openSession();		
-		//2]selectOne()호출
-		int count=session.selectOne("noticeFindMemberByIdAndPwd", map);
-		//3]close()호출
-		session.close();
-		return count==1 ? true : false;
+		
+		return template.selectOne("noticeFindMemberByIdAndPwd", map);	
 	}////////////
 	public List findAll(Map map) {
-		//스프링 지원 마이바티스 API(SqlSessionTemplate) 미 사용시
-		//1]SqlSession얻기
-		SqlSession session= sqlMapper.openSession();		
-		//2]selectOne()호출
-		List<NoticeDTO> records=session.selectList("noticeFindAll", map);
-		//3]close()호출
-		session.close();
-		return records;
+		
+		return template.selectList("noticeFindAll", map);	
 	}
 	public int save(Map map) {
-		//스프링 지원 마이바티스 API(SqlSessionTemplate) 미 사용시
-		//1]SqlSession얻기
-		SqlSession session= sqlMapper.openSession();		
-		//2]insert()호출
-		int affected=session.insert("noticeSave", map);
-		//3]commit()호출
-		session.commit();
-		//4]close()호출
-		session.close();
-		return affected;
+		
+		return template.insert("noticeSave", map);
+		
+		
 	}
 	/*[스프링에서 지원하는  마이바티스 관련 API(mybatis-spring-2.버전.jar) 
 	 * SqlSessionTemplate 사용]
@@ -98,6 +80,7 @@ public class NoticeDAO {
 		//return template.selectOne("memoFindRecordByNo", map);
 	}
 	public int delete(Map map) {		
+		
 		return template.delete("noticeDelete",map);
 	}
 	public int update(Map map) {

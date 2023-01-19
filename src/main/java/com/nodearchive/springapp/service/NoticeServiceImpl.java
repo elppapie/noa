@@ -26,7 +26,7 @@ import com.nodearchive.springapp.service.impl.NoticeDAO;
 @Service("noticeService")
 public class NoticeServiceImpl implements NoticeService<NoticeDTO> {
 
-	//OneMemoDAO주입받는다
+	//NoticeDAO주입받는다
 	@Autowired
 	private NoticeDAO dao;
 	
@@ -73,7 +73,7 @@ public class NoticeServiceImpl implements NoticeService<NoticeDTO> {
 				pageSize, 
 				blockPage, 
 				nowPage,
-				req.getContextPath()+"/views/bbs/List.do?"+searchString);
+				req.getContextPath()+"/views/schedule/Notice.noa?"+searchString);
 		//페이징과 관련된 정보 및 모든 목록을 담는 ListPagingData객체 생성		
 		ListPagingData<NoticeDTO> listPagingData = ListPagingData.builder()
 													.lists(lists)//글 전체 목록 설정

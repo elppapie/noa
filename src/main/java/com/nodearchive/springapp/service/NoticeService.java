@@ -21,4 +21,7 @@ public interface NoticeService<T> {
 	int update(Map map);
 	//PK로 이름 찾는 메소드
 	String findNameByNo(Map map);
+	
+
+	
 }

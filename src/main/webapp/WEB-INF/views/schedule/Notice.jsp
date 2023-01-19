@@ -1,15 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <div class="container">
-    
    <div class="jumbotron">
 		<h1>
 			공지사항			
@@ -29,19 +22,19 @@
 			</tr>
 		</thead>
 		<tbody class="table-sm down-file-body">
-			<c:if test="${empty listPagingData.lists }" var="isEmpty">
+			<c:if test="${empty listPagingData.lists}" var="isEmpty">
 				<tr>
 					<td colspan="4">등록된 글이 없습니다.</td>
 				</tr>
 			</c:if>
-			<c:if test="${not isEmpty }">
+			<c:if test="${not isEmpty}">
 				<c:forEach var="record" items="${listPagingData.lists}" varStatus="loop">
 					<tr>
-						<td>${record.no}</td>
+						<td>${record.N_NO}</td>
 						<td class="text-left"><a
-							href="<c:url value="/views/notice/View.do?no=${record.no}&nowPage="/><c:out value="${param.nowPage}" default="1"/>">${record.title}</a> <span class="badge badge-light">${record.commentCount}</span></td>
-						<td>${record.name}</td>						
-						<td>${record.postDate}</td>
+							href="<c:url value="/views/notice/View.do?no=${record.n_no}&nowPage="/><c:out value="${param.nowPage}" default="1"/>">${record.N_TITLE}</a></td>
+					 	<td>${record.M_NAME}</td>				
+						<td>${record.N_REGIDATE}</td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -61,8 +54,4 @@
      <!--  <button type="submit" class="btn btn-light">검색</button> -->
       <a href="<c:url value="/Notice/search.kosmo"/>" class="btn btn-light">검색</a>
     </form>
-    
 </div>
-
-</body>
-</html>
