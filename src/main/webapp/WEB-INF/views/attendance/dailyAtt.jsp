@@ -290,9 +290,9 @@
 							<tr>
 								<td>기간 선택</td>
 								<td>
-								<input type="Date" id="startdate" name="startdate" autocomplete="off" style="width:170px; height:30px; padding : 0 10px; color : #787878;"/>
+								<input type="Date" id="startdate" name="att_startdate" autocomplete="off" style="width:170px; height:30px; padding : 0 10px; color : #787878;"/>
 									&nbsp;&nbsp;&nbsp; ~ &nbsp;&nbsp;&nbsp; 
-								<input type="Date" id="enddate" name="enddate" autocomplete="off"   style="width:170px; height:30px; padding : 0 10px; color : #787878;"/>
+								<input type="Date" id="enddate" name="att_enddate" autocomplete="off"   style="width:170px; height:30px; padding : 0 10px; color : #787878;"/>
 								</td>
 							</tr>
 							<tr>
