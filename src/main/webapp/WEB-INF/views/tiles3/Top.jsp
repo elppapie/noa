@@ -466,9 +466,10 @@
             </a>
             <div class="collapse" id="main-attendance">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/">세부기능1</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
+                 <li class="nav-item"><a class="nav-link" href="${path}/Attendance/dailylist.kosmo">출퇴근 관리</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/Attendance/monthlylist.kosmo">월 근무내역</a></li>
+                <li class="nav-item"><a class="nav-link" href="${path}/">휴가 신청</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${path}/">휴가 현황</a></li>
               </ul>
             </div>
           </li>
