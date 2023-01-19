@@ -37,7 +37,7 @@
   </ul>
   <div>
     <div class="btn-wrapper">
-      <a href="<c:url value="/Schedule/notice.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 공지사항(임시)</a>
+      <a href="<c:url value="/Notice/list.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 공지사항(임시)</a>
       <a href="<c:url value="/Schedule/write.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 일정추가</a>
       <a href="#" class="btn btn-otline-dark"><i class="fa-solid fa-magnifying-glass"></i> 일정검색</a>
       <a href="#" class="btn btn-primary text-white me-0"><i class="fa-solid fa-download"></i> 달력저장</a>
@@ -251,7 +251,12 @@
 </tbody>
 </table>
 --%>
-
-<a href="<c:url value="/Schedule/fullcalendar.kosmo"/>">fullcalendar 출력</a>
+	<div>
+		<a href="<c:url value="/Schedule/fullcalendar.kosmo"/>">fullcalendar 출력</a><br/>
+		<h3>관리자 페이지(임시)</h3>
+		<a href="<c:url value="/Admin/deptList.kosmo"/>">최고관리자 페이지(부서/팀 목록)</a><br/>
+		<a href="<c:url value="/Admin/members.kosmo"/>">최고관리자 페이지(구성원 목록)</a><br/>
+		<a href="<c:url value="/Admin/groups.kosmo"/>">최고관리자 페이지(그룹 목록)</a><br/>
+	</div>
 </div>
 

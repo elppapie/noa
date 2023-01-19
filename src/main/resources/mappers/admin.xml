@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="mappers.admin">
+	
+	<select id="getGroupList" parameterType="Map" resultType="Map">
+		SELECT gml.group_no, eg.group_name, eg.m_id, eg.group_separator 
+		FROM emp_group eg JOIN group_m_list gml ON gml.group_no = eg.group_no 
+		GROUP BY gml.group_no, eg.group_separator, eg.group_name, eg.m_id 
+		ORDER BY gml.group_no
+	</select>
+	
+	<select id="getGroupIdList" parameterType="Map" resultType="Map">
+		SELECT *
+		FROM 
+			(SELECT group_no, group_name, m_id, m_name, count(group_no) AS group_members
+			FROM (SELECT T.m_id, m.m_name, T.group_name, T.group_no FROM	(SELECT gml.group_no, eg.group_name, eg.m_id, eg.group_separator 
+			        FROM emp_group eg JOIN group_m_list gml ON gml.group_no = eg.group_no 
+			        ORDER BY gml.group_no) T JOIN members m ON T.m_id = m.m_id)
+			GROUP BY group_no, group_name,m_id, m_name
+			ORDER BY group_no)
+		<choose>
+			<when test="member_list != null">
+				WHERE m_id IN
+				<foreach collection="member_list" item="member" open="(" close=")" separator=",">
+					#{member}
+				</foreach>
+			</when>
+		</choose>
+	</select>
+	
+	
+	
+	<!-- 접속중인 사람의 소속회사 가져오기 (1/2) address.xml에 있음 -->
+	<!-- 접속중인 사람의 소속회사(emp_code)에 해당하는 사람 목록 가져오기 (2/2)-->
+	<select id="getMemberIdFromEmp" parameterType="Map" resultType="String">
+		SELECT m_id
+		FROM members 
+		WHERE emp_code = #{emp_code}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	<insert id="insertDept" parameterType="Map">
+		INSERT INTO 
+		dept(
+			dept_code,
+			emp_code,
+			dept_name,
+			dept_regidate
+		) 
+		VALUES(
+			#{emp_code}||'D'||TO_NUMBER(100+SEQ_DEPT.NEXTVAL),
+			#{emp_code},
+			#{dept_name},
+			SYSDATE
+		)
+	</insert>
+	
+	<insert id="insertTeam" parameterType="Map">
+		INSERT INTO
+		team(
+			team_no,
+			dept_code,
+			team_name,
+			team_regidate
+		)
+		VALUES(
+			TO_NUMBER(100 + SEQ_TEAM.NEXTVAL),
+			#{dept_code},
+			#{team_name},
+			SYSDATE
+		)
+	</insert>
+	
+	<insert id="insertPosition" parameterType="Map">
+		INSERT INTO
+		position(
+			position_code,
+			position_name,
+			emp_code
+		)
+		VALUES(
+			#{emp_code}||'P'||#{p_code},
+			#{position_name},
+			#{emp_code}
+		)
+	</insert>
+	
+	
+
+	
+<!--  
+	<update id="updateDept" parameterType="Map">
+		UPDATE
+			dept
+		SET 
+		<if test="emp_no != null">
+			emp_no = #{emp_no},
+		</if>
+			dept_name = #{dept_name}
+		WHERE 
+			dept_name = 
+	</update>
+-->		
+	<update id="updateTeamLeader" parameterType="Map">
+		<choose>
+			<when test="memberList.size != 0">
+				UPDATE 
+					members
+				SET
+					m_team_leader = #{m_team_leader}
+				WHERE
+					m_id IN
+					<foreach collection="memberList" item="member" separator="," open="(" close=")">
+						#{member}
+					</foreach>
+			</when>
+		</choose>
+	</update>
+	
+	
+	<update id="updateDeptLeader" parameterType="Map">
+		<choose>
+			<when test="memberList.size != 0">
+				UPDATE 
+					members 
+				SET 
+					m_dept_leader = #{m_dept_leader}
+				WHERE 
+					m_id IN
+					<foreach collection="memberList" item="member" separator="," open="(" close=")">
+						#{member}
+					</foreach>
+			</when>
+		</choose>
+	</update>
+	
+	
+	
+</mapper>

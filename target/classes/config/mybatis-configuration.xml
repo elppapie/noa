@@ -21,6 +21,7 @@
 		<mapper resource="mappers/chat.xml"/>
 		<mapper resource="mappers/attendance.xml"/>
 		<mapper resource="mappers/approval.xml"/>
+		<mapper resource="mappers/admin.xml"/>
 		
 	</mappers>
 </configuration>

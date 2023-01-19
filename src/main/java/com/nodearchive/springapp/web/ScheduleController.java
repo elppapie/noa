@@ -271,7 +271,7 @@ public class ScheduleController {
 			//Authentication auth,
 			
 			) {
-		return "schedule/Notice.noa";
+		return "notice/List.noa";
 	}
 	
 	@RequestMapping("/fullcalendar.kosmo")

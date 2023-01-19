@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
@@ -11,11 +10,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!-- timepicker 관련 cdn  -->
-<link rel='stylesheet' type='text/css'href='./css/timepicki.css'/>
-<script type='text/javascript'src='./js/jquery.min.js'></script>
-<script type='text/javascript'src='./js/timepicki.js'></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
-<c:set var="one" value="${oneSchedule}"/>
+<c:set var="dept" value="${map으로저장한이름.dept_code}"/>
+<c:set var="team" value="${map으로저장한이름.team_no}"/>
 
 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
 <!----Main Page의 Nav 메뉴 작성---->
@@ -25,27 +24,60 @@
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
 
 		<!-- BS4에서 긁어옴 -->
-		<h2>일정 조회/수정폼</h2>
-		<form class="needs-validated" action="<c:url value='/Schedule/editOk.kosmo'/>" method='POST'>
-		  	<p>일정 종류 선택</p>
-		  	\${one['SCHE_NO']} : ${one['SCHE_NO']}
+		<h2>부서 입력폼</h2>
+		<h5>일정 종류를 먼저 고르게 한 후 이 폼(개인일정)을 띄워줘야 하지 않을까</h5>
+		\${message} : ${message}
+		<form class="needs-validated" action="/Schedule/writeOk.kosmo" method="POST">
+		  	<p>일정 종류 선택 - 선택시 관련 폼이 아래에 뜨도록 하기 - choose / when 태그로? 자스 변수 설정? </p>
 		  	
-			<div class="form-group">
-				<label for="sche_title">일정종류:</label>
-				<input type="text" class="form-control" value="${one['SCHE_TYPE']}" name="sche_type" id="sche_type">
-				<div class="valid-feedback">Valid.</div>
-    			<div class="invalid-feedback">Please fill out this field.</div>			
-			</div>		
+		    <div class="form-check">
+		      <label class="form-check-label" for="radio5">
+		        <input type="radio" class="form-check-input" id="radio5" name="sche_type" value="PERSONAL" checked>개인일정
+		      </label>
+		    </div>
+		    <div class="form-check">
+		      <label class="form-check-label" for="radio1">
+		        <input type="radio" class="form-check-input" id="radio1" name="sche_type" value="PROJECT">프로젝트
+		      </label>
+		    </div>
+		    <div class="form-check">
+		      <label class="form-check-label" for="radio2">
+		        <input type="radio" class="form-check-input" id="radio2" name="sche_type" value="TASK">업무
+		      </label>
+		    </div>
+		    <div class="form-check">
+		      <label class="form-check-label" for="radio3">
+		        <input type="radio" class="form-check-input" id="radio3" name="sche_type" value="MRR">회의실예약
+		      </label>
+		    </div>
+		    <div class="form-check">
+		      <label class="form-check-label" for="radio4">
+		        <input type="radio" class="form-check-input" id="radio4" name="sche_type" value="AUL">근태
+		      </label>
+		    </div>
 		
+			<c:if test="${dept not null}">
+				<div class="form-group">
+					<label for="sche_title">부서명:</label>
+					<input type="text" class="form-control" placeholder="일정명을 입력하세요" name="sche_title" id="sche_title">
+					<div class="valid-feedback">Valid.</div>
+	    			<div class="invalid-feedback">Please fill out this field.</div>			
+				</div>
+				<div class="form-group">
+					<label for="sel1">부서책임자:</label>
+					<select class="form-control" id="sel1">
+						<c:forEach var="" items="${team}">
+							<option></option>
+						</c:forEach>
+					</select>
+				</div>
+			
+			
+			
+			</c:if>
 			<div class="form-group">
-				<label for="sche_title">일정명:</label>
-				<input type="text" class="form-control" value="${one['SCHE_TITLE']}" name="sche_title" id="sche_title">
-				<div class="valid-feedback">Valid.</div>
-    			<div class="invalid-feedback">Please fill out this field.</div>			
-			</div>
-			<div class="form-group">
-				<label for="sche_content">일정내용:</label>
-				<input type="text" class="form-control" value="${one['SCHE_CONTENT']}" name="sche_content" id="sche_content">
+				<label for="sche_content">부서책임자:</label>
+				<input type="text" class="form-control" placeholder="일정내용을 입력하세요" name="sche_content" id="sche_content">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>			
 			</div>
@@ -55,14 +87,14 @@
 					<span class="input-group-text text-dark">일정시작날짜:</span>
 				</div>
 				<label for="sche_startdate_d"></label>
-				<input type="text" class="form-control" value="${fn:split(one['SCHE_STARTDATE'],' ')[0]}" name="sche_startdate_d" id="sche_startdate_d">
+				<input type="text" class="form-control" placeholder="일정시작날짜를 고르세요" name="sche_startdate_d" id="sche_startdate_d">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정시작시간:</span>
 				</div>
 				<label for="sche_startdate_t"></label>
-				<input type="text" class="form-control" value="${fn:split(one['SCHE_STARTDATE'],' ')[1]}" name="sche_startdate_t" id="sche_startdate_t">
+				<input type="text" class="form-control" placeholder="일정시작시간을 고르세요" name="sche_startdate_t" id="sche_startdate_t">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>	    						
 			</div>
@@ -72,28 +104,21 @@
 					<span class="input-group-text text-dark">일정마감날짜:</span>
 				</div>
 				<label for="sche_enddate_d"></label>
-				<input type="text" class="form-control" value="${fn:split(one['SCHE_ENDDATE'],' ')[0]}" name="sche_enddate_d" id="sche_enddate_d">
+				<input type="text" class="form-control" placeholder="일정마감날짜를 고르세요" name="sche_enddate_d" id="sche_enddate_d">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정마감시간:</span>
 				</div>
 				<label for="sche_enddate_t"></label>
-				<input type="text" class="form-control" value="${fn:split(one['SCHE_ENDDATE'],' ')[1]}" name="sche_enddate_t" id="timepicker">
+				<input type="text" class="form-control" placeholder="일정마감시간을 고르세요" name="sche_enddate_t" id="sche_enddate_t">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>	    						
 			</div>
 			
 			<div class="form-group">
 				<label for="sche_color">일정색깔:</label>
-				<input type="text" class="form-control timepicker" value="${one['SCHE_COLOR']}" name="sche_color" id="sche_color">
-				<div class="valid-feedback">Valid.</div>
-    			<div class="invalid-feedback">Please fill out this field.</div>
-			</div>
-			
-			<div class="form-group">
-				<label for="sche_color">일정상태:</label>
-				<input type="text" class="form-control timepicker" value="${one['SCHE_STATUS']}" name="sche_status" id="sche_status">
+				<input type="text" class="form-control" placeholder="일정색깔을 입력하세요" name="sche_color" id="sche_color">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 			</div>
@@ -103,8 +128,7 @@
 					<input class="form-check-input" type="checkbox" name="remember"> Remember me
 				</label>
 			</div>
-			<input type="hidden" name="sche_no" value="${one['SCHE_NO']}"/>
-			<button type="submit" class="btn btn-primary" >Submit</button>
+			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
 
 	</div>
@@ -113,12 +137,8 @@
 	<%--자스로 빈내용 제출안되게 하기--%>
 
 	$(document).ready(function(){
-	    	$( "#sche_startdate_d" ).datepicker({ format: 'yyyy-mm-dd' });
-	    	$( "#sche_enddate_d" ).datepicker({ format: 'yyyy-mm-dd' });
-
-	    	$('#timepicker').timepicki();
-	    	//$( "#sche_enddate_t" ).timepicker({});
-	    	/*
+	    	$( "#sche_startdate" ).datepicker({ format: 'yyyy-mm-dd' });
+	    	$( "#sche_enddate" ).datepicker({ format: 'yyyy-mm-dd' });
 	    	$( "#sche_startdate_t" ).timepicker({ 
 	    	    timeFormat: 'HH:mm:ss',
 	    	    interval: 30,
@@ -141,7 +161,6 @@
 	    	    dropdown: true,
 	    	    scrollbar: true
 	    	});
-	    	*/
 	  });
 	  
 
