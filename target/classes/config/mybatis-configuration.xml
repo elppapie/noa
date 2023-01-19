@@ -6,7 +6,7 @@
 <configuration>
 	<!-- 클래스 별칭 설정 :매퍼파일에서 별칭으로 사용하고자 할때(properties태그가 typeAliases태그보다 위에 위치) -->
 	<typeAliases>
-		
+		<typeAlias type="com.nodearchive.springapp.service.impl.AttendanceDTO" alias="AttendanceDTO"/>
 	</typeAliases>
 	
 	<!-- 매퍼파일(SQL쿼리 결과와 자바빈 매핑)의 위치정보 설정 -->
@@ -19,5 +19,6 @@
 		<mapper resource="mappers/mail.xml"/>
 		<mapper resource="mappers/notice.xml"/>
 		<mapper resource="mappers/chat.xml"/>
+		<mapper resource="mappers/attendance.xml"/>
 	</mappers>
 </configuration>
