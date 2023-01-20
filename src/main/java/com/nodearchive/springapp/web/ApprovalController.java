@@ -110,12 +110,27 @@ public class ApprovalController {
 	
 	//Write ==================================================
 	
-	//문서 작성 페이지로 이동 - 버튼을 누르면, 글을 작성할 수 있는 페이지로 이동시켜주는 컨트롤러
+	//버튼을 누르면, 결재선 선택/양식 선택 할 수 있는 페이지로 이동시켜주는 컨트롤러
 	@RequestMapping("/selectform.kosmo")
-	public String writeApp() throws Exception {
-		logger.info("ApprovalController -> writeApp.kosmo");
+	public String selectApp() throws Exception {//writeApp->selectApp으로 메소드명 변경
+		logger.info("ApprovalController -> selectApp.kosmo");
 		return "/approval/selectform.noa";
-		}
+	}
+	/*
+	//결재선 해당 부서별 결재자 선택
+	@RequestMapping("/selectLineView.kosmo")
+	public String loadline() throws Exception {
+		logger.info("ApprovalController -> loadline.kosmo");
+		return "/approval/selectLineView.noa";
+	}
+	*/
+	//양식 선택 후 기안문작성 버튼 클릭시, 글을 작성할 수 있는 페이지로 이동시켜주는 컨트롤러
+	@RequestMapping("/appForm.kosmo")
+	public String appWrite() throws Exception {
+		logger.info("ApprovalController -> appWrite.kosmo");
+		return "/approval/appForm.noa";
+	}
+	
 /*
 	// 새 결재 작성
 	@RequestMapping("/insertApp.kosmo")

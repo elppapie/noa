@@ -86,6 +86,8 @@ CREATE TABLE APPROVAL
 	APPROVAL_CODE varchar2(3000) NOT NULL,
 	-- 기안자
 	M_ID varchar2(50) NOT NULL,
+	-- 결재상태(추가)
+	APPROVAL_STATUS varchar2(10) NOT NULL,
 	-- 문서양식명
 	AF_NAME nvarchar2(50),
 	-- 문서 제목
@@ -137,8 +139,8 @@ CREATE TABLE APPROVER
 	M_ID varchar2(50) NOT NULL,
 	-- 우선순위
 	APPROVER_PRIORITY number(2,0) NOT NULL,
-	-- 결재상태
-	APPROVER_STATUS number(1) DEFAULT 0 NOT NULL,
+	-- 결재상태(수정)
+	APPROVER_STATUS varchar2(10) NOT NULL,
 	-- 결재일
 	APPROVER_APPDATE timestamp
 );
