@@ -33,7 +33,7 @@ public class NoticeController {
 	//은지님 페이지 이동
 	//버튼 수정 전에는 /Schedule/notice.kosmo 였음
 	// 
-	@RequestMapping("/list.kosmo")
+	@RequestMapping("/List.kosmo")
 	public String notice(
 			//Authentication auth,
 			@RequestParam Map map,
