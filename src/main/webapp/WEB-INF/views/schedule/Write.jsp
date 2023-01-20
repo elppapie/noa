@@ -21,14 +21,15 @@
 
 <div class="tab-content tab-content-basic">
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-
+	    <div class="card">
+        <div class="card-body">
+        <h2 style="font-weight:bold;">일정 입력</h2><br/>
 		<!-- BS4에서 긁어옴 -->
-		<h2>일정 입력폼</h2>
-		<h5>일정 종류를 먼저 고르게 한 후 이 폼(개인일정)을 띄워줘야 하지 않을까</h5>
-		\${message} : ${message}
+		<%--<h5> 일정 종류를 먼저 고르게 한 후 이 폼(개인일정)을 띄워줘야 하지 않을까</h5>
+		\${message} : ${message}--%>
 		<form class="needs-validated" action="/Schedule/writeOk.kosmo" method="POST">
-		  	<p>일정 종류 선택 - 선택시 관련 폼이 아래에 뜨도록 하기 - choose / when 태그로? 자스 변수 설정? </p>
-		  	
+		  	<p>일정 종류 선택 </p>
+		  	<%-- - 선택시 관련 폼이 아래에 뜨도록 하기 - choose / when 태그로? 자스 변수 설정? --%>
 		    <div class="form-check">
 		      <label class="form-check-label" for="radio5">
 		        <input type="radio" class="form-check-input" id="radio5" name="sche_type" value="PERSONAL" checked>개인일정
@@ -55,7 +56,7 @@
 		      </label>
 		    </div>
 		
-		
+			<br/>
 			<div class="form-group">
 				<label for="sche_title">일정명:</label>
 				<input type="text" class="form-control" placeholder="일정명을 입력하세요" name="sche_title" id="sche_title">
@@ -109,14 +110,18 @@
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 			</div>
-		
+			<%-- 
 			<div class="form-group form-check">
 				<label class="form-check-label">
 					<input class="form-check-input" type="checkbox" name="remember"> Remember me
 				</label>
 			</div>
+			--%>
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
+		</div>
+		</div>
+
 
 	</div>
 </div>
@@ -124,8 +129,8 @@
 	<%--자스로 빈내용 제출안되게 하기--%>
 
 	$(document).ready(function(){
-	    	$( "#sche_startdate" ).datepicker({ format: 'yyyy-mm-dd' });
-	    	$( "#sche_enddate" ).datepicker({ format: 'yyyy-mm-dd' });
+	    	$( "#sche_startdate_d" ).datepicker({ format: 'yyyy-mm-dd' });
+	    	$( "#sche_enddate_d" ).datepicker({ format: 'yyyy-mm-dd' });
 	    	$( "#sche_startdate_t" ).timepicker({ 
 	    	    timeFormat: 'HH:mm:ss',
 	    	    interval: 30,

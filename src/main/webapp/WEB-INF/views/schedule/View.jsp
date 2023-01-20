@@ -23,12 +23,13 @@
 
 <div class="tab-content tab-content-basic">
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-
+	    <div class="card">
+        <div class="card-body">
+        <h2 style="font-weight:bold;">일정 조회/수정</h2><br/>
 		<!-- BS4에서 긁어옴 -->
-		<h2>일정 조회/수정폼</h2>
 		<form class="needs-validated" action="<c:url value='/Schedule/editOk.kosmo'/>" method='POST'>
 		  	<p>일정 종류 선택</p>
-		  	\${one['SCHE_NO']} : ${one['SCHE_NO']}
+		  	<%-- \${one['SCHE_NO']} : ${one['SCHE_NO']}--%>
 		  	
 			<div class="form-group">
 				<label for="sche_title">일정종류:</label>
@@ -97,15 +98,19 @@
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 			</div>
-		
+			<%-- 
 			<div class="form-group form-check">
 				<label class="form-check-label">
 					<input class="form-check-input" type="checkbox" name="remember"> Remember me
 				</label>
 			</div>
+			--%>
 			<input type="hidden" name="sche_no" value="${one['SCHE_NO']}"/>
 			<button type="submit" class="btn btn-primary" >Submit</button>
 		</form>
+	</div>
+	</div>
+
 
 	</div>
 </div>

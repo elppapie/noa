@@ -51,9 +51,19 @@ public class AdminDAO {
 	//부서별 팀(이름) 가져오기 라는 헛된 꿈
 	
 	//부서 소속 인원수
-	public List<Map> getDeptMemberNum(List deptCodeList){
-		// |부서코드 |부서소속사람(수) |
-		return template.selectList("adminGetDeptMemberNum",deptCodeList);
+	// |emp_code | 기업코드 넣고 각 부서별 인원수 얻기
+	public List<Map> getDeptMemberNum(Map map){
+		// |dept_code |dept_member_count|
+		// |부서코드 	  |부서소속사람(수) 		|
+		return template.selectList("adminGetDeptMemberNum",map);
+	}
+	
+	//팀 소속 인원수
+	// |emp_code | 기업코드 넣고 각 팀별 인원수 얻기
+	public List<Map> getTeamMemberNum(Map map){
+		// |dept_code |team_no   |team_member_count|
+		// |부서코드 	  |팀번호		 |팀소속사람(수) 	   |
+		return template.selectList("adminGetTeamMemberNum",map);
 	}
 
 	public int enrollDept(Map map) {

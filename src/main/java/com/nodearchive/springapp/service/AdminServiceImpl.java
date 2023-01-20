@@ -211,7 +211,7 @@ public class AdminServiceImpl implements AdminService<Map>{
 		// 부서코드    |부서명     | 부서책임자 아이디      |  부서책임자 이름
 		List<Map> deptList = adminDao.getDeptOrg(map);
 		
-		//부서별 팀 얻어오기
+		//부서코드 목록 얻어오기
 		List<String> deptCodeList = new Vector<>();
 		deptList.forEach(t->deptCodeList.add(t.get("dept_code").toString()));
 		
@@ -226,6 +226,9 @@ public class AdminServiceImpl implements AdminService<Map>{
 		//|team_no |m_id       |m_name   |m_profile_img |position_name |
 		// 팀 번호  | 팀원 아이디  | 팀원이름  |프로필사진링크   | 직급명        |
 		List<Map> teamMembersList = addrDao.getTeamMembers(teamNoList);
+		
+		List<Map> teamMemberNum = adminDao.getTeamMemberNum(map);
+		List<Map> deptMemberNum =  adminDao.getDeptMemberNum(map);
 
 		OrganizationDTO dto = new OrganizationDTO();
 		dto.setDeptList(deptList);

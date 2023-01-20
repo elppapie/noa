@@ -16,6 +16,9 @@
 		text-decoration:none;
 		color:white;
 	}
+	.iambulkk{
+		font-weight:bold;
+	}
 
 </style>
 
@@ -25,21 +28,39 @@
 <div
 	class="d-sm-flex align-items-center justify-content-between border-bottom">
 	<!----Main Page의 Nav 메뉴 작성---->
+	 <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link" href="<c:url value="/Admin/deptList.kosmo"/>" aria-selected="false">부서/팀 조회</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="<c:url value="/Admin/groups.kosmo"/>"  aria-selected="false">그룹 조회</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#" aria-selected="false">구성원 조회</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link border-0" id="more-tab" data-bs-toggle="tab" href="#more" role="tab" aria-selected="false">blank</a>
+    </li>
+  </ul>
+  <div>
+    <div class="btn-wrapper">
+      <a href="<c:url value="/Schedule/write.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> blank</a>
+      <a href="#" class="btn btn-otline-dark"><i class="fa-solid fa-magnifying-glass"></i>  blank</a>
+      <a href="#" class="btn btn-primary text-white me-0"><i class="fa-solid fa-download"></i>  blank</a>
+    </div>
+  </div>	
 </div>
 
 <div class="tab-content tab-content-basic">
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section"
 		role="tabpanel" aria-labelledby="todo-section">
-		
-	
-		
+		<div class="card">
+			<div class="card-body">	
+			<h4 class="card-description"><code>조직도</code></h4>
 		<div class="">
-			<div>조직도</div>
-		</div>
-		<div class="">
-			<div>
-				<h3>구성원 테이블 </h3>
-			</div>
+
+			<h3 class="card-title">구성원 목록</h3>
+
 			<div>
 				<table class="table table-hover text-center">
 					<thead>
@@ -51,7 +72,7 @@
 							<th class="col-1">소속 팀(일단번호)</th>
 							<th class="col-1">
 								<div class="btn btn-primary btn-lg">
-									<a href="<c:url value='/Admin/enroll.kosmo?emp_code=${emp_code}&enroll=member'/>">
+									<a class="iamnothref" href="<c:url value='/Admin/enroll.kosmo?emp_code=${emp_code}&enroll=member'/>">
 									신규 구성원 추가
 									</a>
 								</div>
@@ -79,12 +100,12 @@
 									<td>
 										<div class="btn btn-primary">
 											<a class="iamnothref" href="<c:url value='/Admin/edit.kosmo?m_id=${member["m_id"]}'/>">
-											수정하기
+											소속/직급 수정
 											</a>
 										</div>&nbsp;
 										<div class="btn btn-danger">
 											<a class="iamnothref" href="<c:url value='/Admin/delete.kosmo?dept_code=${member["m_id"]}'/>">
-											삭제하기
+											제적
 											</a>
 										</div>
 									</td>
@@ -97,8 +118,8 @@
 				</table>
 			</div>
 		</div>
-
-		
+	</div><!-- cardbody -->
+	</div><!-- card -->
 		
 	</div>
 </div>

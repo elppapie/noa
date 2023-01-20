@@ -88,7 +88,7 @@ public class ScheduleController {
 	
 	//월간 달력(메인 - 현재시각을 넘겨줄 수 있으면 그걸 서비스에서 해석하면 되는데)
 	//왼쪽 드롭다운에서 줄 주소
-	@RequestMapping("/month.kosmo")
+	@RequestMapping("/month_discard.kosmo")
 	public String monthly(
 			Model model, //?
 			//Authentication auth, //스프링 씨큐리티 사용
@@ -274,7 +274,7 @@ public class ScheduleController {
 		return "notice/List.noa";
 	}
 	
-	@RequestMapping("/fullcalendar.kosmo")
+	@RequestMapping("/month.kosmo")
 	public String fullcalendar(
 			Model model,
 			//Authentication auth,

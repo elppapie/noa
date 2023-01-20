@@ -23,6 +23,38 @@
 
 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
 <!----Main Page의 Nav 메뉴 작성---->
+<a href="<c:url value="/Admin/deptList.kosmo"/>">관리자페이지</a>
+  <ul class="nav nav-tabs" role="tablist">
+     <%-- 
+     <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="tab" href="<c:url value='/Admin/deptList.kosmo'/>" role="tab" aria-selected="true">관리자페이지(뷰페이지구성/임시버튼)</a>
+    </li>
+    --%>
+    <%-- 
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="<c:url value="Schedule/year.kosmo"/>" role="tab" aria-selected="false">연간달력</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active " id="home-tab" data-bs-toggle="tab" href="<c:url value="Schedule/month.kosmo"/>" role="tab" aria-controls="overview" aria-selected="true">월간달력</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="<c:url value="Schedule/week.kosmo"/>" role="tab" aria-selected="false">주간달력</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link border-0" id="more-tab" data-bs-toggle="tab" href="#more" role="tab" aria-selected="false">More</a>
+    </li>
+    --%>
+  </ul>
+  <div>
+    <div class="btn-wrapper">
+      <%-- 
+      <a href="<c:url value="/Notice/list.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 공지사항(임시)</a>
+      --%>
+      <a href="#" class="btn btn-otline-dark"><i class="fa-solid fa-download"></i> 달력저장</a>
+      <a href="#" class="btn btn-otline-dark"><i class="fa-solid fa-magnifying-glass"></i> 일정검색</a>
+      <a href="<c:url value="/Schedule/write.kosmo"/>" class="btn  btn-primary text-white me-0 align-items-center"><i class="fa-solid fa-square-plus"></i> 일정추가</a>
+    </div>
+  </div>
 </div>  
 
 <div class="tab-content tab-content-basic">
@@ -82,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					end : 'dayGridMonth,dayGridWeek,dayGridDay'
 				},
 				titleFormat : function(date) {
-					return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+					return date.date.year + '  년  ' + (parseInt(date.date.month) + 1) + '월';
 				},
 				//initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
 				selectable : true, // 달력 일자 드래그 설정가능

@@ -27,7 +27,13 @@ public class AdminController {
 	@Autowired
 	private AddressDAO addrDao;
 	
-	@RequestMapping("/deptList")
+/*	
+	<h3>관리자 페이지(임시)</h3>
+	<a href="<c:url value="/Admin/deptList.kosmo"/>">최고관리자 페이지(부서/팀 목록)</a><br/>
+	<a href="<c:url value="/Admin/members.kosmo"/>">최고관리자 페이지(구성원 목록)</a><br/>
+	<a href="<c:url value="/Admin/groups.kosmo"/>">최고관리자 페이지(그룹 목록)</a><br/>
+*/	
+	@RequestMapping("/deptList.kosmo")
 	public String deptList(
 			Model model,
 			@RequestParam Map map,
@@ -39,12 +45,12 @@ public class AdminController {
 		map.put("m_id", "song1234@samsung.com");
 //////////////////////////////////////////////////////////////////////////////////////////////////		
 		model.addAttribute("emp_code", adminService.getEmpCode(map));
-		model.addAttribute("organization", addrService.getOrg(map));
+		model.addAttribute("organization", adminService.getOrgAdmin(map));
 
 		return "admin/DeptList.noa";
 	}
 	
-	@RequestMapping("/members")
+	@RequestMapping("/members.kosmo")
 	public String memberList(
 			Model model,
 			@RequestParam Map map,
@@ -56,12 +62,12 @@ public class AdminController {
 		map.put("m_id", "song1234@samsung.com");
 //////////////////////////////////////////////////////////////////////////////////////////////////
 		model.addAttribute("emp_code", adminService.getEmpCode(map));
-		model.addAttribute("organization", addrService.getOrg(map));		
+		model.addAttribute("organization", adminService.getOrgAdmin(map));		
 		
 		return "admin/MemberList.noa";
 	}
 	
-	@RequestMapping("/groups")
+	@RequestMapping("/groups.kosmo")
 	public String groupList(
 			Model model,
 			@RequestParam Map map,
@@ -75,13 +81,13 @@ public class AdminController {
 		
 		
 		model.addAttribute("group_member_list", adminService.selectGroupList(map));
-		model.addAttribute("organization", addrService.getOrg(map));		
+		model.addAttribute("organization", adminService.getOrgAdmin(map));		
 		
 		return "admin/GroupList.noa";
 	}
 	
 	//신규 등록 페이지로 이동
-	@GetMapping("/enroll")
+	@GetMapping("/enroll.kosmo")
 	public String enrollment(
 			Model model,
 			@RequestParam Map map,
@@ -101,12 +107,12 @@ map.put("m_id", "song1234@samsung.com");
 		
 		model.addAttribute("enroll",map.get("enroll"));
 		model.addAttribute("emp_code",map.get("emp_code"));
-		model.addAttribute("organization", addrService.getOrg(map));
+		model.addAttribute("organization", adminService.getOrgAdmin(map));
 		return "admin/Enroll.noa";
 	}
 	
 	//신규 등록처리 후 메인으로 이동
-	@PostMapping("/enroll")
+	@PostMapping("/enroll.kosmo")
 	public String enrollOk(
 			Model model,
 			@RequestParam(value="memberList", required=false) String[] memberList,
@@ -133,12 +139,12 @@ map.put("m_id", "song1234@samsung.com"); //map.put("m_id", session.get("아이�
 		
 		model.addAttribute("enroll",map.get("enroll"));
 		model.addAttribute("emp_code",adminService.getEmpCode(map));
-		model.addAttribute("organization", addrService.getOrg(map));
+		model.addAttribute("organization", adminService.getOrgAdmin(map));
 		System.out.println("주소가 잘못되었나 일단 이동!!!");
 		return "admin/temp_EnrollCheck.noa";
 	}
 	
-	@RequestMapping("/edit")
+	@RequestMapping("/edit.kosmo")
 	public String edit(
 			Model model,
 			@RequestParam Map map,
@@ -153,11 +159,11 @@ map.put("m_id", "song1234@samsung.com");
 		
 		model.addAttribute("enroll",map.get("enroll"));
 		model.addAttribute("emp_code",map.get("emp_code"));
-		model.addAttribute("organization", addrService.getOrg(map));
+		model.addAttribute("organization", adminService.getOrgAdmin(map));
 		return "admin/Edit.noa";
 	}
 	
-	@RequestMapping("/delete")
+	@RequestMapping("/delete.kosmo")
 	public String delete(
 			Model model,
 			@RequestParam Map map,
@@ -176,7 +182,7 @@ map.put("m_id", "song1234@samsung.com");
 	
 	
 	
-	@RequestMapping("/myPage")
+	@RequestMapping("/myPage.kosmo")
 	public String myPage(
 			Model model,
 			@RequestParam Map map,
