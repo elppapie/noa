@@ -17,7 +17,7 @@ public interface TaskService<T> {
 	
 	//목록용
 	ListPagingData<T> selectList(Map map,HttpServletRequest req,int nowPage);
-	//ListPagingData<T> selectListByDate(Map map, HttpServletRequest req, int nowPage);
+	ListPagingData<T> selectListByProj(Map map, HttpServletRequest req, int nowPage);
 	//ListPagingData<Map> selectListById(Map map, HttpServletRequest req, int nowPage);
 	
 	//상세보기용]

@@ -82,6 +82,44 @@ public class TaskServiceImpl implements TaskService<Map>{
 											.build();										
 		return listPagingData;	
 	}
+	
+
+	@Override
+	public ListPagingData<Map> selectListByProj(Map map, HttpServletRequest req, int nowPage) {
+		//페이징을 위한 로직 시작]
+		//전체 레코드수
+		int totalRecordCount=dao.getTotalRecordCountByProj(map);//검색시에도 페이징 해야 함으로 맵을 넘겨준다
+		//페이징을 위한 기본정보 설정
+		map.put(PagingUtil.PAGE_SIZE, pageSize);
+		map.put(PagingUtil.BLOCK_PAGE, blockPage);
+		map.put(PagingUtil.TOTAL_COUNT, totalRecordCount);
+		map.put(PagingUtil.NOW_PAGE, nowPage);
+		//나머지 페이징과 관련된 값들을  얻기 위한 메소드 호출
+		//그러면 총 페이지수와 시작/끝 행번호가 맵에 설정됨
+		PagingUtil.setMapForPaging(map);
+
+		List lists = dao.getTotalTaskbyProj(map);
+		String searchString="";
+		if(map.containsKey("project_no")) {
+			searchString+="project_no="+map.get("project_no")+"&";
+		}
+		//페이징 표시 문자열 얻기
+		String pagingString=PagingUtil.pagingBootStrapStyle(
+				totalRecordCount, 
+				pageSize, 
+				blockPage, 
+				nowPage,
+				req.getContextPath()+"/Task/list.kosmo?"+searchString);
+		//페이징과 관련된 정보 및 모든 목록을 담는 ListPagingData객체 생성		
+		ListPagingData<Map> listPagingData = ListPagingData.builder()
+											.lists(lists)//글 전체 목록 설정
+											.map(map)//페이징 관련 데이타 저장된 맵 설정
+											.pagingString(pagingString)//페이징 표시 문자열 설정
+											.build();										
+		return listPagingData;	
+	}
+
+	
 	/*
 	//selectList - 날짜 검색
 	@Override

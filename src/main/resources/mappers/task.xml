@@ -9,7 +9,7 @@
 	<!-- 업무 생성 : 스케줄 테이블 동시 생성-->
 	<insert id="taskInsert" parameterType="Map">
 		INSERT ALL
-		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, #{sche_title}, #{sche_content}, SYSDATE, SYSDATE, SYSDATE, #{sche_mark}, #{sche_status}, #{sche_color},'TASK')
+		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, '업무추가', '업무추가', SYSDATE, #{set_startdate}, #{set_enddate}, 0,0, 'ORANGE','TASK')
 		  INTO task VALUES (SEQ_TASK.NEXTVAL, #{m_id}, #{project_no}, SEQ_SCHE.CURRVAL, #{task_name}, #{task_content}, #{task_category})
 		SELECT * FROM DUAL
 	</insert>
@@ -21,7 +21,7 @@
 		JOIN schedule s ON s.sche_no = T1.sche_no WHERE T1.task_no=#{task_no}
 	</select>
 	
-	<!-- 페이징을 위한 업무 레코드 수 카운트  -->
+	<!-- 페이징을 위한 업무 레코드 수 카운트 - 검색용  -->
 	<select id="taskTotalRecordCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*) FROM(
 			SELECT T2.*,s.sche_startdate, s.sche_enddate FROM
@@ -57,6 +57,24 @@
 			<if test="set_startdate != null and set_startdate != ''">
 				AND (s.sche_startdate>=#{set_startdate} AND #{set_enddate}>=s.sche_startdate)
 			</if>
+	</select>
+	
+	<!-- 페이징을 위한 업무 레코드 수 카운트 - 프로젝트 하위 업무 셀렉트 용  -->
+	<select id="taskTotalRecordCountByProj" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM(
+			SELECT T1.*,s.sche_startdate, s.sche_enddate FROM
+				(SELECT t.* FROM TASK t)T1
+			JOIN SCHEDULE s ON s.sche_no = T1.sche_no
+			WHERE T1.project_no = #{project_no}
+		)
+	</select>
+	
+	<!-- 페이징을 위한 업무 리스트 출력 - 프로젝트 하위 업무 셀렉트 용 -->
+	<select id="taskFindAllListByProj" parameterType="Map" resultType="Map">
+		SELECT T1.*,s.sche_startdate, s.sche_enddate FROM
+				(SELECT t.* FROM TASK t)T1
+		JOIN SCHEDULE s ON s.sche_no = T1.sche_no
+		WHERE T1.project_no = #{project_no}
 	</select>
 	
 	<!-- 수정용 sche_no 구하는 쿼리 -->

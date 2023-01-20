@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
@@ -62,10 +64,58 @@
                             <div class="card card-rounded">
                               <!-- 카드 바디 시작 -->
                               <div class="card-body" style="padding-bottom:35px;">
+                               
+                                    
 
-                                <div class="d-sm-flex justify-content-between align-items-start mb-3">
+<!-- 중간발표를 위한 임시 텍스트 박스 추가 : 중간 발표 후 삭제 -->
+<%Map map = new HashMap<>(); %>
+<h3>프로젝트 추가</h3>
+<form class="form-inline" method="POST" action="<c:url value='/Project/create.kosmo'/>"> 
+	사용자 정보 : <input type="text" name="loginId" class="form-control mx-2"/> 
+	프로젝트명 : <input type="text" name="project_name" class="form-control mx-2"/>
+	프로젝트 시작일자 : <input type="text" name="set_startdate" class="form-control mx-2"/>
+	프로젝트 마감일자 : <input type="text" name="set_enddate" class="form-control mx-2"/>
+	<div class="form-group">
+		멤버 선택
+		<div class="d-flex">
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" name="member" value="kim1234@samsung.com" id="member1"> 
+				<label class="custom-control-label">kim1234@samsung.com</label>
+			</div>
+			<div class="custom-control custom-checkbox mx-2">
+				<input type="checkbox" class="custom-control-input" name="member" value="park1234@samsung.com" id="member2">
+				<label class="custom-control-label">park1234@samsung.com</label>
+			</div>
+			<div class="custom-control custom-checkbox">
+				<input type="checkbox" class="custom-control-input" name="member" value="song1234@samsung.com" id="member3"> 
+				<label class="custom-control-label">song1234@samsung.com</label>
+			</div>
+			<div class="custom-control custom-checkbox ml-2">
+				<input type="checkbox" class="custom-control-input" name="member" value="hong1234@samsung.com" id="member4"> 
+				<label class="custom-control-label">hong1234@samsung.com</label>
+			</div>
+		</div>
+	</div>	
+	<input type="submit" class="btn btn-info mx-2" value="프로젝트 추가" />
+</form>
+
+<h3>업무 추가</h3>
+<form class="form-inline" method="POST" action="<c:url value='/Task/create.kosmo'/>"> 
+	사용자 정보 : <input type="text" name="m_id" class="form-control mx-2"/> 
+	프로젝트 번호 : <input type="text" name="project_no" class="form-control mx-2"/>
+	업무명 : <input type="text" name="task_name" class="form-control mx-2"/>
+	업무내용 : <input type="text" name="task_content" class="form-control mx-2"/>
+	업무 시작일자 : <input type="text" name="set_startdate" class="form-control mx-2"/>
+	업무 마감일자 : <input type="text" name="set_enddate" class="form-control mx-2"/>
+	업무 카테고리 : <input type="text" name="task_category" class="form-control mx-2"/>
+	
+	<input type="submit" class="btn btn-info mx-2" value="업무 추가" />
+</form>
+<!-- 중간발표를 위한 임시 텍스트 박스 추가 끝-->
+
+								<div class="d-sm-flex justify-content-between align-items-start mb-3">
                                   <ul class="list-unstyled project-list-ul-custom fg-1">
-                                    <li>
+									<li>
                                       프로젝트 목록
                                     </li>
                                     <li>
@@ -75,14 +125,13 @@
                                     </li>
                                   </ul>
                                 </div>
-
                                 <div id="project-list-accordion">
                                   <!-- 프로젝트 하나 시작 , href=#프로젝트일련번호 -->
                                   <div class="card project-list-accordion-bgCustom">
                                     <div class="btn-group" role="group" style="height: 50px;">
                                       <!-- href=#프로젝트일련번호 -->
                                       <div class="card-header card-link hover project-list-accordion-card-header btn fg-10 project-list-btn-dropdownbtn" data-toggle="collapse" href="#project1" style="border:none; flex-grow:15;">
-                                        <span class="project-list-ul-custom" style="line-height:25px">프로젝트 1</span>
+                                        <span class="project-list-ul-custom" style="line-height:25px">${projectList.lists[0].PROJECT_NAME}</span>
                                       </div>
                                       <!-- 드롭다운 쓰리닷 메뉴 시작, id=프로젝트일련번호-dropdown-menu-button -->
                                       <button class="btn dropdown-toggle project-list-btn-dropdownbtn fg-1 project-dropdown-btngroup-border-leftonly" type="button" id="project1-dropdown-menu-button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -91,9 +140,11 @@
                                       <div class="dropdown-menu" aria-labelledby="project1-dropdown-menu-button">
                                         <a class="dropdown-item" href="#">공유</a>
                                         <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">업무추가</a>
+                                        <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">수정</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">캘린더</a>
+                                        <a class="dropdown-item" href="/schedule/month.noa">캘린더</a>
                                       </div>
                                       <!-- 드롭다운 쓰리닷 메뉴 끝 -->
                                     </div>
@@ -106,14 +157,16 @@
                                               <tr>
                                                 <th> 프로필 </th>
                                                 <th> 이름 </th>
+                                                <th> 업무명 </th>
                                                 <th> 진행도 </th>
                                               </tr>
                                             </thead>
                                             <tbody>
                                               <!-- tr : 행 , td : 열 (여기 td 개수는 <thead>의 th개수랑 맞춰야 함.)-->
                                               <tr>
-                                                <td class="py-1"> <img src="#" alt="프로필사진"/> </td>
+                                                <td class="py-1"> <img src="../projectResources/profile1.jsp" alt="프로필사진"/> </td>
                                                 <td> 김길동 </td>
+                                                <td> 업무1 </td>
                                                 <td> 
                                                   <div class="progress">
                                                     <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -129,57 +182,67 @@
                                   </div>
                                   <!-- 프로젝트 하나 끝 -->
                                   
-                                  <!-- 프로젝트 하나 시작 , href=#프로젝트일련번호 -->
-                                  <div class="card project-list-accordion-bgCustom">
-                                    <div class="btn-group" role="group" style="height: 50px;">
-                                      <!-- href=#프로젝트일련번호 -->
-                                      <div class="card-header card-link hover project-list-accordion-card-header btn fg-10 project-list-btn-dropdownbtn" data-toggle="collapse" href="#project2" style="border:none; flex-grow:15;">
-                                        <span class="project-list-ul-custom" style="line-height:25px">프로젝트 2</span>
-                                      </div>
-                                      <!-- 드롭다운 쓰리닷 메뉴 시작, id=프로젝트일련번호-dropdown-menu-button -->
-                                      <button class="btn dropdown-toggle project-list-btn-dropdownbtn fg-1 project-dropdown-btngroup-border-leftonly" type="button" id="project2-dropdown-menu-button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-light fa-bars"></i>
-                                      </button>
-                                      <div class="dropdown-menu" aria-labelledby="project2-dropdown-menu-button">
-                                        <a class="dropdown-item" href="#">공유</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">수정</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">캘린더</a>
-                                      </div>
-                                      <!-- 드롭다운 쓰리닷 메뉴 끝 -->
-                                    </div>
-                                    <!-- 프로젝트 업무 목록 시작 , id=프로젝트일련번호 -->
-                                    <div id="project2" class="collapse">
-                                      <div class="card-body project-list-accordion-card-body">
-                                        <div class="table-reponsive overflow-x-scroll">
-                                          <table class="table table-stripped table-hover">
-                                            <thead>
-                                              <tr>
-                                                <th> 프로필 </th>
-                                                <th> 이름 </th>
-                                                <th> 진행도 </th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              <!-- tr : 행 , td : 열 (여기 td 개수는 <thead>의 th개수랑 맞춰야 함.)-->
-                                              <tr>
-                                                <td class="py-1"> <img src="#" alt="프로필사진"/> </td>
-                                                <td> 김길동 </td>
-                                                <td> 
-                                                  <div class="progress">
-                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                  </div>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <!-- 프로젝트 업무 목록 끝 -->
-                                  </div>
-                                  <!-- 프로젝트 하나 끝 -->
+<!--    여기서부터 목록 테스트 시작    -->                               
+                                  <c:if test="${!(empty projectList.lists)}" var="isNotEmpty">
+                                  	 <!-- 프로젝트 하나 시작 , href=#프로젝트일련번호 -->
+                                  	 
+	                                  <div class="card project-list-accordion-bgCustom">
+	                                    <div class="btn-group" role="group" style="height: 50px;">
+	                                      <!-- href=#프로젝트일련번호 -->
+	                                      <div class="card-header card-link hover project-list-accordion-card-header btn fg-10 project-list-btn-dropdownbtn" data-toggle="collapse" href="#project2" style="border:none; flex-grow:15;">
+	                                        <span id="projectTitle" class="project-list-ul-custom" style="line-height:25px" name="${projectList.lists[1].PROJECT_NO}">${projectList.lists[1].PROJECT_NAME}</span>
+	                                      </div>
+	                                      <!-- 드롭다운 쓰리닷 메뉴 시작, id=프로젝트일련번호-dropdown-menu-button -->
+	                                      <button class="btn dropdown-toggle project-list-btn-dropdownbtn fg-1 project-dropdown-btngroup-border-leftonly" type="button" id="project2-dropdown-menu-button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                                        <i class="fa fa-light fa-bars"></i>
+	                                      </button>
+	                                      <div class="dropdown-menu" aria-labelledby="project2-dropdown-menu-button">
+	                                        <a class="dropdown-item" href="#">공유</a>
+	                                        <div class="dropdown-divider"></div>
+	                                        <a class="dropdown-item" href="#">업무추가</a>
+	                                        <div class="dropdown-divider"></div>
+	                                        <a class="dropdown-item" href="#">수정</a>
+	                                        <div class="dropdown-divider"></div>
+	                                        <a class="dropdown-item" href="/schedule/Month.noa">캘린더</a>
+	                                      </div>
+	                                      <!-- 드롭다운 쓰리닷 메뉴 끝 -->
+	                                    </div>
+	                                    <!-- 프로젝트 업무 목록 시작 , id=프로젝트일련번호 -->
+	                                    <div id="project2" class="collapse">
+	                                      <div class="card-body project-list-accordion-card-body">
+	                                        <div class="table-reponsive overflow-x-scroll">
+	                                          <table class="table table-stripped table-hover">
+	                                            <thead>
+	                                              <tr>
+	                                                <th> 프로필 </th>
+	                                                <th> 이름 </th>
+	                                                <th> 업무명 </th>
+	                                                <th> 진행도 </th>
+	                                              </tr>
+	                                            </thead>
+	                                            <tbody>
+	                                              <!-- tr : 행 , td : 열 (여기 td 개수는 <thead>의 th개수랑 맞춰야 함.)-->
+	                                              <tr>
+	                                                <td class="py-1"> <img src="/webapp/projectResources/profile1.jpg" alt="프로필사진"/> </td>
+	                                                <td>${selectTaskListByProj.lists[0].M_ID}</td>
+	                                                <td>업무1</td>
+	                                                <td> 
+	                                                  <div class="progress">
+	                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+	                                                  </div>
+	                                                </td>
+	                                              </tr>
+	                                            </tbody>
+	                                          </table>
+	                                        </div>
+	                                      </div>
+	                                    </div>
+	                                    <!-- 프로젝트 업무 목록 끝 -->
+	                                  </div>
+	                               </c:if>
+	                                  <!-- 프로젝트 하나 끝 -->
+<!--     여기가 목록 테스트 끝     -->                                
+                                 
                                 </div>
 
                               </div>
@@ -349,4 +412,40 @@
 	</div>
 </div>
 
+<script>
+//※댓글 목록의 제목 클릭시-click이벤트걸때 반드시  $(document).on('이벤트명','셀렉터',콜백함수)으로
+//그래야 동적으로 추가된 요소에도 이벤트가 발생한다
+$(document).on('click','#projectTitle',function(){
+	//먼저 각 프로젝트의 업무리스트를 Ajax로가져온다.
+	console.log('프로젝트 번호attr:',$(this).attr('name'));
+	var this_ = $(this);//클릭한 제이쿼리객체
+	
+	$.ajax({
+		url:"<c:url value="/Task/listbyporj.kosmo"/>",
+		data:"project_no="+this_.attr('name')
+		
+	}).done(function(data){
+	
+		console.log('프로젝트 번호:',data);
+		
+		//if('${sessionScope.id}'===data){//본인 댓글만 수정
+		//if(data!= null){//본인 댓글만 수정(씨큐리티 적용시)
+			//입력상자값을 클릭한 제목으로 변경
+			//$('#projNo').val(data);
+			//버튼의 텍스트를 수정으로 변경
+			//$('#submit').val('수정');
+			//폼의 hidden인 lno의 value를 클릭한 제목의 lno값으로 설정
+			//$('input[name=lno]').val(this_.attr('title'));
+			//console.log('히든값 설정 확인(lno):',$('input[name=lno]').val());/
+		}
+	
+	}).fail(function(error){
+		console.log('프로젝트 업무 찾기 오류:',error);
+	});
+	
+	
+	
+	
+});
 
+</script>

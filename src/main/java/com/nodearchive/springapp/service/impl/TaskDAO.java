@@ -33,6 +33,18 @@ public class TaskDAO {
 	public List getTotalTask(Map map) {
 		return template.selectList("taskFindAllList",map);
 	}
+	
+
+	public int getTotalRecordCountByProj(Map map) {
+		
+		return template.selectOne("taskTotalRecordCountByProj",map);
+	}
+	
+	public List getTotalTaskbyProj(Map map) {
+		
+		return template.selectList("taskFindAllListByProj",map);
+	}
+
 /*
 	//selectList - by date
 	public List selectTaskByDate(Map map) {
@@ -82,6 +94,8 @@ public class TaskDAO {
 	public String checkMember(Map map) {
 		return template.selectOne("taskCheckMember",map);
 	}
+
+	
 
 	
 

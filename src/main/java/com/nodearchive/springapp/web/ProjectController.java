@@ -28,7 +28,20 @@ public class ProjectController {
 	//**기본 crud 작업이 동일한 service 주입받음
 	@Autowired
 	private ProjectService projectService;
-
+/*
+	@RequestMapping(value="/list.kosmo",produces = "text/html; charset=UTF-8")
+	public String testProject(
+			//Authentication auth,
+			@RequestParam Map map, 
+			HttpServletRequest req,
+			Model model
+			) {
+		return "/project/Project.noa";
+		//return "/Project/Project123.noa";
+	}
+	*/
+	
+	
 	//프로젝트 목록(post) - 테스트 완료
 	//로그인 유저 정보 파악하여 사용자가 포함된 프로젝트만 select 
 	@RequestMapping("/list.kosmo")
@@ -40,12 +53,15 @@ public class ProjectController {
 			) {
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
 		//UserDetails userDetails=(UserDetails)auth.getPrincipal();
-		//map.put("login_Id", userDetails.getUsername());
+		//map.put("loginId", userDetails.getUsername());
+		
+		//test
+		map.put("loginId", "park1234@samsung.com");
 		
 		int nowPage=1;
-		projectService.selectList(map, req, nowPage);
-		model.addAttribute("projectList", map);
-		return "project/list.noa";
+		model.addAttribute("projectList", projectService.selectList(map, req, nowPage));
+		//return "project/list.noa";
+		return "project/Project.noa";
 	}
 	
 	
@@ -55,17 +71,27 @@ public class ProjectController {
 			//Authentication auth,
 			Model model,
 			@RequestParam Map map
-			//,HttpServletRequest req //로그인 계정 정보를 세션에서 가져오기 위한 인자
+			,HttpServletRequest req //로그인 계정 정보를 세션에서 가져오기 위한 인자
 			) {
 		
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
 		//UserDetails userDetails=(UserDetails)auth.getPrincipal();
 		//map.put("login_Id", userDetails.getUsername());
 
+		List<String> members=new Vector<String>();
+		Map row = new HashMap<>();
+		
+		//프론트 엔드에서 전달 받는 member 리스트를 배열에 저장
+		String[] memberArray = req.getParameterValues("member");
+		map.put("memberArray", memberArray);
+		
+		
 		projectService.insert(map);
 		model.addAttribute("project", map);
 		//프로젝트 리스트 페이지로 이동
-		return "forward:project/list.noa";
+		//return "forward:project/list.noa";
+		//[TEST용 주소]
+		return "project/Project.noa";
 	}
 	
 	//프로젝트 상세보기(get) - 테스트 완료
@@ -135,7 +161,9 @@ public class ProjectController {
 		}
 	
 		model.addAttribute("insertProjM",projectService.insertMember(members));
-		return "project/list.noa";
+		//return "project/list.noa";
+		//[TEST용 주소]
+		return "project/Project.noa";
 	}
 	
 	//멤버 리스트 불러오기(get) - 테스트 완
