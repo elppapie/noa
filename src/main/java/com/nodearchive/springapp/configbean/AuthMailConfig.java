@@ -2,11 +2,16 @@ package com.nodearchive.springapp.configbean;
 
 import java.util.Properties;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import com.nodearchive.springapp.service.utils.AuthMailHandler;
+import com.nodearchive.springapp.service.utils.AuthMailTempKey;
 
 @Configuration
 public class AuthMailConfig {
@@ -50,6 +55,16 @@ public class AuthMailConfig {
 		mailSender.setDefaultEncoding("utf-8");
 				
 		return mailSender;
+	}
+	
+	@Bean
+	public AuthMailHandler authMailHandler(JavaMailSender javaMailSender) throws MessagingException {
+		return new AuthMailHandler(javaMailSender);
+	}
+	
+	@Bean
+	public AuthMailTempKey authMailTempKey() {
+		return new AuthMailTempKey();
 	}
 
 }

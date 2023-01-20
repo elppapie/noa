@@ -33,70 +33,70 @@
   <!-- font-awesome Kit Code -->
   <script src="https://kit.fontawesome.com/672ea2e509.js" crossorigin="anonymous"></script>
 </head>
+<style>
+  .signUpPage-logo-size-alter{
+  	margin-top:-50px;
+	margin-bottom:-15px;
+  }
+  .signUpPage-logo-size-alter-div{
+  	padding-top: 0px;
+  	padding-bottom: 0px;
+  }
+  .signUpPage-email-auth-button:hover{
+    cursor: pointer;
+  }
+  .signUpPage-email-auth-button{
+    background-color: #324a3b;
+    border-color: #324a3b;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+  .signUpPage-email-auth-no-style{
+    background-color: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.769) !important;
+  }
+  
+</style>
 <body> 
 	<div class="container-scroller"> 
       <div class="main-panel mp-height">
         <div class="content-wrapper d-flex justify-content-center">
-          <div class="d-flex py-5">
-          <div class="row flex-grow" >
-            <div class="col-sm-6 d-flex align-items-stretch px-5">
-              <div class="grid-margin stretch-card flex-grow">
-                <div class="card card-rounded">
-                  <div class="card-body d-flex flex-column justify-content-center">
-                    <div class="logo-img-div">
-                      <img src="${path}/resources/images/logo-removebg-preview.png" class="loginpage-logo-img mx-auto d-block " alt="노아 이미지 로고"/>
-                    </div>
-                    <div class="logo-txt-div">
-                      <img src="${path}/resources/images/textlogo-NodeArchive.svg" class="mx-auto d-block loginpage-logo-img" alt="노아 텍스트 로고"/>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                      <p class="emp-description mt-2 px-5 py-3">
-                        우리 노드아카이브 그룹웨어는 재택근무에 특화된 그룹웨어 서비스를 제공합니다.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>    
-            </div>
-            <div class="col-sm-6 d-flex align-items-stretch px-5">
+          <div class="d-flex py-5 fg-1">
+          <div class="row flex-grow justify-content-center" >
+            <div class="col-sm-8 d-flex align-items-stretch px-5">
               <div class="grid-margin stretch-card flex-grow">
                 <div class="card card-rounded">
                   <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                    <h2 class="card-title fsu-lg"> 로그인 </h2>
+                    <div class="logo-img-div signUpPage-logo-size-alter-div">
+                      <img src="${path}/resources/images/logo-removebg-preview.png" class="loginpage-logo-img mx-auto d-block signUpPage-logo-size-alter" alt="노아 이미지 로고"/>
+                    </div>
+                    <h2 class="card-title fsu-lg"> 기업 등록 </h2>
                     <p class="card-description">
-                      ID와 비밀번호를 입력하세요 <i class="fa fa-light fa-question-circle-o" title='"아이디@기업도메인"형식의 ID를 입력하세요&nbsp;'></i>
+                      기업 등록을 위해 우선 개인 이메일로 본인 인증을 진행하세요 <i class="fa fa-light fa-question-circle-o" 
+                      title='이메일 인증버튼을 누르면 입력한 이메일 주소로 인증코드가 전송됩니다.'></i>
                     </p>
-                    <form class="form-sample" action="#" method="post">
+                    <form class="form-sample" action="#" method="post" style="width: 80%;">
                       <div class="form-group mb-2">
                         <div class="input-group">
-                          <input type="text" class="form-control flex-grow-1" placeholder="로그인 ID"/>
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              @
+                          <input id="signUpPage-email-auth" type="text" class="form-control" style="flex-grow: 9;" placeholder="이메일 주소"/>
+                          <div class="input-group-prepend flex-grow-1 signUpPage-email-auth-button" style="padding-left: 3px;" >
+                            <span class="input-group-text signUpPage-email-auth-no-style">
+                              이메일 인증
                             </span>
                           </div>
-                          <input type="text" class="form-control flex-grow-1" placeholder="도메인.com"/>
                         </div>  
                       </div>
-                      <div class="form-group">  
-                        <input type="text" class="form-control flex-grow-1" placeholder="비밀번호"/>
-                        <button type="submit" class="btn btn-secondary mt-2 btn-submit-fitX fsu-sm">로그인</button>
-                        <div class="d-flex align-items-baseline">
-                          <div class="col-6">
-                            <div class="form-check mx-sm-2">
-                              <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input fsu-sm"/> 로그인 상태 유지
-                              </label>
-                            </div>
-                          </div>
-                          <div class="col-6">
-                            <a class="find-id-pwd fsu-sm" href="#">ID, 비밀번호 찾기</a>
-                            <a class="find-id-pwd fsu-sm" href="${path}/Login/signUp.kosmo">내 기업 등록하기</a>
-                          </div>
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input id="auth-key-here-please" type="text" class="form-control" placeholder="인증 코드를 입력하세요" disabled title="이메일 인증 버튼을 클릭하세요"/>
                         </div>
                       </div>
+                      <button id="signUp-first-btn-next" class="btn btn-secondary btn-submit-fitX fsu-sm" disabled>다음</button>
+                      <div class="progress mt-1 mb-2">
+                        <div class="progress-bar bg-success" role="progressbar" style="width:33.3%" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
                     </form>
-                    <div class="text-info">아래에 소셜 로그인 추가 시 버튼 추가</div>
                   </div>
                 </div>
               </div>    
@@ -117,7 +117,7 @@
       <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
-  
+  </div>
   <!-- plugins:js -->
   <script src="${path}/resources/vendors/js/vendor.bundle.base.js"></script>
   <!-- endinject -->
@@ -143,6 +143,27 @@
     $(".mp-height").css("height",availHeightPX);
     var logoWidthPX = $(".loginpage-logo-img").width() - 10 + "px";
     $('.emp-description').css("width",logoWidthPX);
+    
+    
+    document.querySelector("span.signUpPage-email-auth-no-style").onclick = function(e){
+    	const email = document.querySelector("#signUpPage-email-auth").value;
+        $.ajax({
+          url:"${path}/Login/emailAuth.kosmo",
+          data:{"email":email},
+          dataType:'json'
+        }).done(function(data){
+        	//data = {email:"입력한 이메일 주소",key:"생성된 인증코드",isSuccess:true}
+        	if(data.isSuccess===true) console.log('인증 메일 보내기 성공')
+        	//1. 인증코드 입력란 enabled 시켜주기
+        	const input_auth = document.querySelector("#auth-key-here-please");
+        	input_auth.disabled=false;
+        	input_auth.onkeydown = function(e){
+        		if(this.value.trim()===data.key) document.querySelector("#signUp-first-btn-next").disabled=false;
+        		else document.querySelector("#signUp-first-btn-next").disabled=true;
+        	};
+        }).fail(function(e){console.log(e)});
+        
+      };
   </script>
 </body>
 

@@ -14,6 +14,13 @@ function openChatMain(path,m_id) {
         )
 }
 
+function openWebRTCMain(m_id){
+	window.open(path
+        ,"webRTC"
+        ,"width="+screen.width+",height="+screen.height+",fullscreen=yes"
+        )
+}
+
 ////////////////project/project.jsp 시작 ////////////////
 	//+버튼 클릭 시 체크리스트 추가. (모달창 먼저 띄워서 입력받은 후에 입력받은 값을 htmlString에 넣어서 추가할 것.)
 if(document.querySelector("#project-todo-list-add-btn")!=null){
