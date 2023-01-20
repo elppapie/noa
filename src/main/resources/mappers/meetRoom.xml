@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mappers.meetRoom">
+	
+	<select id="selectMeetRoomList" resultMap="meetingRoomResultSet">
+		select *
+		from meeting_room
+		where mr_status = 0
+	</select>
+	<resultMap type="MeetingRoom" id="meetingRoomResultSet">
+		<id column="MR_CODE" property="mr_code"/>
+		<result column="EMP_CODE" property="emp_code"/>
+		<result column="MR_NAME" property="mr_name"/>
+		<result column="MR_INFO" property="mr_info"/>
+		<result column="MR_STATUS" property="mr_status"/>
+	</resultMap>
+	
+	<insert id="insertMeetRoom">
+		insert into meeting_room
+		values(seq_mr_code.nextval, #{emp_code}, #{mr_name}, #{mr_info}, default)
+	</insert>
+	
+	<select id="selectMeetRoom" resultMap="meetingRoomResultSet">
+		select *
+		from meeting_room
+		where mr_status = 0 and mr_code = #{mr_code}
+	</select>
+	
+	<update id="updateMeetRoom">
+		update meeting_room
+		set emp_code = #{emp_code}, mr_name = #{mr_name}, mr_info = #{mr_info}
+		where mr_code = #{mr_code}
+	</update>
+	
+	<update id="deleteMeetRoom">
+		update meeting_room
+		set meet_status = 1
+		where mr_code = #{mr_code}
+	</update>	
+</mapper>
