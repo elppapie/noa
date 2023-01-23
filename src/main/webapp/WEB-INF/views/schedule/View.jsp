@@ -5,6 +5,7 @@
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
+<c:set var="memberList" value="${organization.getTeamMembersList()}" />
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
@@ -105,6 +106,21 @@
 				</label>
 			</div>
 			--%>
+			
+			<div class="form-group">
+				<label for="selectDeptMember">참조인 추가:</label> 
+				<select
+					class="form-control" id="selectDeptMember" name="memberList"
+					multiple size="10" style="height: 100%;">
+					<c:forEach var="member" items="${memberList}">
+						<c:if test="${member['m_id'] != m_id}">
+							<option value="${member['m_id']}">${member["m_name"]},
+								팀번호:${member["team_no"]}, 직급:${member["position_name"]}, 아이디:${member["m_id"]}
+							</option>
+						</c:if>
+					</c:forEach>
+				</select>
+			</div>
 			<input type="hidden" name="sche_no" value="${one['SCHE_NO']}"/>
 			<button type="submit" class="btn btn-primary" >Submit</button>
 		</form>

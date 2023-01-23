@@ -94,7 +94,7 @@
 	<!-- JOIN을 하는 경우 DTO 타입으로는 못 가져오고, map으로 가져오는 게 제일 편함 -->
 	<!-- 이름, 직함, 소속 부서, 소속 팀, 이메일 -->
 	<select id="scheFindRefByNo" parameterType="Map" resultType="Map">
-		SELECT m.m_name, p.position_name, sr.m_id, t.team_name, d.dept_name
+		SELECT m.m_name "m_name", p.position_name "position_name", sr.m_id "m_id", t.team_name "team_name", d.dept_name "dept_name"
 		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
 			JOIN members m ON m.m_id = sr.m_id 
     		JOIN position p ON p.position_code = m.position_code
@@ -107,7 +107,7 @@
 	<!-- 일정 입력용 -->
 	<insert id="scheInsert" parameterType="Map">
 		INSERT INTO schedule VALUES(
-			#{sche_no},
+			SEQ_SCHE.NEXTVAL,
 			#{sche_title},
 			#{sche_content},
 			SYSTIMESTAMP,
@@ -115,7 +115,8 @@
 			#{sche_enddate,jdbcType=TIMESTAMP},
 			'0',
 			#{sche_status},
-			#{sche_color}		
+			#{sche_color},
+			#{sche_type}		
 		)
 <!--  		
 		<foreach item="dto" collection="list" open="INSERT ALL" separator=" ">
@@ -177,20 +178,29 @@
 
   
 	<select id="scheduleOneToDto" parameterType="Map" resultType="com.nodearchive.springapp.service.impl.ScheduleDTO">
-		SELECT * 
-		FROM schedule 
-		WHERE sche_no = 
-		<choose>
-			<when test="sche_no != null">
-				#{sche_no}
-			</when>
-			<otherwise>
-				SEQ_SCHE.CURRVAL
-			</otherwise>
-		</choose>
+		SELECT 
+			sche_no "sche_no",
+			sche_title "sche_title", 
+			sche_content "sche_content", 
+			sche_regidate "sche_regidate", 
+			sche_enddate "sche_enddate", 
+			sche_startdate "sche_startdate", 
+			sche_mark "sche_mark", 
+			sche_status "sche_status", 
+			sche_color "sche_color",
+			sche_type = "sche_type"
+		FROM schedule
+		WHERE 
+			sche_title = #{sche_title} AND
+			sche_content = #{sche_content} AND
+			sche_startdate = #{sche_startdate,jdbcType=TIMESTAMP} AND
+			sche_enddate = #{sche_enddate,jdbcType=TIMESTAMP} AND
+			sche_color = #{sche_color}
 	</select>
 
-
+	<select id="scheCurrentSequence" resultType="Map">
+		SELECT LAST_NUMBER-1 "sche_no" FROM USER_SEQUENCES WHERE SEQUENCE_NAME ='SEQ_SCHE'
+	</select>
 
 	<!-- 일정 삭제용 // 삭제권한은 어떻게 설정하지 -->
 	<delete id="scheDelete" parameterType="Map">

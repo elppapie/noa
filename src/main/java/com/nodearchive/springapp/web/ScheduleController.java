@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nodearchive.springapp.service.AdminServiceImpl;
 import com.nodearchive.springapp.service.ScheduleServiceImpl;
 import com.nodearchive.springapp.service.impl.ScheduleDTO;
 
@@ -66,6 +67,9 @@ public class ScheduleController {
 	
 	@Autowired
 	private ScheduleServiceImpl scheduleService; 
+	@Autowired
+	private AdminServiceImpl adminService;
+	
 	
 	private static final Logger log = LoggerFactory.getLogger(ScheduleController.class);
 
@@ -138,18 +142,20 @@ public class ScheduleController {
 			//Authentication auth,
 			@RequestParam Map map
 			) {
-		System.out.println("안녕 난 view.kosmo야 컨트롤러에 있어");
-		System.out.println("⚜⚜ map이 제대로 넘어왔나? "+map);
-		System.out.println("⚜⚜ map에 저장되어잇나? "+map.get("SCHE_NO"));
-
-		Map oneSchedule = scheduleService.view(map);
-		model.addAttribute("oneSchedule",oneSchedule);
-		System.out.println("[ ⚜⚜ 여기서 null이 전달되는지 확인 ⚜⚜ ]");
-		System.out.println("일정타이틀:"+oneSchedule.get("SCHE_TITLE"));
-		System.out.println("일정내용:"+oneSchedule.get("SCHE_CONTENT"));
-		System.out.println("일정시작:"+oneSchedule.get("SCHE_STARTDATE"));
-		System.out.println("일정끝:"+oneSchedule.get("SCHE_ENDDATE"));
-		System.out.println("일정 번호ㅗㅗㅗㅗ:"+oneSchedule.get("SCHE_NO"));
+//		System.out.println("안녕 난 view.kosmo야 컨트롤러에 있어");
+//		System.out.println("⚜⚜ map이 제대로 넘어왔나? "+map);
+//		System.out.println("⚜⚜ map에 저장되어잇나? "+map.get("SCHE_NO"));
+		model.addAttribute("oneSchedule",scheduleService.view(map));
+//		System.out.println("[ ⚜⚜ 여기서 null이 전달되는지 확인 ⚜⚜ ]");
+//		System.out.println("일정타이틀:"+oneSchedule.get("SCHE_TITLE"));
+//		System.out.println("일정내용:"+oneSchedule.get("SCHE_CONTENT"));
+//		System.out.println("일정시작:"+oneSchedule.get("SCHE_STARTDATE"));
+//		System.out.println("일정끝:"+oneSchedule.get("SCHE_ENDDATE"));
+//		System.out.println("일정 번호ㅗㅗㅗㅗ:"+oneSchedule.get("SCHE_NO"));
+		
+		map.put("m_id", "kim1234@samsung.com");
+		model.addAttribute("m_id",map.get("m_id"));
+		model.addAttribute("organization", adminService.getOrgAdmin(map));
 		return "schedule/View.noa";
 		// "schedule/View.noa"+map.get("SCHE_NO");로 했더니 404에러뜸... 뒤에것이 object타입이라 그런가?
 	}
@@ -158,9 +164,13 @@ public class ScheduleController {
 	//사람을 map에다가 저장해서 list에다가 담기
 	@RequestMapping("/write.kosmo")
 	public String write(
+			Model model,
 			//Authentication auth,
 			@RequestParam Map map
 			) {
+		map.put("m_id", "kim1234@samsung.com");
+		model.addAttribute("m_id",map.get("m_id"));
+		model.addAttribute("organization", adminService.getOrgAdmin(map));
 		return "schedule/Write.noa";
 	}
 	
@@ -168,8 +178,9 @@ public class ScheduleController {
 	//사람을 map에다가 저장해서 list에다가 담기
 	@RequestMapping("/writeOk.kosmo")
 	public String writeOk(
-			Model model,
 			//Authentication auth,
+			Model model,
+			@RequestParam(value="memberList", required=false) String[] memberList,
 			@RequestParam Map map, // schedule 테이블의 컬럼명을 키값으로 각 입력값 받아옴
 			HttpServletRequest request
 			) {
@@ -181,23 +192,21 @@ public class ScheduleController {
 		
 		//참조인 목록을 대체 어떻게 전달해야하지.....
 		//스크립틀릿으로 자바코드로 전달해야하나?
-		String [] strArr = {"kim1234@samsung.com","song1234@samsung.com","park1234@samsung.com"};
+		//String [] strArr = {"kim1234@samsung.com","song1234@samsung.com","park1234@samsung.com"};
+/////////////////////////////////////////////////////////////////////////////////////////////////		
+		List<String> list = new Vector<>();
+		for(String str:memberList) list.add(str);
 		
-		List<ScheduleDTO> list = new ArrayList<ScheduleDTO>();
-		for(String str:strArr) {
-			ScheduleDTO dto = new ScheduleDTO();
-			dto.setM_id(str);
-			list.add(dto);
-		}
+		//입력하는 사람도 넣어야 하는데
+		//list.add("");
+		
 		//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
 		map.put("list", list);
-/////////////////////////////////////////////////////////////////////////////////////////////////		
-		
-		
-		scheduleService.insert(map);
-		model.addAttribute("message", "입력폼 작성 후 전송(등록)");		
-		
-		return "schedule/Month.noa";
+		int howManyRefs = scheduleService.insert(map);
+		model.addAttribute("message", "입력폼 작성 후 전송(등록)");
+		System.out.println("[ ⚜ ] 참조인 몇명등록됨? (test때는 3명):"+howManyRefs);
+
+		return "schedule/FullCalendar.noa";
 	}
 	
 	//일정 수정시 - 수정폼으로 이동
@@ -213,8 +222,9 @@ public class ScheduleController {
 	//일정 수정폼 작성 후 제출 - 달력폼으로 이동 - 해당 일정 등록된 곳으로??
 	@RequestMapping("/editOk.kosmo")
 	public String editOk(
-			Model model,
 			//Authentication auth,
+			Model model,
+			@RequestParam(value="memberList", required=false) String[] memberList,
 			@RequestParam Map map //파라미터로 폼의 name=value 저장됨
 			) {
 		//참조인 목록은 request 영역에 addAttribute로 list로 넣어서 받아와야할듯 - 자스 or request 속성에 하나씩 저장해서 여기서 list로 만들거나
@@ -224,33 +234,24 @@ public class ScheduleController {
 ////////////////////////////////////// test용 더미데이터 ////////////////////////////////////////////////
 		//참조인 목록을 대체 어떻게 전달해야하지.....
 		//스크립틀릿으로 자바코드로 전달해야하나?
-		String [] strArr = {"kim1234@samsung.com","song1234@samsung.com","park1234@samsung.com"};
+		//String [] strArr = {"kim1234@samsung.com","song1234@samsung.com","park1234@samsung.com"};
+/////////////////////////////////////////////////////////////////////////////////////////////////		
 		
 		//List<ScheduleDTO>  <====> List<String> 
 		//id 저장 + 뒤에가서 sche_no 저장해야 해서 DTO타입이 차라리 낫다
-		//근데 알고보니 mybatis foreach구문은 list타입 array타입만 사용가능....
+		//근데 알고보니 mybatis foreach구문은 list타입 array타입만 사용가능.... 아니다!!! 공식페이지에서 아니래!!
 		//Map 속의 list면 ... 가능하지 않으려나
-		List<ScheduleDTO> list = new ArrayList<ScheduleDTO>();
-		for(String str:strArr) {
-			ScheduleDTO dto = new ScheduleDTO();
-			dto.setM_id(str);
-			System.out.println("fo문 str뭘까 ref 담아주는과정:"+str);
-			list.add(dto);
-		}
-
+		List<String> list = new Vector<>();
+		for(String str:memberList) list.add(str);
+		
+		//입력하는 사람도 넣어야 하는데
+		//list.add("");
+		
 		//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
 		map.put("list", list);
-/////////////////////////////////////////////////////////////////////////////////////////////////		
-		System.out.println("[⚜]==== 컨트롤러: editOk.kosmo :"+map.get("sche_title"));
-		
-		
-		
 		int howManyRefs = scheduleService.update(map);
 		model.addAttribute("message", "입력폼 작성 후 전송(등록)");
-		
 		System.out.println("[ ⚜ ] 참조인 몇명등록됨? (test때는 3명):"+howManyRefs);
-		
-		
 		return "schedule/FullCalendar.noa";
 		// 이 페이지에서 fullCalendarData 호출함
 	}

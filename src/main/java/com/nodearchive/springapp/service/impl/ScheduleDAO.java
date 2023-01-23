@@ -40,16 +40,7 @@ public class ScheduleDAO {
 	// 일정 상세보기용(일정 하나 클릭시)
 	// 로그인한 사람의 권한 확인?
 	public Map view(Map map) {
-		Map mapp = template.selectOne("scheFindRecordByNo",map);
-		try {
-			//null 뜬다 왜냐 컬럼명으로 가져온 거라 대문자로 전부 바뀜
-			System.out.println("[ ⚜ DAO ] mapp의 속성:"+mapp.get("sche_title")); 
-			System.out.println("[ ⚜ DAO ] mapp의 속성:"+mapp.get("SCHE_TITLE"));
-		}
-		catch(NullPointerException e) {
-			System.out.println("mapp이 null입니다 === 반환되는 레코드가 없어요 === 참조인 등록 실패가 주 원인일듯");
-		}
-		return mapp;
+		return template.selectOne("scheFindRecordByNo",map);
 	}
 	
 	// 일정에 연관된 사람들 가져오기 (1명(본인만 연관된)이어도 가져옴)
@@ -58,27 +49,27 @@ public class ScheduleDAO {
 	}
 
 	
-	// 일정 입력용 - 몇 개의 레코드가 영향을 받는지 반환
-	// map에 전달해야 할 것들
-	// [1] schedule 테이블의 컬럼별 값
-	// [2] "refList"로 저장된 List
-	//		id값들(이메일)임
-	//		주소록 쿼리문을 사용해서 사람들 목록을 뿌려줘야 할 듯 - view에서
+	//일정 입력
 	public int insertSche(Map map) {
-		//Schedule 테이블에 레코드 1행 입력
-		template.insert("scheInsert",map);
-		//입력된 레코드의 DTO 가져오기(일정번호[sche_no] 가져오기용)
-		ScheduleDTO scheDto = template.selectOne("scheduleOneToDto",map);
-		int sche_no = scheDto.getSche_no();
-		//map에 저장된 참조인 리스트 꺼내기
-		List<ScheduleDTO> list = (List)map.get("list");
-		//list에 저장된 ScheduleDTO들에 sche_no를 setter로 주입
-		for(ScheduleDTO sche:list) sche.setSche_no(sche_no);
-		//map에 참조인 목록 저장
-		map.put("list", list);
-		//일정 참조인 등록 - 그 과정에서 최종 등록된 참조인 레코드 수 반환		
+		return template.insert("scheInsert",map);
+	}
+	
+	//가장 최근의 일정 번호 가져오기
+	// |인자 없음 |
+	public Map selectCurrentSeqNo() {
+		// |sche_no 	|
+		// |최근 일정 번호  |
+		return template.selectOne("scheCurrentSequence");
+	}
+	
+	//일정 입력시 참조인도 입력
+	public int insertScheRef(List list) {
 		return template.insert("scheInsertRef",list);
 	}
+	
+	
+	
+	
 	
 	
 	// 일정 삭제용 - 몇 개의 레코드가 영향을 받는지 반환
@@ -94,24 +85,16 @@ public class ScheduleDAO {
 	//		id값들(이메일)임
 	//		주소록 쿼리문을 사용해서 사람들 목록을 뿌려줘야 할 듯 - view에서
 	public int updateSche(Map map) {
-		//Schedule 테이블에 레코드 1행 수정
-		template.update("scheUpdate",map);
-		//입력된 레코드의 DTO 가져오기(일정번호[sche_no] 가져오기용)
-		ScheduleDTO scheDto = template.selectOne("scheduleOneToDto",map);
-		int sche_no = scheDto.getSche_no();
-		//map에 저장된 참조인 리스트 꺼내기
-		List<ScheduleDTO> list = (List)map.get("list");
-		//list에 저장된 ScheduleDTO들에 sche_no를 setter로 주입
-		for(ScheduleDTO sche:list) sche.setSche_no(sche_no);
-		//map에 참조인 리스트 저장
-		map.put("list", list);
-		
-		//일정 참조인 재등록 - 그 과정에서 최종 등록된 참조인 레코드 수 반환
-		// 참조인 수가 변할 수도 있으므로 맘편하게 전부 삭제하고 다시 등록하기!
-		// 트랜잭션으로 묶을 수 있다면 좋을텐데
-		template.delete("scheDeleteRef",map);
-		return template.insert("scheInsertRef",list);
+		return template.update("scheUpdate",map);
 	}
+	
+	//일정 관련 참조인 삭제
+	public int deleteRef(Map map) {
+		return template.delete("scheDeleteRef",map);
+	}
+	
+	
+	
 	
 	// 일정 완료상태 수정용 - 몇 개의 레코드가 영향을 받는지 반환
 	public int updateState(Map map) {
@@ -125,9 +108,7 @@ public class ScheduleDAO {
 */	
 	//fullCalendar 사용
 	public List<Map> useFullCalendar() {
-		List<Map> calendar = null;
-		calendar = template.selectList("fullCalendarAllSchedule");
-		return calendar;
+		return template.selectList("fullCalendarAllSchedule");
 	}
 	
 	

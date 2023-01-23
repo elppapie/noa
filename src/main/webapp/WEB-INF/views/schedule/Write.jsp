@@ -4,6 +4,7 @@
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
+<c:set var="memberList" value="${organization.getTeamMembersList()}" />
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
@@ -27,7 +28,7 @@
 		<!-- BS4에서 긁어옴 -->
 		<%--<h5> 일정 종류를 먼저 고르게 한 후 이 폼(개인일정)을 띄워줘야 하지 않을까</h5>
 		\${message} : ${message}--%>
-		<form class="needs-validated" action="/Schedule/writeOk.kosmo" method="POST">
+		<form class="needs-validated" action="<c:url value='/Schedule/writeOk.kosmo'/>" method="POST">
 		  	<p>일정 종류 선택 </p>
 		  	<%-- - 선택시 관련 폼이 아래에 뜨도록 하기 - choose / when 태그로? 자스 변수 설정? --%>
 		    <div class="form-check">
@@ -106,10 +107,50 @@
 			
 			<div class="form-group">
 				<label for="sche_color">일정색깔:</label>
-				<input type="text" class="form-control" placeholder="일정색깔을 입력하세요" name="sche_color" id="sche_color">
-				<div class="valid-feedback">Valid.</div>
-    			<div class="invalid-feedback">Please fill out this field.</div>
+				<select class="form-control" id="sche_color" name="sche_color">
+					<option value="#3944BC">파란색</option>
+					<option value="#f5f5f5">흰색</option>
+					
+				</select>
 			</div>
+<%-- 					
+					<input type="text" class="form-control" placeholder="일정색깔을 입력하세요" name="sche_color" id="sche_color">
+					<div class="valid-feedback">Valid.</div>
+	    			<div class="invalid-feedback">Please fill out this field.</div>
+			</div>
+--%>						
+			
+			
+			<p>일정 상태 선택</p>
+			<div class="form-group">
+				<div class="form-check">
+			      <label class="form-check-label" for="radio12">
+			        <input type="radio" class="form-check-input" id="radio12" name="sche_status" value="0">미완료
+			      </label>
+			    </div>
+			    <div class="form-check">
+			      <label class="form-check-label" for="radio13">
+			        <input type="radio" class="form-check-input" id="radio13" name="sche_status" value="1">완료
+			      </label>
+			    </div>
+			</div>
+			<div class="form-group">
+				<label for="selectDeptMember">참조인 추가:</label> 
+				<select
+					class="form-control" id="selectDeptMember" name="memberList"
+					multiple size="10" style="height: 100%;">
+					<c:forEach var="member" items="${memberList}">
+						<c:if test="${member['m_id'] != m_id}">
+							<option value="${member['m_id']}">${member["m_name"]},
+								팀번호:${member["team_no"]}, 직급:${member["position_name"]}, 아이디:${member["m_id"]}
+							</option>
+						</c:if>
+					</c:forEach>
+				</select>
+			</div>			
+			
+			
+			<%-- input type="hidden" name="sche_status" value="0"/>--%>
 			<%-- 
 			<div class="form-group form-check">
 				<label class="form-check-label">
@@ -117,6 +158,7 @@
 				</label>
 			</div>
 			--%>
+			<input type="hidden" name="m_id" value="song1234@samsung.com"/>
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
 		</div>

@@ -2,8 +2,10 @@ package com.nodearchive.springapp.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -176,27 +178,43 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	
 	
 	
-	// 일정 입력용
+	// 일정 입력용 - 몇 개의 레코드가 영향을 받는지 반환
+	// map에 전달해야 할 것들
+	// [1] schedule 테이블의 컬럼별 값
+	// [2] "refList"로 저장된 List
+	//		id값들(이메일)임
+	//		주소록 쿼리문을 사용해서 사람들 목록을 뿌려줘야 할 듯 - view에서
+	// |sche_startdate_d |sche_startdate_t  |sche_enddate_d |sche_enddate_t |
+	// |시작날짜 			 |시작시간				|끝날짜			|끝시간			|
+	// |||
+	// |||
+	// |list 								  |
+	// |참조인 아이디(m_id) 저장되어있는 List<String> |
 	@Override
 	public int insert(Map map) {
-		
-		// 파라미터로 넘어왔던 값들 중에서 
-		String sche_startdate = (String)map.get("sche_startdate_d")+" "+(String)map.get("sche_startdate_t");
-		String sche_enddate = (String)map.get("sche_enddate_d")+" "+(String)map.get("sche_enddate_t");
-		
-		System.out.println("[ ⚜ ] 시작일자 한 칸 띄고 시작시간"+sche_startdate);
-		System.out.println("[ ⚜ ] 마감일자 한 칸 띄고 마감시간"+sche_enddate);
-		
-		map.put("sche_startdate", sche_enddate);
-		map.put("sche_enddate", sche_enddate);
-		
-		
-		
+		// 파라미터로 넘어온 시간/ 날짜 합치기
+		map = scheSetTime(map);
+		//Schedule 테이블에 레코드 1행 입력
 		int record = dao.insertSche(map);
-		// (우선은)메세지 출력 - 상황에 따라 request 객체 반환해도 되고? 매개변수로 받아서 사용해도 되고?
-		if(record ==0) System.out.println("일정 입력 실패~~");
-		else  System.out.println("일정 입력성공, 참조인 몇 명 입력했어?"+record);
+		//가장 최근 입력된 SEQ번호 가져오기 - sche_no 가져오기
+		int sche_no = Integer.parseInt(String.valueOf(dao.selectCurrentSeqNo().get("sche_no")));
+		//map에 저장된 참조인 리스트를 꺼내서 sche_no 저장하기
+		List<String> idList = (List<String>)map.get("list");
+		List<ScheduleDTO> list = new Vector<>(); 
+		for(String str:idList) {
+			ScheduleDTO dto = new ScheduleDTO();
+			dto.setM_id(str);
+			dto.setSche_no(sche_no);
+			list.add(dto);
+		}
+		//참조인 입력하기
+		dao.insertScheRef(list);
 			
+		// (우선은)메세지 출력 - 상황에 따라 request 객체 반환해도 되고? 매개변수로 받아서 사용해도 되고?
+		//if(record ==0) System.out.println("일정 입력 실패~~");
+		//else  System.out.println("일정 입력성공, 참조인 몇 명 입력했어?"+record);
+		
+		//입력된 일정 수 반환
 		return record;
 	}
 	
@@ -234,27 +252,32 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		return 0;
 	}
 
+	
+	
 	@Override
+	// |sche_no | | |
+	// |일정번호	| | |
+	// |list 								  |
+	// |참조인 아이디(m_id) 저장되어있는 List<String> |
 	public int update(Map map) {
 		// 파라미터로 넘어왔던 값들 중에서 
-		String sche_startdate = (String)map.get("sche_startdate_d")+" "+(String)map.get("sche_startdate_t");
-		String sche_enddate = (String)map.get("sche_enddate_d")+" "+(String)map.get("sche_enddate_t");
-		System.out.println("[⚜]==== 서비스: update :"+map.get("sche_title"));
-		System.out.println("[ ⚜ ] 서비스의 update 시작일자 한 칸 띄고 시작시간"+sche_startdate);
-		System.out.println("[ ⚜ ] 서비스의 update 마감일자 한 칸 띄고 마감시간"+sche_enddate);
-		System.out.println("[ ⚜ ] update 마감일자 한 칸 띄고 마감시간"+sche_enddate);
-		// key=value 에서 String 타입을 int 타입으로 변환
-//		int sche_status = (int)map.get("sche_status");
-//		map.put("sche_status", sche_status);
-		
-		map.put("sche_startdate", sche_startdate);
-		map.put("sche_enddate", sche_enddate);
-		
+		map = scheSetTime(map);
 		int record = dao.updateSche(map);
-		// (우선은)메세지 출력 - 상황에 따라 request 객체 반환해도 되고? 매개변수로 받아서 사용해도 되고?
-		if(record ==0) System.out.println("일정 입력 실패~~");
-		else  System.out.println("일정 입력성공, 참조인 몇 명 입력했어?"+record);
-			
+		//가장 최근 입력된 SEQ번호 가져오기 - sche_no 가져오기
+		int sche_no = Integer.parseInt(String.valueOf(map.get("sche_no")));
+		//map에 저장된 참조인 리스트를 꺼내서 sche_no 저장하기
+		List<String> idList = (List<String>)map.get("list");
+		List<ScheduleDTO> list = new Vector<>(); 
+		for(String str:idList) {
+			ScheduleDTO dto = new ScheduleDTO();
+			dto.setM_id(str);
+			dto.setSche_no(sche_no);
+			list.add(dto);
+		}
+		//기존 참조인 목록 제거하기
+		dao.deleteRef(map);
+		//참조인 입력하기
+		dao.insertScheRef(list);	
 		return record;
 	}
 
@@ -264,6 +287,17 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		return dao.useFullCalendar();
 	}
 
+	//시간 설정 로직 따로 빼기
+	// |sche_startdate_d |sche_startdate_t  |sche_enddate_d |sche_enddate_t |
+	// |시작날짜 			 |시작시간				|끝날짜			|끝시간			|
+	public Map scheSetTime(Map map) {
+		String sche_startdate = (String)map.get("sche_startdate_d")+" "+(String)map.get("sche_startdate_t");
+		String sche_enddate = (String)map.get("sche_enddate_d")+" "+(String)map.get("sche_enddate_t");
+		//map에 시작/끝 일자+시간 문자열 저장
+		map.put("sche_startdate", sche_startdate);
+		map.put("sche_enddate", sche_enddate);
+		return map;
+	}
 	
 	
 }

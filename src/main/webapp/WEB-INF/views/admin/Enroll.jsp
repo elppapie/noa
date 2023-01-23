@@ -69,8 +69,8 @@
 								</select>
 							</div>
 							<div class="form-group">
-								<label for="sel1">부서책임자 선택하기:</label> <select
-									class="form-control" id="sel1" name="m_dept_leader">
+								<label for="sel1">부서책임자 선택하기:</label> 
+								<select	class="form-control" id="sel1" name="m_dept_leader">
 									<c:forEach var="member" items="${memberList}">
 										<option value="${member['m_id']}">${member["m_name"]},
 											팀번호:${member["team_no"]}, 직급:${member["position_name"]}<br />아이디:${member["m_id"]}
