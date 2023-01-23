@@ -40,9 +40,12 @@ public class MailController {
 	@RequestMapping("/mailSended.kosmo")
 	public String mailSended(
 			//Authentication auth,
-			@RequestParam Map map
+			@RequestParam Map map,
+			HttpServletRequest req
 			) {
-			
+		
+		List<Map> sendMailList = mService.selectSendList(map, req);
+		req.setAttribute("sendmail", sendMailList);
 		return "/mail/sended.noa";
 	}
 	
@@ -50,9 +53,12 @@ public class MailController {
 	@RequestMapping("/mailTemp.kosmo")
 	public String mailTemp(
 			//Authentication auth,
-			@RequestParam Map map
+			@RequestParam Map map,
+			HttpServletRequest req
 			) {
 
+		List<Map> tempMailList = mService.selectTempList(map, req);
+		req.setAttribute("tempmail", tempMailList);
 		return "/mail/temp.noa";
 	}
 	
@@ -60,8 +66,11 @@ public class MailController {
 	@RequestMapping("/mailMy.kosmo")
 	public String mailMy(
 			//Authentication auth,
-			@RequestParam Map map) {
-				
+			@RequestParam Map map,
+			HttpServletRequest req) {
+		
+		List<Map> myMailList = mService.selectMyList(map, req);
+		req.setAttribute("mymail", myMailList);
 		return "/mail/mym.noa";
 	}
 	
@@ -69,9 +78,12 @@ public class MailController {
 	@RequestMapping("/mailSpam.kosmo")
 	public String mailSpam(
 			//Authentication auth,
-			@RequestParam Map map
+			@RequestParam Map map,
+			HttpServletRequest req
 			) {
-				
+		
+		List<Map> spamMailList = mService.selectSpamList(map, req);
+		req.setAttribute("spammail", spamMailList);
 		return "/mail/spam.noa";
 	}
 	
@@ -79,9 +91,12 @@ public class MailController {
 	@RequestMapping("/mailFavorite.kosmo")
 	public String mailFavorite(
 			//Authentication auth,
-			@RequestParam Map map
+			@RequestParam Map map,
+			HttpServletRequest req
 			) {
 		
+		List<Map> fvMailList = mService.selectFvList(map, req);
+		req.setAttribute("fvmail", fvMailList);
 		return "/mail/favorite.noa";
 	}
 	
@@ -89,19 +104,25 @@ public class MailController {
 	@RequestMapping("/mailRecycle.kosmo")
 	public String mailRecycle(
 			//Authentication auth,
-			@RequestParam Map map		
+			@RequestParam Map map,
+			HttpServletRequest req
 			) {
 		
+		List<Map> recycleMailList = mService.selectRecycleList(map, req);
+		req.setAttribute("recyclemail", recycleMailList);
 		return "/mail/recycle.noa";
 	}
 	
-	//메일 전체 목록
+	//전체 메일함 목록
 	@RequestMapping("/mailList.kosmo")
 	public String mailList(
 			//Authentication auth,
-			@RequestParam Map map	
+			@RequestParam Map map,
+			HttpServletRequest req
 			) {
 		
+		List<Map> allMailLists = mService.selectAllMailList(map, req);
+		req.setAttribute("allmail", allMailLists);
 		return "/mail/list.noa";
 	}
 	
@@ -109,7 +130,8 @@ public class MailController {
 	@RequestMapping("/mailSel.kosmo")
 	public String mailSel(
 			//Authentication auth,
-			@RequestParam Map map) {
+			@RequestParam Map map,
+			HttpServletRequest req) {
 		
 		return "/mail/sel.noa";
 	}
@@ -118,7 +140,8 @@ public class MailController {
 	@RequestMapping("/mailRead.kosmo")
 	public String mailRead(
 			//Authentication auth,
-			@RequestParam Map map) {
+			@RequestParam Map map,
+			HttpServletRequest req) {
 				
 		return "/mail/read.noa";
 	}
@@ -127,7 +150,8 @@ public class MailController {
 	@RequestMapping("/mailFechk.kosmo")
 	public String mailFechk(
 			//Authentication auth,
-			@RequestParam Map map) {
+			@RequestParam Map map,
+			HttpServletRequest req) {
 		
 		return "/mail/fechk.noa";
 	}
@@ -136,7 +160,8 @@ public class MailController {
 	@RequestMapping("/sendSave")
 	public String sendSave(
 			//Authentication auth,
-			@RequestParam Map map) {
+			@RequestParam Map map,
+			HttpServletRequest req) {
 				
 		return "/mail/sendsave.noa";
 	}
@@ -145,7 +170,8 @@ public class MailController {
 	@RequestMapping("/sendRefer") 
 	public String sendRefer(
 			//Authentication auth,
-			@RequestParam Map map) {
+			@RequestParam Map map,
+			HttpServletRequest req) {
 				
 		return "/mail/sendRefer.noa";
 	}	

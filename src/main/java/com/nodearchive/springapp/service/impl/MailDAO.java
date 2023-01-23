@@ -50,7 +50,7 @@ public class MailDAO {
 		return template.selectList("mailByTrash", map);
 	}
 	
-	//메일 전체 목록
+	//전체 메일함 목록
 	public List<Map> recByMailLists(Map map){
 		return template.selectList("mailByLists", map);
 	}
