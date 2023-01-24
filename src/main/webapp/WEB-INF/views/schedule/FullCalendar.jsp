@@ -7,6 +7,8 @@
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
+<c:set var="memberList" value="${organization.getTeamMembersList()}" />
+<c:set var="one" value="${oneSchedule}"/>
 <!-- fullcalendar css -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
@@ -15,6 +17,11 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
 <!-- 제이쿼리 사용 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
 
 
 
@@ -69,6 +76,160 @@
 	
 	</div>
 </div>
+
+<!-- The Modal -->
+<div class="modal viewEventModal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h3 style="font-weight:bold;">일정 조회/수정</h3>
+        <button type="button" class="close closeModal" data-dismiss="modal">닫기</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body card-body">
+		<!-- BS4에서 긁어옴 -->
+		<form class="needs-validated" action="<c:url value='/Schedule/editOk.kosmo'/>" method='POST'>
+			<div class="form-group">
+				<label for="sche_title">일정종류:</label>
+				<input type="text" class="form-control" value="${one['SCHE_TYPE']}" name="sche_type" id="sche_type">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>			
+			</div>		
+		
+			<div class="form-group">
+				<label for="sche_title">일정명:</label>
+				<input type="text" class="form-control" value="${one['SCHE_TITLE']}" name="sche_title" id="sche_title">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>			
+			</div>
+			<div class="form-group">
+				<label for="sche_content">일정내용:</label>
+				<input type="text" class="form-control" value="${one['SCHE_CONTENT']}" name="sche_content" id="sche_content">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>			
+			</div>
+			
+			<div class="form-group input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text text-dark">시작날짜:</span>
+				</div>
+				<input type="text" class="form-control" value="${fn:split(one['SCHE_STARTDATE'],' ')[0]}" name="sche_startdate_d" id="sche_startdate_d">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>
+				<div class="input-group-prepend">
+					<span class="input-group-text text-dark">시작시간:</span>
+				</div>
+				<input type="time" class="form-control" value="${fn:split(one['SCHE_STARTDATE'],' ')[1]}" name="sche_startdate_t" id="sche_startdate_t">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>	    						
+			</div>
+			
+			<div class="form-group input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text text-dark">마감날짜:</span>
+				</div>
+				<input type="text" class="form-control" value="${fn:split(one['SCHE_ENDDATE'],' ')[0]}" name="sche_enddate_d" id="sche_enddate_d">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>
+				<div class="input-group-prepend">
+					<span class="input-group-text text-dark">마감시간:</span>
+				</div>
+				<input type="time" class="form-control" value="${fn:split(one['SCHE_ENDDATE'],' ')[1]}" name="sche_enddate_t" id="sche_enddate_t">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>	    						
+			</div>
+			
+			<div class="form-group">
+				<label for="sche_color">일정색깔:</label>
+				<input type="color" class="form-control" value="${one['SCHE_COLOR']}" name="sche_color" id="sche_color">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="sche_status">일정상태:</label>
+				<input type="text" class="form-control" value="${one['SCHE_STATUS']}" name="sche_status" id="sche_status">
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>
+			</div>
+			<%-- 
+			<div class="form-group form-check">
+				<label class="form-check-label">
+					<input class="form-check-input" type="checkbox" name="remember"> Remember me
+				</label>
+			</div>
+			--%>
+			<div class="form-group input-group">
+				<label for="sche_ref">참조인:</label><br/>
+				<c:if test="${ref-list.size() > 1}">
+					<c:forEach items="${ref-list}" var="ref">
+						<c:if test="${ref['m_id'] != requestScope['m_id']}">
+							
+							
+							
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">이름:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['m_name']}" name="sche_ref" id="sche_ref">
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">직급:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['position_name']}" name="sche_ref" id="sche_ref">
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">부서:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['dept_name']}" name="sche_ref" id="sche_ref">
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">팀:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['team_name']}" name="sche_ref" id="sche_ref">
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">아이디:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['m_id']}" name="sche_ref" id="sche_ref">																									
+
+						</c:if>
+					</c:forEach>
+
+				</c:if>
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<label for="selectDeptMember">참조인 변경:</label> 
+				<select
+					class="form-control" id="selectDeptMember" name="memberList"
+					multiple size="10" style="height: 100%;">
+					<c:forEach var="member" items="${memberList}">
+						<c:if test="${member['m_id'] != m_id}">
+							<option value="${member['m_id']}">${member["m_name"]},
+								팀번호:${member["team_no"]}, 직급:${member["position_name"]}, 아이디:${member["m_id"]}
+							</option>
+						</c:if>
+					</c:forEach>
+				</select>
+			</div>
+			<input type="hidden" name="sche_no" value="${one['SCHE_NO']}"/>
+			<input type="submit" class="btn btn-primary" value="제출"/>
+			<input type="submit" class="btn btn-primary" value="목록으로"/>
+		</form>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <script>
 <%--
 $(function(){
@@ -123,7 +284,39 @@ document.addEventListener('DOMContentLoaded', function() {
 				nowIndicator: true, // 현재 시간 마크
 				events: data,
 				eventClick : function(info){
-					info.el.style.borderColor = 'red';
+					$.ajax({
+					    url: "<c:url value='/Schedule/oneEvent.kosmo?sche_no="+info.event._def.publicId+"'/>",
+					    type: 'GET',
+					    contentType : "application/json",
+					    dataType: 'json'
+					})
+					.done(function(data){
+						$('.viewEventModal').modal('show');
+						//$('.viewEventModal').show();
+						//viewModalOpen(info);
+						$('#sche_title').val(info.event._def.title);
+						$('#sche_content').val(data['sche_content']);
+						$('#sche_startdate_d').val(data['sche_startdate'].split(" ")[0]);
+						$('#sche_startdate_t').val(data['sche_startdate'].split(" ")[1]);
+						$('#sche_enddate_d').val(data['sche_enddate'].split(" ")[0]);
+						$('#sche_enddate_t').val(data['sche_enddate'].split(" ")[1]);
+						$('#sche_color').val(data['sche_color']);
+						$('#sche_status').val(data['sche_status']);
+						$('#sche_type').val(data['sche_type']);
+						for(const i in data['sche_ref']){
+							console.log("안녕 나는 "+i+"야");
+						}
+						//$('#sche_ref').val(data['sche_ref']);
+					});
+					
+					
+					
+					var oneEvent = '${one}';
+					console.log("oneEvent: "+oneEvent);
+					console.log(info);
+					console.log(typeof info);
+					console.log(info.event._def.title);
+					console.log(info.event._def.publicId);
 				}
 			});
 			calendar.render();
@@ -131,6 +324,21 @@ document.addEventListener('DOMContentLoaded', function() {
 		request.fail(function(jdXHR, textStatus){
 			console.log(jdXHR);
 			alert("Request failed: "+textStatus );
+		});
+		
+		
+		function viewModalOpen(info){
+			
+		    //if(현재로그인한사람/세션에서 아이디 가져오기 == null){
+			//	alert();
+			//	location.href='login.jsp';
+			//}
+		    //$('.viewEventModal').modal({backdrop: 'static'});
+			$('.viewEventModal').modal("show");
+			
+		}
+		$('.closeModal').click(function(){
+			$('.viewEventModal').modal('hide');
 		});
 	});
 });

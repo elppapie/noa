@@ -56,15 +56,13 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정시작날짜:</span>
 				</div>
-				<label for="sche_startdate_d"></label>
 				<input type="text" class="form-control" value="${fn:split(one['SCHE_STARTDATE'],' ')[0]}" name="sche_startdate_d" id="sche_startdate_d">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정시작시간:</span>
 				</div>
-				<label for="sche_startdate_t"></label>
-				<input type="text" class="form-control" value="${fn:split(one['SCHE_STARTDATE'],' ')[1]}" name="sche_startdate_t" id="sche_startdate_t">
+				<input type="time" class="form-control" value="${fn:split(one['SCHE_STARTDATE'],' ')[1]}" name="sche_startdate_t" id="sche_startdate_t">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>	    						
 			</div>
@@ -73,29 +71,27 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정마감날짜:</span>
 				</div>
-				<label for="sche_enddate_d"></label>
 				<input type="text" class="form-control" value="${fn:split(one['SCHE_ENDDATE'],' ')[0]}" name="sche_enddate_d" id="sche_enddate_d">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정마감시간:</span>
 				</div>
-				<label for="sche_enddate_t"></label>
-				<input type="text" class="form-control" value="${fn:split(one['SCHE_ENDDATE'],' ')[1]}" name="sche_enddate_t" id="timepicker">
+				<input type="time" class="form-control" value="${fn:split(one['SCHE_ENDDATE'],' ')[1]}" name="sche_enddate_t" id="timepicker">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>	    						
 			</div>
 			
 			<div class="form-group">
 				<label for="sche_color">일정색깔:</label>
-				<input type="text" class="form-control timepicker" value="${one['SCHE_COLOR']}" name="sche_color" id="sche_color">
+				<input type="color" class="form-control" value="${one['SCHE_COLOR']}" name="sche_color" id="sche_color">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 			</div>
 			
 			<div class="form-group">
-				<label for="sche_color">일정상태:</label>
-				<input type="text" class="form-control timepicker" value="${one['SCHE_STATUS']}" name="sche_status" id="sche_status">
+				<label for="sche_status">일정상태:</label>
+				<input type="text" class="form-control" value="${one['SCHE_STATUS']}" name="sche_status" id="sche_status">
 				<div class="valid-feedback">Valid.</div>
     			<div class="invalid-feedback">Please fill out this field.</div>
 			</div>
@@ -106,9 +102,46 @@
 				</label>
 			</div>
 			--%>
+			<div class="form-group input-group">
+				<label for="sche_ref">참조인:</label><br/>
+				<c:if test="${requestScope['ref-list'].size() > 1}">
+					<c:forEach items="${requestScope['ref-list']}" var="ref">
+						<c:if test="${ref['m_id'] != requestScope['m_id']}">
+							
+							
+							
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">이름:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['m_name']}" name="sche_ref" id="sche_ref">
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">직급:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['position_name']}" name="sche_ref" id="sche_ref">
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">부서:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['dept_name']}" name="sche_ref" id="sche_ref">
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">팀:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['team_name']}" name="sche_ref" id="sche_ref">
+							<div class="input-group-prepend">
+								<span class="input-group-text text-dark">아이디:</span>
+							</div>
+							<input type="text" class="form-control" value="${ref['m_id']}" name="sche_ref" id="sche_ref">																									
+
+						</c:if>
+					</c:forEach>
+
+				</c:if>
+				<div class="valid-feedback">Valid.</div>
+    			<div class="invalid-feedback">Please fill out this field.</div>
+			</div>
+			
 			
 			<div class="form-group">
-				<label for="selectDeptMember">참조인 추가:</label> 
+				<label for="selectDeptMember">참조인 변경:</label> 
 				<select
 					class="form-control" id="selectDeptMember" name="memberList"
 					multiple size="10" style="height: 100%;">
@@ -122,7 +155,8 @@
 				</select>
 			</div>
 			<input type="hidden" name="sche_no" value="${one['SCHE_NO']}"/>
-			<button type="submit" class="btn btn-primary" >Submit</button>
+			<input type="submit" class="btn btn-primary" value="제출"/>
+			<input type="submit" class="btn btn-primary" value="목록으로"/>
 		</form>
 	</div>
 	</div>

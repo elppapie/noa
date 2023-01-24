@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nodearchive.springapp.service.AdminServiceImpl;
 import com.nodearchive.springapp.service.ScheduleServiceImpl;
 import com.nodearchive.springapp.service.impl.ScheduleDTO;
@@ -34,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @Controller
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @RequiredArgsConstructor
 @RequestMapping("/Schedule")
 public class ScheduleController {
@@ -154,8 +157,10 @@ public class ScheduleController {
 //		System.out.println("일정 번호ㅗㅗㅗㅗ:"+oneSchedule.get("SCHE_NO"));
 		
 		map.put("m_id", "kim1234@samsung.com");
+		
 		model.addAttribute("m_id",map.get("m_id"));
 		model.addAttribute("organization", adminService.getOrgAdmin(map));
+		model.addAttribute("ref-list", scheduleService.viewRef(map));
 		return "schedule/View.noa";
 		// "schedule/View.noa"+map.get("SCHE_NO");로 했더니 404에러뜸... 뒤에것이 object타입이라 그런가?
 	}
@@ -198,7 +203,7 @@ public class ScheduleController {
 		for(String str:memberList) list.add(str);
 		
 		//입력하는 사람도 넣어야 하는데
-		//list.add("");
+		list.add(String.valueOf(map.get("m_id")));
 		
 		//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
 		map.put("list", list);
@@ -290,6 +295,42 @@ public class ScheduleController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/oneEvent.kosmo")
+	public Map oneEvent(
+			HttpServletRequest req,
+			//Authentication auth,
+			@RequestParam Map map, //sche_no를 전달받음
+			ModelAndView mv
+			) {
+		Map oneSchedule = scheduleService.view(map);		
+		map.put("m_id", "kim1234@samsung.com");
+		
+		HashMap<String, Object> hash = new HashMap<>();
+        JSONObject jsonObj = new JSONObject();
+        hash.put("sche_title", oneSchedule.get("sche_title").toString());
+        hash.put("sche_content", oneSchedule.get("sche_content").toString());
+        hash.put("sche_startdate", oneSchedule.get("sche_startdate").toString());
+        hash.put("sche_enddate", oneSchedule.get("sche_enddate").toString());
+        hash.put("sche_type", oneSchedule.get("sche_type").toString());
+        hash.put("sche_color", oneSchedule.get("sche_color").toString());
+        hash.put("sche_status", oneSchedule.get("sche_status").toString());
+        hash.put("ref-list", scheduleService.viewRef(map));
+        
+		
+        jsonObj = new JSONObject(hash);
+		
+//		model.addAttribute("m_id",map.get("m_id"));
+//		model.addAttribute("organization", adminService.getOrgAdmin(map));
+//		model.addAttribute("ref-list", scheduleService.viewRef(map));
+//		mv.addObject("jsonObj", jsonObj);
+//		mv.setViewName("/schedule/FullCalendar.noa");
+//		return mv;
+        return jsonObj;
+	}
+	
+	
+	
+	@ResponseBody
 	@RequestMapping("/fullcalendarData.kosmo")
 	public List<Map> fullcalendarData() {
 			//fullCalendar.jsp에서 이 메소드를 호출해서 정보를 받아옴
@@ -302,22 +343,26 @@ public class ScheduleController {
 	 
 	        HashMap<String, Object> hash = new HashMap<>();
 	 
-	        for (int i = 0; i < calendar.size(); i++) {	        	
+	        for (int i = 0; i < calendar.size(); i++) {	  
+	        	hash.put("id", calendar.get(i).get("SCHE_NO").toString());
 	            hash.put("title", calendar.get(i).get("SCHE_TITLE").toString());
 	            hash.put("start", calendar.get(i).get("SCHE_STARTDATE").toString());
 	            hash.put("end", calendar.get(i).get("SCHE_ENDDATE").toString());
 	            //엥 toString() 했더니 갑자기 됨
 //	            hash.put("time", listAll.get(i).getScheduleTime());
 	            String color = calendar.get(i).get("SCHE_COLOR").toString();
-	            if(!color.contains("#")) { //색깔을 #으로 저장하지 않았을 경우 색깔 정보 #으로 넣기
-	            	switch(color) {
-	            		case "white": color= "#f5f5f5"; break;
-	            		case "blue" : color= "#3944BC"; break;
-	            	}
-	            	
-	            }
+//	            if(!color.contains("#")) { //색깔을 #으로 저장하지 않았을 경우 색깔 정보 #으로 넣기
+//	            	switch(color) {
+//	            		case "white": color= "#f5f5f5"; break;
+//	            		case "blue" : color= "#3944BC"; break;
+//	            	}
+//	            	
+//	            }
 	            hash.put("color", color);
-	            hash.put("url", "view.kosmo?sche_no="+calendar.get(i).get("SCHE_NO").toString());
+////////////////////////////////////////잠시 url 비활성화
+	            //hash.put("url", "view.kosmo?sche_no="+calendar.get(i).get("SCHE_NO").toString());
+	            hash.put("url", "oneEvent.kosmo?sche_no="+calendar.get(i).get("SCHE_NO").toString());
+	            
 	            
 	            //System.out.println("그래서 이거 파라미터로 잘 넘어가니???? :"+"view.kosmo?SCHE_NO="+calendar.get(i).get("SCHE_NO").toString());
 	            

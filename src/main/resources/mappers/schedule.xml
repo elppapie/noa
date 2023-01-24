@@ -76,10 +76,22 @@
 	<!-- 일정 하나 클릭시(상세보기) 띄워주기 -->
 	<!-- #{sche_no} 일정번호 전달 -->
 	<!-- #{id} 로그인한 사람의 아이디 전달 / 권한때 필요할듯 -->
-	<!-- 일정 하나만 띄울거니까 id로도 WHERE문 제한해야함 -->
-	
-	<!-- 일단 아이디 넣는 건 빼고, 최고권한자(ORDER BY position_code) rn 1띄우기 // -->
 	<select id="scheFindRecordByNo" parameterType="Map" resultType="Map">		
+		SELECT 
+			sche_title "sche_title", 
+			sche_content "sche_content", 
+			sche_startdate "sche_startdate", 
+			sche_enddate "sche_enddate", 
+			sche_status "sche_status", 
+			sche_color "sche_color", 
+			sche_type "sche_type"
+		FROM schedule
+		WHERE sche_no = #{sche_no}
+	</select>
+	
+	<!-- 일정 하나만 띄울거니까 id로도 WHERE문 제한해야함 -->
+	<!-- 일단 아이디 넣는 건 빼고, 최고권한자(ORDER BY position_code) rn 1띄우기 // -->
+	<select id="scheFindRecordByNoOrderByPosition" parameterType="Map" resultType="Map">		
 		SELECT *
 		FROM ( SELECT T.*, ROWNUM rn FROM ( SELECT * FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
     		JOIN members m ON m.m_id = sr.m_id
@@ -101,7 +113,7 @@
     		JOIN team t ON t.team_no = m.team_no
     		JOIN dept d ON d.dept_code = t.dept_code
     	WHERE
-    		sche_no = #{sche_no}
+    		sr.sche_no = #{sche_no}
 	</select>
 
 	<!-- 일정 입력용 -->

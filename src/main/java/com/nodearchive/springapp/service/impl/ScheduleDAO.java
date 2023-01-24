@@ -44,7 +44,11 @@ public class ScheduleDAO {
 	}
 	
 	// 일정에 연관된 사람들 가져오기 (1명(본인만 연관된)이어도 가져옴)
+	// |sche_no |
+	// |일정번호	|
 	public List findRefByNo(Map map){
+		// |m_name 	|position_name 	|m_id |team_name   |dept_name |
+		// |이름 		|직급이름 			|아이디 |소속 팀 이름   |소속 부서 이름 |
 		return template.selectList("scheFindRefByNo",map);
 	}
 

@@ -168,11 +168,15 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	// 일정 상세보기용(일정 하나 클릭시)
 	// 로그인한 사람의 권한 확인
 	public Map view(Map map) {
-		System.out.println("[ ⚜ ] 서비스에서 DAO로 넘어가기 전" + map);
-		return dao.view(map);
+		Map map_ = dao.view(map);
+		// 받은 map 전달하기 전에 수정할 것은 여기에서 수정
+		return map_;
 	}
 	// 일정 참조인 목록보기
+	// |sche_no |
+	// |일정번호	|
 	public List viewRef(Map map) {
+		
 		return dao.findRefByNo(map);
 	}
 	
@@ -276,7 +280,7 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		}
 		//기존 참조인 목록 제거하기
 		dao.deleteRef(map);
-		//참조인 입력하기
+		//참조인 새로 입력하기
 		dao.insertScheRef(list);	
 		return record;
 	}
