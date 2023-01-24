@@ -21,6 +21,52 @@ function openWebRTCMain(m_id){
         )
 }
 
+///////////////sidebar 오류 수정 시작///////////////
+/*
+	const sessionStorage = window.sessionStorage;
+    const sidebar = document.querySelector("nav#sidebar");
+    const nav_items_a = sidebar.querySelectorAll("#collapse > li > a"); //???
+
+    sidebar.onclick = (e) => {
+	  console.log("sidebar is clicked")
+      if(!(e.target.nodeName==="A" && e.target.children.length==0 )) return true;
+      console.log("sidebar's a tag is clicked")
+      let a = e.target;
+      //세션스토리지에 클릭한 사이드 메뉴와 서브 사이드메뉴를 저장.
+      sessionStorage.setItem("sub-nav-item",a.textContent);
+      sessionStorage.setItem("nav-item",a.parentElement.parentElement.parentElement.previousElementSibling.querySelector('span').textContent);
+	  //a.parentElement.parentElement.parentElement.previousElementSibling.querySelector('span').textContent
+    };
+
+    //세선스토리지에 클릭한 사이드 메뉴가 저장되어 있다면 다른 메뉴의 active를 없애준다.
+    console.log(sessionStorage.getItem("nav-item").toString()) //해결
+    console.log(sessionStorage.getItem("sub-nav-item")) //해결
+    
+    if(sessionStorage.getItem("sub-nav-item")){
+      //일단 모든 사이드메뉴 active 클래스 없애기
+      let lis =sidebar.querySelectorAll('li');
+      lis.forEach((item,index)=>{
+      console.log(item);
+      console.log(item.firstElementChild);
+        if(item.classList.contains('active')) {
+        	console.log('li tag contains "active" class');
+        	item.classList.remove('active');
+        }
+        if(item.firstElementChild.classList.contains('active')) {
+        	console.log("li's a tag contains 'active' class");
+        	item.firstElementChild.classList.remove('active');
+        }
+      });
+
+
+	}
+
+
+*/
+
+///////////////sidebar 오류 수정 끝///////////////
+
+
 ////////////////project/project.jsp 시작 ////////////////
 	//+버튼 클릭 시 체크리스트 추가. (모달창 먼저 띄워서 입력받은 후에 입력받은 값을 htmlString에 넣어서 추가할 것.)
 if(document.querySelector("#project-todo-list-add-btn")!=null){

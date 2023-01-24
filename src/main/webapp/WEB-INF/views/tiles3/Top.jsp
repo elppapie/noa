@@ -387,178 +387,178 @@
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
 	  <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="${path}/WEB-INF/views/main.kosmo">
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-border-all"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#main-addressBook" aria-expanded="false" aria-controls="ui-basic">
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-address-book"></i>
-              <span class="menu-title">주소록</span>
-              <i class="menu-arrow"></i> 
-            </a>
-            <div class="collapse" id="main-addressBook">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="${path}/Address/allList.kosmo">전체 구성원</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/resources/pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/resources/pages/ui-features/typography.html">Typography</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#main-mail" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-envelope"></i>
-              <span class="menu-title">메일</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="main-mail">
-              <ul class="nav flex-column sub-menu">
-              	<li class="nav-item"><a class="nav-link" href="${path}/Mail/writeToOthers.kosmo"><i class="fa fa-color-gray fa-light fa-pen-to-square"> 메일쓰기</i></a></li>
-              	<li class="nav-item"><a class="nav-link" href="${path}/Mail/writeToMe.kosmo"><i class="fa fa-color-gray fa-light fa-pen-to-square"> 내게쓰기</i></a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/Mail/mailList.kosmo">전체메일</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailView.kosmo">받은메일함</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailSended.kosmo">보낸메일함</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailFavorite.kosmo">즐겨찾기</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailTemp.kosmo">임시메일함</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailMy.kosmo">내게쓴메일함</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailSpam.kosmo">스팸메일함</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailRecycle.kosmo">휴지통</a></li>
-                <!--  
-                전체메일, 받은메일함에서 표시할 항목들
-                	*메일 검색 : /Mail/mailSel.kosmo
-					*메일 읽음/안읽음 표시 : /Mail/mailRead.kosmo
-					*메일 즐찾 체크여부 : /Mail/mailCheck.kosmo
-				메일 작성 페이지에서 표시할 항목
-					*메일 임시 저장 : /Mail/sendSave
-					*메일 참조 설정 : /Mail/sendRefer
-                -->
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="javascript:openChatMain('${path}/Chat/main.kosmo')" aria-expanded="false" aria-controls="form-elements">
-            <!--  data-bs-toggle="collapse"  -->
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-comment"></i>
-              <span class="menu-title">메신저</span>
-              <i class="menu-chat-sidebar"></i>
-              <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
-              <!-- <i class="menu-arrow"></i>  
-               -->
-            </a>
-            <!-- 
-            <div class="collapse" id="main-message">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/Chat/main.kosmo">메신저열기</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
-              </ul>
-            </div>
-            -->
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#main-attendance" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-user-clock"></i>
-              <span class="menu-title">근태관리</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="main-attendance">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/">세부기능1</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
-                 <li class="nav-item"><a class="nav-link" href="${path}/Attendance/dailylist.kosmo">출퇴근 관리</a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/Attendance/monthlylist.kosmo">월 근무내역</a></li>
-                <li class="nav-item"><a class="nav-link" href="${path}/">휴가 신청</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">휴가 현황</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#main-approval" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-clipboard"></i>
-              <span class="menu-title">전자결재</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="main-approval">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/Approval/approvalmain.kosmo">결재목록</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Approval/selectform.kosmo">결재문서작성</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Approval/approvallist.kosmo">문서함</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Approval/templist.kosmo">임시문서함</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="${path}/Notice/List.kosmo" aria-expanded="false" aria-controls="form-elements">
-            <!--  data-bs-toggle="collapse"  -->
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-book"></i>
-              <span class="menu-title">공지사항</span>
-              <i class="menu-chat-sidebar"></i>
-              <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="${path}/Schedule/month.kosmo" aria-expanded="false" aria-controls="form-elements">
-            <!--  data-bs-toggle="collapse"  -->
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-calendar-check"></i>
-              <span class="menu-title">캘린더</span>
-              <i class="menu-chat-sidebar"></i>
-              <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#main-todo" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-list-check"></i>
-              <span class="menu-title">업무관리</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="main-todo">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/Project/list.kosmo">프로젝트</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Task/list.kosmo">개인업무</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/Report/list.kosmo">리포트관리</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#main-meeting" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mifa fa fa-color-gray fa-light fa-handshake"></i>
-              <span class="menu-title">회의실예약</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="main-meeting">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/Meet/list.kosmo">예약목록</a></li>
-                <!-- /Meet/calview.kosmo : 예약 캘린더로 보기 >> 예약목록에서 달력 버튼 누르면 모달로 보여주기. -->
-                <li class="nav-item"> <a class="nav-link" href="${path}/Meet/insertview.kosmo">예약신청</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fullscreen" target="_top" href="http://192.168.0.36:3000/" aria-expanded="false" aria-controls="form-elements" onclick='openWebRTCMain()'>
-            <!--  data-bs-toggle="collapse"  -->
-              <i class="menu-icon mifa fa fa-duotone fa-video"></i>
-              <span class="menu-title">화상회의</span>
-              <i class="menu-chat-sidebar"></i>
-              <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
-              <!-- <i class="menu-arrow"></i>  
-               -->
-            </a>
-            <!-- 
-            <div class="collapse" id="main-message">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="${path}/Chat/main.kosmo">메신저열기</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
-              </ul>
-            </div>
-            -->
-          </li>
-        </ul>
-      </nav>
+	    <ul class="nav">
+	      <li class="nav-item">
+	        <a class="nav-link" href="${path}/WEB-INF/views/main.kosmo">
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-border-all"></i>
+	          <span class="menu-title">Dashboard</span>
+	        </a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" data-bs-toggle="collapse" href="#main-addressBook" aria-expanded="false" aria-controls="ui-basic">
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-address-book"></i>
+	          <span class="menu-title">주소록</span>
+	          <i class="menu-arrow"></i> 
+	        </a>
+	        <div class="collapse" id="main-addressBook">
+	          <ul class="nav flex-column sub-menu">
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Address/allList.kosmo">전체 구성원</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/resources/pages/ui-features/dropdowns.html">Dropdowns</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/resources/pages/ui-features/typography.html">Typography</a></li>
+	          </ul>
+	        </div>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" data-bs-toggle="collapse" href="#main-mail" aria-expanded="false" aria-controls="form-elements">
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-envelope"></i>
+	          <span class="menu-title">메일</span>
+	          <i class="menu-arrow"></i>
+	        </a>
+	        <div class="collapse" id="main-mail">
+	          <ul class="nav flex-column sub-menu">
+	              <li class="nav-item"><a class="nav-link" href="${path}/Mail/writeToOthers.kosmo"><i class="fa fa-color-gray fa-light fa-pen-to-square"> 메일쓰기</i></a></li>
+	              <li class="nav-item"><a class="nav-link" href="${path}/Mail/writeToMe.kosmo"><i class="fa fa-color-gray fa-light fa-pen-to-square"> 내게쓰기</i></a></li>
+	            <li class="nav-item"><a class="nav-link" href="${path}/Mail/mailList.kosmo">전체메일</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailView.kosmo">받은메일함</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailSended.kosmo">보낸메일함</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailFavorite.kosmo">즐겨찾기</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailTemp.kosmo">임시메일함</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailMy.kosmo">내게쓴메일함</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailSpam.kosmo">스팸메일함</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Mail/mailRecycle.kosmo">휴지통</a></li>
+	            <!--  
+	            전체메일, 받은메일함에서 표시할 항목들
+	                *메일 검색 : /Mail/mailSel.kosmo
+	                *메일 읽음/안읽음 표시 : /Mail/mailRead.kosmo
+	                *메일 즐찾 체크여부 : /Mail/mailCheck.kosmo
+	            메일 작성 페이지에서 표시할 항목
+	                *메일 임시 저장 : /Mail/sendSave
+	                *메일 참조 설정 : /Mail/sendRefer
+	            -->
+	          </ul>
+	        </div>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="javascript:openChatMain('${path}/Chat/main.kosmo')" aria-expanded="false" aria-controls="form-elements">
+	        <!--  data-bs-toggle="collapse"  -->
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-comment"></i>
+	          <span class="menu-title">메신저</span>
+	          <i class="menu-chat-sidebar"></i>
+	          <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
+	          <!-- <i class="menu-arrow"></i>  
+	           -->
+	        </a>
+	        <!-- 
+	        <div class="collapse" id="main-message">
+	          <ul class="nav flex-column sub-menu">
+	            <li class="nav-item"><a class="nav-link" href="${path}/Chat/main.kosmo">메신저열기</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
+	          </ul>
+	        </div>
+	        -->
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" data-bs-toggle="collapse" href="#main-attendance" aria-expanded="false" aria-controls="form-elements">
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-user-clock"></i>
+	          <span class="menu-title">근태관리</span>
+	          <i class="menu-arrow"></i>
+	        </a>
+	        <div class="collapse" id="main-attendance">
+	          <ul class="nav flex-column sub-menu">
+	            <li class="nav-item"><a class="nav-link" href="${path}/">세부기능1</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
+	             <li class="nav-item"><a class="nav-link" href="${path}/Attendance/dailylist.kosmo">출퇴근 관리</a></li>
+	            <li class="nav-item"><a class="nav-link" href="${path}/Attendance/monthlylist.kosmo">월 근무내역</a></li>
+	            <li class="nav-item"><a class="nav-link" href="${path}/">휴가 신청</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/">휴가 현황</a></li>
+	          </ul>
+	        </div>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" data-bs-toggle="collapse" href="#main-approval" aria-expanded="false" aria-controls="form-elements">
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-clipboard"></i>
+	          <span class="menu-title">전자결재</span>
+	          <i class="menu-arrow"></i>
+	        </a>
+	        <div class="collapse" id="main-approval">
+	          <ul class="nav flex-column sub-menu">
+	            <li class="nav-item"><a class="nav-link" href="${path}/Approval/approvalmain.kosmo">결재목록</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Approval/selectform.kosmo">결재문서작성</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Approval/approvallist.kosmo">문서함</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Approval/templist.kosmo">임시문서함</a></li>
+	          </ul>
+	        </div>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="${path}/Notice/List.kosmo" aria-expanded="false" aria-controls="form-elements">
+	        <!--  data-bs-toggle="collapse"  -->
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-book"></i>
+	          <span class="menu-title">공지사항</span>
+	          <i class="menu-chat-sidebar"></i>
+	          <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
+	        </a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="${path}/Schedule/month.kosmo" aria-expanded="false" aria-controls="form-elements">
+	        <!--  data-bs-toggle="collapse"  -->
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-calendar-check"></i>
+	          <span class="menu-title">캘린더</span>
+	          <i class="menu-chat-sidebar"></i>
+	          <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
+	        </a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" data-bs-toggle="collapse" href="#main-todo" aria-expanded="false" aria-controls="form-elements">
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-list-check"></i>
+	          <span class="menu-title">업무관리</span>
+	          <i class="menu-arrow"></i>
+	        </a>
+	        <div class="collapse" id="main-todo">
+	          <ul class="nav flex-column sub-menu">
+	            <li class="nav-item"><a class="nav-link" href="${path}/Project/list.kosmo">프로젝트</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Task/list.kosmo">개인업무</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Report/list.kosmo">리포트관리</a></li>
+	          </ul>
+	        </div>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" data-bs-toggle="collapse" href="#main-meeting" aria-expanded="false" aria-controls="form-elements">
+	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-handshake"></i>
+	          <span class="menu-title">회의실예약</span>
+	          <i class="menu-arrow"></i>
+	        </a>
+	        <div class="collapse" id="main-meeting">
+	          <ul class="nav flex-column sub-menu">
+	            <li class="nav-item"><a class="nav-link" href="${path}/Meet/list.kosmo">예약목록</a></li>
+	            <!-- /Meet/calview.kosmo : 예약 캘린더로 보기 >> 예약목록에서 달력 버튼 누르면 모달로 보여주기. -->
+	            <li class="nav-item"> <a class="nav-link" href="${path}/Meet/insertview.kosmo">예약신청</a></li>
+	          </ul>
+	        </div>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link fullscreen" target="_top" href="http://192.168.0.36:3000/" aria-expanded="false" aria-controls="form-elements" onclick='openWebRTCMain()'>
+	        <!--  data-bs-toggle="collapse"  -->
+	          <i class="menu-icon mifa fa fa-duotone fa-video"></i>
+	          <span class="menu-title">화상회의</span>
+	          <i class="menu-chat-sidebar"></i>
+	          <i class="fa fa-solid fa-up-right-from-square load-immediate-icon"></i>
+	          <!-- <i class="menu-arrow"></i>  
+	           -->
+	        </a>
+	        <!-- 
+	        <div class="collapse" id="main-message">
+	          <ul class="nav flex-column sub-menu">
+	            <li class="nav-item"><a class="nav-link" href="${path}/Chat/main.kosmo">메신저열기</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능2</a></li>
+	            <li class="nav-item"> <a class="nav-link" href="${path}/">세부기능3</a></li>
+	          </ul>
+	        </div>
+	        -->
+	      </li>
+	    </ul>
+	  </nav>
       <!-- partial -->
       
       <div class="main-panel">
