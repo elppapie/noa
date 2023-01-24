@@ -12,11 +12,7 @@
 
 <div class="tab-content tab-content-basic">
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-	
-	
-
 	<div class="text-right mb-2">
-		<a href="<c:url value="/Mail/writeToOthers.kosmo"/>" class="btn btn-light">메일 쓰기</a>
 	</div>
 	<table class="table table-light table-hover text-center">
 
@@ -33,7 +29,7 @@
 		<tbody class="table-sm down-file-body">
 			<c:if test="${empty receviemail}" var="isEmpty">
 				<tr>
-					<td colspan="4">받은 메일이 없습니다.</td>
+					<td colspan="6">메일이 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${not isEmpty }">
@@ -47,9 +43,7 @@
 					</tr>
 				</c:forEach>
 			</c:if>
-
 		</tbody>
-	</table>
-	
+	</table>	
 	</div>
 </div>
