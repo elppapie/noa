@@ -162,7 +162,8 @@ public class MailController {
 			//Authentication auth,
 			@RequestParam Map map,
 			HttpServletRequest req) {
-				
+		
+			
 		return "/mail/sendsave.noa";
 	}
 	
