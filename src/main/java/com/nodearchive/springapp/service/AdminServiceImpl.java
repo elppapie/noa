@@ -30,6 +30,10 @@ public class AdminServiceImpl implements AdminService<Map>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	//기업의 모든 구성원 가져오기 (기본 구성원 목록)
+	public List<Map> getMembersFromEmp(Map map){
+		return adminDao.selectAllMembersFromEmp(map);
+	}
 	
 	//아이디로 기업코드 가져오기
 	public String getEmpCode(Map map) {
@@ -63,7 +67,7 @@ public class AdminServiceImpl implements AdminService<Map>{
 		//접속중인 사람의 소속회사 가져오기 (1/2) address.xml에 있음
 		map.put("emp_code", addrDao.getEmpCodeByMId(map));
 		//접속중인 사람의 소속회사(emp_code)에 해당하는 사람 목록 List<String> 가져오기 (2/2)
-		map.put("member_list", adminDao.selectMemberOfEmpList(map));	
+		map.put("member_list", adminDao.selectMemberOfEmpList(map));
 		
 		// |emp_code |member_list 	|
 		// |회사코드	 |회사구성원목록(id) |

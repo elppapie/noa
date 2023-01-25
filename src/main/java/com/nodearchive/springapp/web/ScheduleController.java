@@ -20,22 +20,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nodearchive.springapp.service.AdminServiceImpl;
 import com.nodearchive.springapp.service.ScheduleServiceImpl;
+import com.nodearchive.springapp.service.impl.OrganizationDTO;
 import com.nodearchive.springapp.service.impl.ScheduleDTO;
 
 import lombok.RequiredArgsConstructor;
 
 
-
-@Controller
+@Controller 
+//대신 RestController사용, 객체 반환시 자동 JSON전환
+//@RestController
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @RequiredArgsConstructor
 @RequestMapping("/Schedule")
@@ -210,6 +216,9 @@ public class ScheduleController {
 		int howManyRefs = scheduleService.insert(map);
 		model.addAttribute("message", "입력폼 작성 후 전송(등록)");
 		System.out.println("[ ⚜ ] 참조인 몇명등록됨? (test때는 3명):"+howManyRefs);
+		
+		//fullcalendar용 일정 정보 다운받기..하면 안됨 sche_no를 요구하기 때문
+		fullcalendar(model, map);
 
 		return "schedule/FullCalendar.noa";
 	}
@@ -284,29 +293,31 @@ public class ScheduleController {
 	public String fullcalendar(
 			Model model,
 			//Authentication auth,
-			@RequestParam Map map,
-			HttpServletRequest request
+			@RequestParam Map map
 			) {
 		System.out.println("풀캘린더 만나러 갑니다~~★");
 			List<Map> calendar = scheduleService.useFullCalendar();
-			request.setAttribute("calendarList",calendar);
+			model.addAttribute("calendarList",calendar);
 
 		return "schedule/FullCalendar.noa";
 	}
 	
 	@ResponseBody
-	@RequestMapping("/oneEvent.kosmo")
+	@RequestMapping(value="/oneEvent.kosmo", produces="application/json; charset=UTF-8")
 	public Map oneEvent(
-			HttpServletRequest req,
 			//Authentication auth,
-			@RequestParam Map map, //sche_no를 전달받음
-			ModelAndView mv
-			) {
-		Map oneSchedule = scheduleService.view(map);		
+			//@RequestBody Map map, //sche_no를 전달받음
+			@RequestParam Map map //sche_no를 전달받음
+			) throws JsonProcessingException {
+		//클릭한 일정의 내용 전달받음
+		Map oneSchedule = scheduleService.view(map);
+		//임의의 로그인한 자 
 		map.put("m_id", "kim1234@samsung.com");
+		System.out.println("★sche_no 잘 들어왔나용:"+map.get("sche_no").toString());
 		
 		HashMap<String, Object> hash = new HashMap<>();
-        JSONObject jsonObj = new JSONObject();
+        //JSONObject jsonObj = new JSONObject();
+        ObjectMapper mapper = new ObjectMapper();
         hash.put("sche_title", oneSchedule.get("sche_title").toString());
         hash.put("sche_content", oneSchedule.get("sche_content").toString());
         hash.put("sche_startdate", oneSchedule.get("sche_startdate").toString());
@@ -316,8 +327,9 @@ public class ScheduleController {
         hash.put("sche_status", oneSchedule.get("sche_status").toString());
         hash.put("ref-list", scheduleService.viewRef(map));
         
-		
-        jsonObj = new JSONObject(hash);
+		map.put("ref-list", scheduleService.viewRef(map));
+        //jsonObj = new JSONObject(hash);
+        
 		
 //		model.addAttribute("m_id",map.get("m_id"));
 //		model.addAttribute("organization", adminService.getOrgAdmin(map));
@@ -325,10 +337,33 @@ public class ScheduleController {
 //		mv.addObject("jsonObj", jsonObj);
 //		mv.setViewName("/schedule/FullCalendar.noa");
 //		return mv;
-        return jsonObj;
+//      return mapper.writeValueAsString(hash);
+		//return mapper.writeValueAsString(map);
+        return hash;
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping("/getMember.kosmo")
+	public List<Map> memberFromEmp(
+				@RequestParam Map map
+			) {
+		map.put("m_id", "kim1234@samsung.com");
+		map.put("emp_code", adminService.getEmpCodeByMId(map));
+        JSONObject jsonObj = new JSONObject();
+        JSONArray jsonArr = new JSONArray();
+        jsonObj = new JSONObject();
+        jsonArr.add(jsonObj);
+        
+        //ObjectMapper mapper = new ObjectMapper();
+        //mapper.writeValueAsString(adminService.getMembersFromEmp(map));
+        
+        for(Map map_:adminService.getMembersFromEmp(map)) {
+        	jsonObj = new JSONObject(map_);
+        	jsonArr.add(jsonObj);
+        }
+        log.info("jsonArrCheck: {}", jsonArr);
+		return jsonArr;
+	}
 	
 	@ResponseBody
 	@RequestMapping("/fullcalendarData.kosmo")
@@ -344,13 +379,13 @@ public class ScheduleController {
 	        HashMap<String, Object> hash = new HashMap<>();
 	 
 	        for (int i = 0; i < calendar.size(); i++) {	  
-	        	hash.put("id", calendar.get(i).get("SCHE_NO").toString());
-	            hash.put("title", calendar.get(i).get("SCHE_TITLE").toString());
-	            hash.put("start", calendar.get(i).get("SCHE_STARTDATE").toString());
-	            hash.put("end", calendar.get(i).get("SCHE_ENDDATE").toString());
+	        	hash.put("id", calendar.get(i).get("sche_no").toString());
+	            hash.put("title", calendar.get(i).get("sche_title").toString());
+	            hash.put("start", calendar.get(i).get("sche_startdate").toString());
+	            hash.put("end", calendar.get(i).get("sche_enddate").toString());
 	            //엥 toString() 했더니 갑자기 됨
 //	            hash.put("time", listAll.get(i).getScheduleTime());
-	            String color = calendar.get(i).get("SCHE_COLOR").toString();
+	            String color = calendar.get(i).get("sche_color").toString();
 //	            if(!color.contains("#")) { //색깔을 #으로 저장하지 않았을 경우 색깔 정보 #으로 넣기
 //	            	switch(color) {
 //	            		case "white": color= "#f5f5f5"; break;
@@ -361,7 +396,7 @@ public class ScheduleController {
 	            hash.put("color", color);
 ////////////////////////////////////////잠시 url 비활성화
 	            //hash.put("url", "view.kosmo?sche_no="+calendar.get(i).get("SCHE_NO").toString());
-	            hash.put("url", "oneEvent.kosmo?sche_no="+calendar.get(i).get("SCHE_NO").toString());
+	            hash.put("url", "oneEvent.kosmo?sche_no="+calendar.get(i).get("sche_no").toString());
 	            
 	            
 	            //System.out.println("그래서 이거 파라미터로 잘 넘어가니???? :"+"view.kosmo?SCHE_NO="+calendar.get(i).get("SCHE_NO").toString());

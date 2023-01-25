@@ -170,6 +170,26 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	public Map view(Map map) {
 		Map map_ = dao.view(map);
 		// 받은 map 전달하기 전에 수정할 것은 여기에서 수정
+		// [*] sche_type 문자열 변환
+		String sche_type = (String)map_.get("sche_type");
+		switch(sche_type) {
+		case "PERSONAL":
+			sche_type="개인";
+			break;
+		case "AUL":
+			sche_type="연차/휴가";
+			break;
+		case "PROJECT":
+			sche_type="프로젝트";
+			break;
+		case "TASK":
+			sche_type="업무";
+			break;
+		}
+		
+		
+		// map에 변경한 값 넣기
+		map_.put("sche_type",sche_type);
 		return map_;
 	}
 	// 일정 참조인 목록보기

@@ -17,6 +17,17 @@ public class AdminDAO {
 		return template.selectList("getGroupList",map);
 	}
 	
+	// |emp_code |
+	// |기업코드	 | 필요시 select 항목 더 추가하기~~~ 가장 보편적인 기업 구성원 가져오는 메소드
+	public List<Map> selectAllMembersFromEmp(Map map){
+		
+		// |dept_name |team_name |m_name |position_name 
+		// |부서명	  |팀명		 |이름	 |직급			
+		// |m_id |m_private_contact |m_profile_img |m_hiredate |m_resigndate |m_enabled |
+		// |아이디 |연락처(전화번호)		|프로필사진(저장위치)|고용일	   |사임일		 |계정활성화여부 |
+		return template.selectList("getMemberFromEmp",map);
+	}
+	
 	//|member_list | (기업의 총 인원 목록) 넣어주기
 	public List<Map> selectGroupIdList(Map map) { 
 		// List의 각 Map 키값별로 저장된 정보

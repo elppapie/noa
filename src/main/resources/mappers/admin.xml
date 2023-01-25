@@ -42,6 +42,31 @@
 		WHERE emp_code = #{emp_code}
 	</select>
 	
+	<!-- 기업에 속한 구성원 목록 쫙 뿌리기용 -->
+	<!-- 필요시 여기에 SELECT하는 컬럼 추가 -->
+	<select id="getMemberFromEmp" parameterType="Map" resultType="Map">
+		SELECT 
+            d.dept_name "dept_name",
+			t.team_name "team_name",
+            m.m_name "m_name", 
+			p.position_name "position_name", 
+			m.m_id "m_id",
+            m.m_private_contact "m_private_contact",
+            m.m_profile_img "m_profile_img",
+            m.m_hiredate "m_hiredate",
+            m.m_resigndate "m_resigndate",
+            m.m_enabled "m_enabled"
+		FROM 
+			members m
+    		JOIN position p ON p.position_code = m.position_code
+    		JOIN team t ON t.team_no = m.team_no
+    		JOIN dept d ON d.dept_code = t.dept_code
+    	WHERE
+    		emp_code = #{emp_code}
+    	ORDER BY 
+    		d.dept_code, t.team_no
+	</select>
+	
 	<!-- 기업의 부서 조회하기: #{emp_code}=조회할 기업 -->
 	<select id="adminGetDeptOrg" parameterType="Map" resultType="Map">
 		SELECT  dept_code "dept_code", dept_name "dept_name", 

@@ -106,7 +106,12 @@
 	<!-- JOIN을 하는 경우 DTO 타입으로는 못 가져오고, map으로 가져오는 게 제일 편함 -->
 	<!-- 이름, 직함, 소속 부서, 소속 팀, 이메일 -->
 	<select id="scheFindRefByNo" parameterType="Map" resultType="Map">
-		SELECT m.m_name "m_name", p.position_name "position_name", sr.m_id "m_id", t.team_name "team_name", d.dept_name "dept_name"
+		SELECT 
+			m.m_name "m_name", 
+			p.position_name "position_name", 
+			sr.m_id "m_id",
+			t.team_name "team_name", 
+			d.dept_name "dept_name"
 		FROM schedule s JOIN sche_ref sr ON s.sche_no = sr.sche_no
 			JOIN members m ON m.m_id = sr.m_id 
     		JOIN position p ON p.position_code = m.position_code
@@ -256,7 +261,17 @@
 	
 	<!-- fullCalendar에서 가져오기 -->
 	<select id="fullCalendarAllSchedule" resultType="Map">
-		SELECT * from schedule
+		SELECT 
+			sche_no "sche_no",
+			sche_title "sche_title",
+			sche_content "sche_content",
+			sche_regidate "sche_regidate",
+			sche_startdate "sche_startdate",
+			sche_enddate "sche_enddate",
+			sche_status "sche_status",
+			sche_color "sche_color",
+			sche_type "sche_type"
+		FROM schedule
 	</select>
 	
 	
