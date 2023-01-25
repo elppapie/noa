@@ -70,6 +70,12 @@
 .main-panel {
   width: 100% !important;
 }
+.padding-left-220px{
+  padding-left: 220px;
+}
+.padding-left-70px{
+  padding-left: 70px;
+}
 .align-text-center{
   text-align: center;
 }

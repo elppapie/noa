@@ -22,7 +22,7 @@ function openWebRTCMain(path,m_id){
 }
 
 
-//구성원 검색 iframe창 띄우기
+/////////////////구성원 검색 iframe창 띄우기(아직은 팝업창...)
 function openSearchOrg(path,m_id){
 	const searchName = document.querySelector("#top-input-search-members").value;
 	
@@ -35,10 +35,54 @@ function openSearchOrg(path,m_id){
 		);
 };
 
+/////////////////sidebar sticky로 만들기
+const sidebar = document.querySelector("nav#sidebar");
+
+var sticky = sidebar.offsetTop;
+
+function makeSidebarSticky() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+}
+
+window.onscroll = ()=>{makeSidebarSticky()};
+
+/////////////// .main-panel 수정하기 - 페이지 가로폭 991px 이하로 내려가면 padding-left-220px 클래스 없애기
+const mainPanel = document.querySelector('.main-panel');
+
+window.addEventListener('DOMContentLoaded',()=>{deletePaddingLeft220PX()});
+window.onresize = ()=>{deletePaddingLeft220PX()};
+
+function deletePaddingLeft220PX(){
+	if(window.innerWidth <= 991){
+		mainPanel.classList.remove("padding-left-220px");
+		document.querySelector('.navbar-menu-wrapper').style.borderBottom='none';
+	}
+	else{
+		mainPanel.classList.add("padding-left-220px");
+	}
+}
+
+const top3BarIcon = document.querySelector("#top-nav-3bar-menu-ic");
+top3BarIcon.onclick = ()=>{
+	if(document.querySelector('body').classList.contains('sidebar-icon-only')){
+		mainPanel.classList.add("padding-left-220px");
+		mainPanel.classList.remove("padding-left-70px");
+	}
+	else{
+		mainPanel.classList.remove("padding-left-220px");
+		mainPanel.classList.add("padding-left-70px");
+	}
+};
+
+
 ///////////////sidebar 오류 수정 시작///////////////
 /*
 	const sessionStorage = window.sessionStorage;
-    const sidebar = document.querySelector("nav#sidebar");
+    
     const nav_items_a = sidebar.querySelectorAll("#collapse > li > a"); //???
 
     sidebar.onclick = (e) => {

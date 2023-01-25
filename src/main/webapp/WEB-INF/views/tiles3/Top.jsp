@@ -39,14 +39,46 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<!--  Custom CSS   -->
+  <style>
+	.navbar .navbar-menu-wrapper{
+		border-bottom:1.5px solid #c1c1c1;
+	}
+	.sidebar{
+		/*width:273px !important;*/
+	}
+	.sidebar-icon-only .sidebar{
+		/*width:75px !important;*/
+		background: #232227 !important;
+	}
+	.sidebar-icon-only .navbar-brand-wrapper{
+		background: #232227 !important;
+	}
+	.sidebar-icon-only .navbar-brand-wrapper .icon-menu::before{
+		color: #ffffff;
+	}
+	.sidebar-icon-only .menu-icon::before{
+		color: #ffffff;
+	}
+	.sidebar-icon-only .load-immediate-icon{
+		display:none;
+	}
+	.sticky {
+		position: fixed;
+		width: 220px;
+	}
+	#sidebar.active {
+		background-color: rgba(0,0,0,45%);
+	}
+</style>
 </head>
-<body>
+<body class="sidebar-dark">
   <div class="container-scroller"> 
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
         <div class="me-3">
-          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
+          <button class="navbar-toggler navbar-toggler align-self-center" id="top-nav-3bar-menu-ic" type="button" data-bs-toggle="minimize">
             <span class="icon-menu"></span>
           </button>
         </div>
@@ -239,7 +271,10 @@
     </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
+    
+    
       <!-- partial:partials/_settings-panel.html -->
+      <!--   
       <div class="theme-setting-wrapper">
         <div id="settings-trigger"><i class="ti-settings"></i></div>
         <div id="theme-settings" class="settings-panel">
@@ -258,6 +293,8 @@
           </div>
         </div>
       </div>
+      -->
+      
       <div id="right-sidebar" class="settings-panel">
         <i class="settings-close ti-close"></i>
         <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
@@ -410,7 +447,7 @@
       </div>
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
-	  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+	  <nav class="sidebar sidebar-offcanvas sticky" id="sidebar">
 	    <ul class="nav">
 	      <li class="nav-item">
 	        <a class="nav-link" href="${path}/WEB-INF/views/main.kosmo">
@@ -587,7 +624,7 @@
 	  </nav>
       <!-- partial -->
       
-      <div class="main-panel">
+      <div class="main-panel padding-left-220px">
 	    <div class="content-wrapper">
           <div class="row">
             <div class="col-sm-12">
