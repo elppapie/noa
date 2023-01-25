@@ -23,6 +23,37 @@
 	width:30px !important;
 }
 
+#top-input-search-members{
+	width: 150px;
+	background-color: transparent;
+	border: 1px #1f3bb3 solid;
+	border-radius: 17px 0px 0px 17px;
+	color:#1f3bb3;
+}
+#top-input-search-members::placeholder{
+	color:#4662d9;
+}
+.top-wt-icon-search-members:hover{
+	cursor:pointer;
+}
+.top-wt-icon-search-members::before{
+	content:"\f00e";
+	color:#1f3bb3;
+}
+.top-btn-search-members{
+	padding: 0px !important;	
+	margin: 0px 10px;
+	color:#1f3bb3;
+}
+.top-btn-search-members-append{
+	border: 1px #1f3bb3 solid;
+	border-radius: 0px 17px 17px 0px;
+	color:#1f3bb3;
+}
+.top-btn-search-members-append:hover{
+	cursor:pointer;
+}
+
 /* login.jsp - start */
 .fsu-lg{
   font-size: 2rem !important;

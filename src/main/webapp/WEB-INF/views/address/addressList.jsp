@@ -37,6 +37,8 @@
 
 <div class="tab-content tab-content-basic">
 <!----Main Page의 Content 작성---->
+<h1>\${param.searchColumn}: ${param.searchColumn}</h1>
+<h1>\${param.searchWord}: ${param.searchWord}</h1>
 </div>
 
 

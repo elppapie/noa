@@ -66,6 +66,7 @@
           </li>
         </ul>
         <ul class="navbar-nav ms-auto">
+          <!-- 
           <li class="nav-item dropdown d-none d-lg-block">
             <a class="nav-link dropdown-bordered dropdown-toggle dropdown-toggle-split" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false"> Select Category </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
@@ -99,6 +100,7 @@
               </a>
             </div>
           </li>
+          
           <li class="nav-item d-none d-lg-block">
             <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
               <span class="input-group-addon input-group-prepend border-right">
@@ -107,12 +109,31 @@
               <input type="text" class="form-control">
             </div>
           </li>
+           -->
+           
+          <!-- 구성원 검색 -->
+          <li class="nav-item d-flex align-items-center">
+          	<div class="form-group" style="margin:0px;">
+          		<div class="input-group">
+          			<input type="text" class="form-control" placeholder="구성원 검색" id="top-input-search-members"/>
+          			<div class="input-group-append d-flex justify-content-center align-items-center top-btn-search-members-append" onclick="openSearchOrg('${path}/Address/allList.kosmo')">
+          				<button type="button" class="btn btn-rounded top-btn-search-members">
+          					<i class="ti-search"></i>
+         				</button>
+          			</div>
+          		</div>
+          	</div>
+          </li> 
+          
+          
+          <!-- 
           <li class="nav-item">
             <form class="search-form" action="#">
               <i class="icon-search"></i>
               <input type="search" class="form-control" placeholder="Search Here" title="Search here">
             </form>
           </li>
+          
           <li class="nav-item dropdown">
             <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
               <i class="fa fa-light fa-square-xmark"></i>
@@ -151,6 +172,9 @@
               </a>
             </div>
           </li>
+          -->
+          
+          
           <li class="nav-item dropdown"> 
             <a class="nav-link count-indicator" id="countDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="icon-bell"></i>
@@ -394,6 +418,7 @@
 	          <span class="menu-title">Dashboard</span>
 	        </a>
 	      </li>
+	      <!-- 
 	      <li class="nav-item">
 	        <a class="nav-link" data-bs-toggle="collapse" href="#main-addressBook" aria-expanded="false" aria-controls="ui-basic">
 	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-address-book"></i>
@@ -408,6 +433,7 @@
 	          </ul>
 	        </div>
 	      </li>
+	      -->
 	      <li class="nav-item">
 	        <a class="nav-link" data-bs-toggle="collapse" href="#main-mail" aria-expanded="false" aria-controls="form-elements">
 	          <i class="menu-icon mifa fa fa-color-gray fa-light fa-envelope"></i>
@@ -538,7 +564,7 @@
 	        </div>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link fullscreen" target="_top" href="http://192.168.0.36:3000/" aria-expanded="false" aria-controls="form-elements" onclick='openWebRTCMain()'>
+	        <a class="nav-link fullscreen" href="javascript:openWebRTCMain('http://192.168.0.33:3000/')" aria-expanded="false" aria-controls="form-elements" onclick='openWebRTCMain()'>
 	        <!--  data-bs-toggle="collapse"  -->
 	          <i class="menu-icon mifa fa fa-duotone fa-video"></i>
 	          <span class="menu-title">화상회의</span>

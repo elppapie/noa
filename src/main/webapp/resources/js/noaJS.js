@@ -6,20 +6,34 @@ var availWidthPX = window.screen.availWidth+"px";
 var availHeightPX = window.screen.availHeight+"px";
 
 function openChatMain(path,m_id) {
-    var width=440;
-    var height=650;
+    let width=440;
+    let height=650;
     window.open(path
         ,"메신저"
         ,"left="+(availWidth-width)+",top="+(availHeight-height)+",width="+width+",height="+height 
         )
 }
 
-function openWebRTCMain(m_id){
+function openWebRTCMain(path,m_id){
 	window.open(path
         ,"webRTC"
-        ,"width="+screen.width+",height="+screen.height+",fullscreen=yes"
+        ,"left="+(availWidth)+",top="+(availHeight)+",fullscreen='yes'"
         )
 }
+
+
+//구성원 검색 iframe창 띄우기
+function openSearchOrg(path,m_id){
+	const searchName = document.querySelector("#top-input-search-members").value;
+	
+	let width=970;
+    let height=680;
+	window.open(
+		path+"?searchColumn=m_name&searchWord="+searchName,
+		"조직도",
+		"left="+(availWidth/2-width/2)+",top="+(availHeight/2-height/2)+",width="+width+",height="+height
+		);
+};
 
 ///////////////sidebar 오류 수정 시작///////////////
 /*
