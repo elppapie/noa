@@ -204,7 +204,7 @@ CREATE TABLE AUTHO_GRANT
 CREATE TABLE CHAT
 (
 	-- 채팅방일련번호
-	CHAT_NO varchar2(2000) NOT NULL,
+	CHAT_NO number NOT NULL,
 	-- 채팅방생성자
 	M_ID varchar2(50) NOT NULL,
 	-- 채팅방 이름
@@ -223,7 +223,7 @@ CREATE TABLE CHAT_MSG
 	-- 메세지작성자
 	M_ID varchar2(50) NOT NULL,
 	-- 채팅방일련번호
-	CHAT_NO varchar2(2000) NOT NULL,
+	CHAT_NO number NOT NULL,
 	-- 메세지내용
 	CM_CONTENT nvarchar2(2000) NOT NULL,
 	-- 메세지 전송시간
@@ -238,7 +238,7 @@ CREATE TABLE CHAT_M_LIST
 	-- 채팅방 참여자
 	M_ID varchar2(50) NOT NULL,
 	-- 채팅방일련번호
-	CHAT_NO varchar2(2000) NOT NULL,
+	CHAT_NO number NOT NULL,
 	-- 채팅방 참여일
 	CML_REGIDATE date DEFAULT SYSDATE NOT NULL,
 	CONSTRAINT CK_CML UNIQUE (M_ID, CHAT_NO)
