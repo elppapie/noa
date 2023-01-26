@@ -33,36 +33,29 @@
 		 type:DTO계열 즉 SELECT한 쿼리 결과를 담을 자바빈 객체
 		 id: select 요소의 resultMap속성에 설정해줄 식별자    
 	 -->
-	 <!--
+	 <!--  
 	 <resultMap type="noticeDto" id="noticeDtoResult">
+
+	 	<result property="n_no" column="n_no"/> 	
+	 	<result property="n_title" column="n_title"/>
+	 	<result property="n_content" column="n_content"/>
+	 	<result property="n_regidate" column="n_regidate"/>
+	 	<result property="m_id" column="m_id"/>
+	 	<result property="m_name" column="m_name"/>
 	 	 
-		property:자바빈(OneMemoDTO)의 속성명
-		column:테이블의 컬럼(조회(SELECT)결과의 컬럼명들 의미)
-		 -->
-		 <!--  
-	 	<result property="no" column="no"/>
-	 	<result property="title" column="title"/>
-	 	<result property="content" column="content"/>
-	 	<result property="regidate" column="regidate"/>
-	 	<result property="id" column="id"/>
-	 	<result property="name" column="name"/>
-	 	-->
-	 	<!-- 
 		1:N관계 매핑용
 		column: 조인조건의 컬럼명 (ON onememo.no = linecomments.no)
 		select: select태그의 id 속성값(쿼리문은 조인문)
 		javaType : OneMemoDTO의 자식레코드(LineCommentDTO)를 담을 컬렉션 타입
 		ofType : 자식의 DTO타입
-		property: 댓글 목록을 담을 OneMemoDTO속성명
-		
-		
+		property: 댓글 목록을 담을 OneMemoDTO속성명		
 		아래 collection태그 사용시 
 		현재 매퍼파일에서 메모글 하나 가져올때 반드시 resultMap="memoDtoResult"을 사용하지
-		 
-	 	
+		  	
 	 	<collection property="comments" column="no" select="onememo.mybatis.mapper.linecomments.commentListsByNo" javaType="List" ofType="commentDto"/>
-	 </resultMap>
-	-->
+	 </resultMap> 
+	 --> 
+	
 	
 	<!-- 아이디 및 패스워드로 공지사항 글 조회 ok -->
 	<select id="noticeFindMemberByIdAndPwd" parameterType="Map" resultType="int" >
@@ -104,18 +97,19 @@
 	
 	</insert>
 	
-	<!-- 글 번호로 공지사항 글 조회 -->
-	<!--  
-	<select id="memoFindRecordByNo" parameterType="Map" resultMap="NoticeDTO">
-		SELECT o.*, m_name 
-		FROM notice n JOIN members m ON n.id=m.id
-		WHERE n_no=#{n_no}
+	<!-- 글 번호로 공지사항 글 조회 ok -->	  
+	<select id="findRecordByNo" parameterType="Map" resultType="int">
+	
+	SELECT n.*,m_name 
+		FROM notice n JOIN members m ON n.m_id=m.m_id
+		WHERE n_no=#{n_no,jdbcType=VARCHAR}
+		
 	</select>
-	-->
+	
 	
 	<!-- 공지사항 글 삭제 ok-->
 	<delete id="noticeDelete" parameterType="Map">
-		DELETE notice WHERE n_no=#{n_no}
+		DELETE notice WHERE n_no=#{n_no,jdbcType=VARCHAR}
 	</delete>
 	
 	<!-- 공지사항 글 수정 ok-->

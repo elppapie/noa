@@ -76,8 +76,8 @@ public class NoticeDAO {
 	private SqlSessionTemplate template;
 	
 	public NoticeDTO findRecordByNo(Map map) {	
-		return null;
-		//return template.selectOne("memoFindRecordByNo", map);
+		//return null;
+		return template.selectOne("findRecordByNo", map);
 	}
 	public int delete(Map map) {		
 		

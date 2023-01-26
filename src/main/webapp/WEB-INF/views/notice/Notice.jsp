@@ -22,36 +22,38 @@
 			</tr>
 		</thead>
 		<tbody class="table-sm down-file-body">
-			<c:if test="${empty listPagingData.lists}" var="isEmpty">
-				<tr>
-					<td colspan="4">등록된 글이 없습니다.</td>
-				</tr>
-			</c:if>
-			<c:if test="${not isEmpty}">
-				<c:forEach var="record" items="${listPagingData.lists}" varStatus="loop">
-					<tr>
-						<td>${record.N_NO}</td>
-						<td class="text-left"><a
-							href="<c:url value="/views/notice/View.do?no=${record.n_no}&nowPage="/><c:out value="${param.nowPage}" default="1"/>">${record.N_TITLE}</a></td>
-					 	<td>${record.M_NAME}</td>				
-						<td>${record.N_REGIDATE}</td>
-					</tr>
-				</c:forEach>
-			</c:if>
-
+			
+			<tr>
+				<td>01</td>
+				<td><a href="http://localhost:8080/NodeArchive/Notice/view.kosmo">2023년 신년사 입니다.</a></td>
+				<td>관리자</td>
+				<td>2022-12-31</td>
+			</tr>
 		</tbody>
 	</table>
 	<!-- 페이징 출력 -->
 	<div>${listPagingData.pagingString}</div>
 	<!-- 검색 UI -->
-	<form class="form-inline justify-content-center" method="post">
-       <select class="form-control" name="searchColumn">
-	    <option value="title">제목</option>
-	    <option value="content">내용</option>
-	    <option value="name">작성자</option>	    
-	  </select>
-      <input type="text" class="form-control mx-2 my-2" placeholder="검색어를 입력하세요" name="searchWord"/>      
-     <!--  <button type="submit" class="btn btn-light">검색</button> -->
-      <a href="<c:url value="/Notice/search.kosmo"/>" class="btn btn-light">검색</a>
-    </form>
+	<form class="form-inline justify-content-center" method="post">  
+	  <div class="mx-quto input-group mt-5 justify-content-center">
+	  <div class="dropdown">
+	  <button class="btn btn-light dropdown-toggle" data-toggle="dropdown">
+	  선택
+	  </button>
+	  <div class="dropdown-menu">
+	  	<a class="dropdown-item" href="#">제목</a>
+	  	<a class="dropdown-item" href="#">내용</a>
+	  	<a class="dropdown-item" href="#">작성자</a>
+	  </div>
+	 </div>
+
+		
+			<mx-auto><input name="query" type="text"
+				class="form-control" placeholder="검색어 입력" aria-label="search"
+				aria-describedby="button-addon2"> </mx-auto>
+			<button class="btn btn-grey" type="submit" id="button-addon2">검색</button>
+		</div>
+
+	</form>
+	 
 </div>

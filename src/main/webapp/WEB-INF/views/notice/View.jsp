@@ -5,33 +5,35 @@
 <div class="container">
 	<div class="jumbotron">
 		<h1>
-			공지사항 <small>상세보기 페이지</small>
+			공지사항 상세보기
 		</h1>
 	</div>
+	<form method="post" action="<c:url value="/Notice/List.kosmo"/>">  
 	<table class="table table-bordered">
 		<tbody class="table-sm">
+		
 			<tr>
 				<th class="w-25 bg-dark text-white text-center">번호</th>
-				<td>${record.n_no}</td>
+				<td>1</td>
 			</tr>
 			<tr>
 				<th class="w-25 bg-dark text-white text-center">글쓴이</th>
-				<td>${record.m_name }</td>
+				<td>관리자</td>
 			</tr>
 			<tr>
 				<th class="w-25 bg-dark text-white text-center">작성일</th>
-				<td>${record.n_regidate}</td>
+				<td>2022-12-31</td>
 			</tr>
 
 			<tr>
 				<th class="w-25 bg-dark text-white text-center">제목</th>
-				<td>${record.n_title}</td>
+				<td>2023년 신년사 입니다.</td>
 			</tr>
 			<tr>
 				<th class="bg-dark text-white text-center" colspan="2">내 용</th>
 			</tr>
 			<tr>
-				<td colspan="2">${record.n_content }</td>
+				<td colspan="2">노드아카이브 임직원 여러분 새해 복 많이 받으시고 건강하게 지내시길 바랍니다.</td>
 			</tr>
 		</tbody>
 	</table>
@@ -42,32 +44,44 @@
 		--%>
 		<!-- 세션영역에 있는 아이디값 가져오기 -->
 		<!-- 씨큐리티 적용시 -->
+		<!-- 
 		<c:set var="sessionId"><sec:authentication property="principal.username"/> </c:set>
 		<c:if test="${sessionId==record.m_id }">
-			<a href="<c:url value="/views/notice/Edit.do?no=${record.n_no}"/>"
+			<a href="<c:url value="/Notice/edit.kosmo"/>"
 			class="btn btn-success">수정</a> 
 			<a
 			href="javascript:isDelete(${record.n_no})" class="btn btn-success">삭제</a>
 		
 		</c:if>
+		 -->
+		 
 		
-		<a
-			href="<c:url value="/views/schedule/Notice.do?nowPage=${param.nowPage}"/>"
-			class="btn btn-success">목록</a>
+		 
+		<div class="text-right mb-2">
+			<a href="http://localhost:8080/NodeArchive/Notice/edit.kosmo" class="btn btn-light"> 수정</a>
+			<a href="http://localhost:8080/NodeArchive/Notice/List.kosmo" class="btn btn-light">삭제</a>
+			<button type="submit" class="btn btn-light">목록</button>
+		</div>
+		 
 	</div>
-	<!-- 한줄 코멘트 입력 폼 -->
+	</form>
+	
+	
+
+<!-- 	
+	 한줄 코멘트 입력 폼 
 	<form id="form" 
 		class="form-inline col-sm-12 d-flex justify-content-center mt-3">
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" /> <input type="hidden" name="no"
-			value="${record.n_no}" />
-		<!-- 댓글 수정용 -->
+			value="${record.N_NO}" />
+		 댓글 수정용 
 		<input type="hidden" name="lno" /> <input type="text" id="linecomment"
 			name="linecomment" class="form-control mx-2 w-50"
 			placeholder="한줄 댓글을 입력하세요" /> <input type="button"
 			class="btn btn-danger mx-2" value="등록" id="submit" />
 	</form>
-	<!-- 한줄 코멘트 목록 -->
+	 한줄 코멘트 목록 
 	<div class="row d-flex justify-content-center mt-3">
 		<div class="col-sm-8">
 			<table class="table table-hover text-center">
@@ -95,7 +109,7 @@
 								<%-- 
 								<c:if test="${sessionScope.id==comment.id}" var="isSame">
 								--%>
-								<!-- 씨큐리티 사용시 -->
+								 씨큐리티 사용시 
 								<c:if test="${sessionId==comment.id}" var="isSame">
 									<button class="btn btn-info btn-sm my-delete">삭제</button>
 								</c:if>
@@ -106,13 +120,13 @@
 							</tr>
 						</c:forEach>
 					</c:if>
-
 				</tbody>
 			</table>
 		</div>
-	</div>
+	</div>-->
 </div>
 
+ 
 <script>
 	//[ajax로 서버에 데이터를 요청하는 함수]
 	/*
@@ -128,7 +142,7 @@
 	    스프링에서는 @RequestBody 로 데이터를 받는다.
 	*/
 	//코멘트 등록 및 수정처리
-	$('#submit').click(function(){
+	 <!--$('#submit').click(function(){
 		console.log($(this).val());
 		console.log($('#form').serialize());
 		var action;
@@ -235,7 +249,7 @@
 				console.log('삭제 실패:',error);
 			});
 		}
-	});
+	}); -->
 	
 	
 	//글 삭제
@@ -246,6 +260,7 @@
 	}
 	
 </script>
+
 
 
 			

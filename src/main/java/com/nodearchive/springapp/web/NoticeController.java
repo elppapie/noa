@@ -66,15 +66,13 @@ public class NoticeController {
 		map.put("m_id","kim1234@samsung.com");
 ///////////////////////////////////////////////////////////////////////////////////////////////////		
 		noticeService.insert(map);
-		
-		
-		
+
 		//서비스 호출
 		ListPagingData<NoticeDTO> listPagingData=  noticeService.selectList(map, req, nowPage);
 		//데이타 저장
 		model.addAttribute("listPagingData", listPagingData);
 		//뷰정보 반환
-		return "schedule/Notice.noa";
+		return "notice/Notice.noa";
 	}
 	
 	//공지등록
@@ -109,30 +107,92 @@ public class NoticeController {
 			//map.put("id",userDetails.getUsername());
 			//noticeService.insert(map);
 			//뷰정보 반환-목록을 처리하는 컨트롤러로 이동
-			return "forward:/views/schedule/Notice.noa";
+			return "forward:/views/notice/Notice.noa";
 		}
-
+		
+	// 공지 상세보기-> 원본
+	/*@RequestMapping("/view.kosmo")
+	public String view(
+			@RequestParam Map map
+			) {
+		return "notice/View.noa";
+	}	*/
+		
+		//상세보기
+		@RequestMapping(value="/view.kosmo",method = {RequestMethod.GET,RequestMethod.POST})
+		public String view(
+				//@ModelAttribute("id") String id,
+				Authentication auth,
+				@RequestParam Map map,
+				Model model
+				) {
+			//서비스 호출
+			NoticeDTO record= noticeService.selectOne(map);
+			//데이타 저장
+			model.addAttribute("record", record);
+			//뷰정보 반환
+			return "notice/View.noa";
+		}
+	
 	//공지수정
-	@RequestMapping("/edit.kosmo")
+	/*@RequestMapping("/edit.kosmo")
 	public String edit(
 			@RequestParam Map map
 			) {
 		return "notice/Edit.noa";
-	}
-	//공지검색
-	@RequestMapping("/search.kosmo")
-	public String search(
-			@RequestParam Map map
-			) {
-		return "notice/Search.noa";
-	}
-	
+	}*/
+		//meemocontroller에서 복붙 시작..
+		//수정 폼으로 이동
+		@RequestMapping("/edit.kosmo")
+		public String edit(
+				//@ModelAttribute("id") String id,
+				Authentication auth,
+				@RequestParam Map map,
+				Model model) {
+			//서비스 호출
+			NoticeDTO record= noticeService.selectOne(map);
+			
+			//데이타 저장
+			model.addAttribute("record", record);
+			//뷰정보 반환
+			return "notice/Edit.noa";
+		}
+		//입력처리
+		@PostMapping("/Edit.kosmo")
+		public String editok(
+				//@ModelAttribute("id") String id,
+				Authentication auth,
+				@RequestParam Map map
+				) {
+			
+			//서비스 호출		
+			noticeService.update(map);
+			//뷰정보 반환-목록을 처리하는 컨트롤러로 이동
+			return "forward:/views/notice/View.noa";
+		}	
+		// memocontroller에서 복붙 끝.
+	/*
 	//공지삭제
-	@RequestMapping("/delete.kosmo")
+	@RequestMapping(value ="/Delete.kosmo", method = RequestMethod.GET)
 	public String delete(
 			@RequestParam Map map
 			) {
-		return "notice/Delete.noa";
-	}
+		return "notice/Notice.noa"; 
+	
+	}*/
+	//memocontroller 에서 복붙
+	//삭제
+		@GetMapping("/Delete.kosmo")
+		public String delete(
+				//@ModelAttribute("id") String id,
+				Authentication auth,
+				@RequestParam Map map) {
+			
+			//서비스 호출
+			noticeService.delete(map);
+			//뷰정보 반환]-목록을 처리하는 컨트롤러로 이동
+			return "notice/Notice.noa";
+		}
 	
 }
+			

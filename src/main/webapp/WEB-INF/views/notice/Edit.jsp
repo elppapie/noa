@@ -1,40 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%
+	System.out.println("/notice/Edit.jsp - 공지사항 수정");
+	//DB 등록 - NoticeService - NoticeDAO
+	response.sendRedirect("view.kosmo?no=1");
+ %>
+ 
+ <style>
+textarea{
+      width: 100%;
+      height: 500px;
+}
+</style>
 
 <div class="container">
     
    <div class="jumbotron">
-		<h1>
-			공지사항 <small>수정 페이지</small>			
-		</h1>
+		<h2>
+			공지사항 수정		
+		</h2>
 	</div>
-	<c:if test="${! empty InputError}">
-		<div class="alert alert-success alert-dismissible fade show">
-		  <button type="button" class="close" data-dismiss="alert">&times;</button>
-		  <strong>Failure!</strong> ${InputError}
-		</div>
-	</c:if>
-	<form method="post" action="<c:url value="/views/notice/Edit.do"/>">
-	<input type="hidden" name="no" value="${record.no}"/>  
-	<!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>  -->  
-	 <input type="hidden" name="관리자" value="kim1234@samsung.com"/>
-      <div class="form-group">
-        <label><kbd class="lead">제목</kbd></label>
-        <input type="text" value="${record.n_title}" class="form-control" placeholder="제목을 입력하세요" name="title">
-      </div>
-      <!--  원본
-      <div class="form-group">
-		<label><kbd class="lead">내용</kbd></label>
-		<textarea class="form-control" rows="10" cols="33" name="content">${record.n_content}</textarea>
-	  </div>
-	  -->
-	  <div class="form-group">
-    	<label for="exampleFormControlTextarea1">Example textarea</label>
-    	<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-  	  </div>
-	  
-      <button type="submit" class="btn btn-light">수정</button>
-    </form>	
+	<form action="view.kosmo" method="post" enctype="multipart/form-data" onsubmit="return check()">
+	
+		<label><kbd class="ios">제목</kbd></label>
+		<input type="text" name="title" value="2023년 신년사 입니다." class="form-control">
+		
+
+	
+		<label><kbd class="ios">내용</kbd></label>
+		<textarea>노드아카이브 임직원 여러분 새해 복 많이 받으시고 건강하게 지내시길 바랍니다.</textarea>	
+		
+		
+	
+		
+			<button type="submit" class="btn btn-light" onClick="location.href='edit.kosmo?title='">수정</button>
+			<button type="button" class="btn btn-light" onclick="history.back()">취소</button>
+		
+	
+</form>
 </div>

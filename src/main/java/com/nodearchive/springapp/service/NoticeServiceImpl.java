@@ -73,7 +73,7 @@ public class NoticeServiceImpl implements NoticeService<NoticeDTO> {
 				pageSize, 
 				blockPage, 
 				nowPage,
-				req.getContextPath()+"/views/schedule/Notice.noa?"+searchString);
+				req.getContextPath()+"/views/notice/Notice.noa?"+searchString);
 		//페이징과 관련된 정보 및 모든 목록을 담는 ListPagingData객체 생성		
 		ListPagingData<NoticeDTO> listPagingData = ListPagingData.builder()
 													.lists(lists)//글 전체 목록 설정
@@ -117,10 +117,9 @@ public class NoticeServiceImpl implements NoticeService<NoticeDTO> {
 
 	@Override
 	public int delete(Map map) {
-		int affected=0;//삭제된 댓글의 총수 저장용
-		/*
+		//int affected=0;//삭제된 댓글의 총수 저장용	
 		//타입 파라미터<T>: 트랜잭션 처리 작업후 반환할 타입으로 지정
-		affected=transactionTemplate.execute(new TransactionCallback<Integer>() {
+		/*affected=transactionTemplate.execute(new TransactionCallback<Integer>() {
 			//아래 메소드에 트랜잭션으로 처리할 작업들을 기술
 			@Override
 			public Integer doInTransaction(TransactionStatus status) {
@@ -128,16 +127,14 @@ public class NoticeServiceImpl implements NoticeService<NoticeDTO> {
 				//글번호에 따른 모든 댓글 삭제
 				int deletedCommentCount=ldao.deleteByNo(map);
 				//트랜잭션 테스트를 위한 에러 발생
-				//String str=null;
-				//str.length();
+				String str=null;
+				str.length();
 				//해당 원본 글 삭제
 				dao.delete(map);
 				//doInTransaction()의 반환값이 execute()메소드의 반환값이다 
 				return deletedCommentCount;
-			}
-			
-		}); */
-		
+			}		
+		});*/ 		
 		//람다함수로 변경
 		/*affected = transactionTemplate.execute(status->{
 			int deletedCommentCount=ldao.deleteByNo(map);
@@ -145,9 +142,8 @@ public class NoticeServiceImpl implements NoticeService<NoticeDTO> {
 			return deletedCommentCount;
 		});*/
 		
+		return dao.delete(map);
 		
-		
-		return affected;
 	}
 
 
