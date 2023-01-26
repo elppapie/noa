@@ -171,6 +171,7 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		Map map_ = dao.view(map);
 		// 받은 map 전달하기 전에 수정할 것은 여기에서 수정
 		// [*] sche_type 문자열 변환
+		/* 이거 ... 그냥 뷰에서 option태그에 value로 설정해놔서 괜찮
 		String sche_type = (String)map_.get("sche_type");
 		switch(sche_type) {
 		case "PERSONAL":
@@ -190,6 +191,7 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		
 		// map에 변경한 값 넣기
 		map_.put("sche_type",sche_type);
+		*/
 		return map_;
 	}
 	// 일정 참조인 목록보기
@@ -269,11 +271,13 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	*/
 
 	@Override
+	// |sche_no |
+	// |일정번호   |
 	public int delete(Map map) {
-		
-		//int affected = dao.find
-		
-		return 0;
+		//먼저 참조인 지우고 (fk 제약조건)
+		dao.deleteRef(map);
+		//일정 지우기 
+		return dao.delete(map);
 	}
 
 	

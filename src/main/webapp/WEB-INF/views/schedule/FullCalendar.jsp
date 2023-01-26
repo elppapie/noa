@@ -16,9 +16,9 @@
 <!-- fullcalendar 언어 설정관련 script -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
 <!-- 제이쿼리 사용 -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!-- BS4 validation? -->
@@ -36,6 +36,13 @@
 		color:black;
 	}
 	.sche_color{
+		outline:none;
+		border: none;
+		width: 50px;
+		height:50px;
+		border-radius: 100px;
+	}	
+	.sche_color_write{
 		outline:none;
 		border: none;
 		width: 50px;
@@ -60,8 +67,100 @@
 		/*background-color:red;*/
 		display:inline-block;
 	}
-	
-	
+	#color_front_write{
+		border-radius: 50%;
+		width: 50px;
+		height: 50px; 
+		/*background-color:red;*/
+		display:inline-block;
+	}	
+	.options-for-sche-type{
+	    font-size: 0.875rem;
+	    font-weight: 400;
+	    line-height: 1;
+	    color: #212529;
+	}
+	#sche_type{
+		height:2rem;
+		/*width:100%;*/
+		border: 1px solid #dee2e6;
+		border-radius: 2px;
+		background-color:white; 
+		/*
+		padding: 0.875rem 1.375rem;
+		*/
+		margin: 0px 0px 0px -1px;
+		line-height: 1;
+    	color: #212529;
+    	
+    	/*테두리 안 불어보이게 하는거 - 이게 정답이었네 ㅠㅠㅠ*/
+    	outline: 0;
+    	/*화살표 안 보이는거 해결하기 - 일단 보류...*/
+    	display:block;
+    	appearence:listbox;
+    	
+    	/*폰트설정*/
+    	font-size:14px;    	
+    	
+    	cursor:pointer;
+	}
+	#button-for-select-type{
+		cursor:pointer;
+	}
+	#sche_type_write{
+		height:2rem;
+		/*width:100%;*/
+		border: 1px solid #dee2e6;
+		border-radius: 2px;
+		background-color:white; 
+		/*
+		padding: 0.875rem 1.375rem;
+		*/
+		margin: 0px 0px 0px -1px;
+		line-height: 1;
+    	color: #212529;
+    	
+    	/*테두리 안 불어보이게 하는거 - 이게 정답이었네 ㅠㅠㅠ*/
+    	outline: 0;
+    	/*화살표 안 보이는거 해결하기 - 일단 보류...*/
+    	display:block;
+    	appearence:listbox;
+    	
+    	/*폰트설정*/
+    	font-size:14px;    	
+    	
+    	cursor:pointer;
+	}
+	#button-for-select-type-write{
+		cursor:pointer;
+	}
+	#ref-list_write{
+		height:2rem;
+		/*width:100%;*/
+		border: 1px solid #dee2e6;
+		border-radius: 2px;
+		background-color:white; 
+		/*
+		padding: 0.875rem 1.375rem;
+		*/
+		margin: 0px 0px 0px -1px;
+		line-height: 1;
+    	color: #212529;
+    	
+    	/*테두리 안 불어보이게 하는거 - 이게 정답이었네 ㅠㅠㅠ*/
+    	outline: 0;
+    	/*화살표 안 보이는거 해결하기 - 일단 보류...*/
+    	display:block;
+    	appearence:listbox;
+    	
+    	/*폰트설정*/
+    	font-size:14px;    	
+    	
+    	cursor:pointer;	
+	}
+	#button-for-select-ref-write{
+		cursor:pointer;
+	}
 	
 </style>
 
@@ -120,20 +219,18 @@
 	</div>
 </div>
 
-<!-- The Modal -->
+
+<!-- 일정 조회/수정 모달 Modal -->
 <div class="modal" id="viewEventModal">
   <div class="modal-dialog">
     <div class="modal-content">
 	<form class="needs-validation" action="<c:url value='/Schedule/editOk.kosmo'/>" method='POST' novalidate>
-
       <!-- Modal Header -->
       <div class="modal-header">
         <h3 style="font-weight:bold;">일정 조회/수정</h3>
         <span id="color_front"></span>
         <input class="sche_color" type="color" name="sche_color" id="sche_color"/>
-        
       </div>
-
       <!-- Modal body -->
       <div class="modal-body card-body">
 		<!-- BS4에서 긁어옴 -->
@@ -153,18 +250,34 @@
 			</div>
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
+					<span class="input-group-text text-dark">일정종류</span>
+				</div>
+			    <select class="form-control selectpicker" name="sche_type" id="sche_type" required>
+					<option value="PERSONAL" class="options-for-sche-type">개인일정</option>
+					<option value="PROJECT" class="options-for-sche-type">프로젝트</option>
+					<option value="TASK" class="options-for-sche-type">업무</option>
+					<option value="AUL" class="options-for-sche-type">연차</option>
+					<option value="MRR" class="options-for-sche-type">회의실예약</option>
+			    </select>
+				<div class="input-group-append" id="button-for-select-type">
+					<span class="input-group-text text-dark"><i class="fa-solid fa-caret-down"></i></span>
+				</div>	
+			    <%-- 
+				--%>		    
+    			<div class="invalid-feedback">일정종류를 선택하세요</div>				
+					<%-- 
 				<div class="dropdown">
-				    <input type="button" class="input-group-text text-dark dropdown-toggle" value="일정종류" data-toggle="dropdown" required/>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">일정종류</button>
+					    <input type="button" class="btn input-group-text text-dark dropdown-toggle" value="일정종류" data-toggle="dropdown" required/>
 				    <div class="dropdown-menu">
 				      <a class="dropdown-item" href="#">개인일정</a>
 				      <a class="dropdown-item" href="#">프로젝트</a>
 				      <a class="dropdown-item" href="#">업무</a>
 				      <a class="dropdown-item" href="#">연차</a>
 				    </div>	
-				</div>			
 				</div>
 				<input type="text" class="form-control" name="sche_type" id="sche_type" required>
-    			<div class="invalid-feedback">일정종류를 선택하세요</div>			
+					--%>
 			</div>			
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
@@ -184,44 +297,27 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">참조인</span>
 				</div>
-				<div class="form-controll" id="ref-list">
+				<div class="form-control" id="ref-list">
 				<!-- 여기에 참조인 정보 append -->
 				</div>
-			</div>
-
-			<div class="form-group">
-				<label for="selectDeptMember">참조인 변경</label> 
-				<select class="form-control" id="selectDeptMember" name="memberList" multiple size="5" style="height: 100%;">
-					<c:forEach var="member" items="${memberList}">
-						<c:if test="${member['m_id'] != m_id}">
-							<option value="${member['m_id']}">${member["m_name"]},
-								팀번호:${member["team_no"]}, 직급:${member["position_name"]}, 아이디:${member["m_id"]}
-							</option>
-						</c:if>
-					</c:forEach>
-				</select>
 			</div>
 			<input type="hidden" name="sche_status" id="sche_status"/>
 			<input type="hidden" name="sche_no" id="sche_no"/>
 			<input type="hidden" id="calendarList" name="calendarList" value="${calendarList}"/>
-
       </div>
-
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger deleteSchedule" data-dismiss="modal">삭제</button>
 		<input type="submit" class="btn btn-primary" value="저장하기"/>
-		<input type="submit" class="btn btn-primary" value="목록으로"/>
 		<input type="button" class="btn btn-primary close closeModal" value="닫기" data-dismiss="modal">
       </div>
-
 	</form>
     </div>
   </div>
 </div>
 
 
-<!-- The Modal -->
+<!-- 일정 등록 모달 Modal -->
 <div class="modal" id="writeEventModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -232,10 +328,8 @@
         <span id="color_front_write"></span>
         <input class="sche_color" type="color" name="sche_color" id="sche_color_write"/>
       </div>
-
       <!-- Modal body -->
       <div class="modal-body card-body">
-	       modal body start
 	       		<!-- BS4에서 긁어옴 -->
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
@@ -253,18 +347,19 @@
 			</div>
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
-				<div class="dropdown">
-				    <input type="button" class="input-group-text text-dark dropdown-toggle" value="일정종류" data-toggle="dropdown" required/>
-				    <div class="dropdown-menu">
-				      <a class="dropdown-item" href="#">개인일정</a>
-				      <a class="dropdown-item" href="#">프로젝트</a>
-				      <a class="dropdown-item" href="#">업무</a>
-				      <a class="dropdown-item" href="#">연차</a>
-				    </div>	
-				</div>			
+					<span class="input-group-text text-dark">일정종류</span>
 				</div>
-				<input type="text" class="form-control" placeholder="종류를 선택하세요" name="sche_type" id="sche_type_write" required>
-    			<div class="invalid-feedback">일정종류를 선택하세요</div>			
+			    <select class="form-control selectpicker" name="sche_type" id="sche_type_write" required>
+					<option value="PERSONAL" class="options-for-sche-type">개인일정</option>
+					<option value="PROJECT" class="options-for-sche-type">프로젝트</option>
+					<option value="TASK" class="options-for-sche-type">업무</option>
+					<option value="AUL" class="options-for-sche-type">연차</option>
+					<option value="MRR" class="options-for-sche-type">회의실예약</option>
+			    </select>
+				<div class="input-group-append" id="button-for-select-type-write">
+					<span class="input-group-text text-dark"><i class="fa-solid fa-caret-down"></i></span>
+				</div>	    
+    			<div class="invalid-feedback">일정종류를 선택하세요</div>				
 			</div>			
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
@@ -282,13 +377,23 @@
 			</div>
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
-					<span class="input-group-text text-dark">참조인 선택</span>
+					<span class="input-group-text text-dark">참조목록</span>
 				</div>
-				<div class="form-controll" id="ref-list_write">
-				<!-- 여기에 참조인 정보 append -->			
+				
+			    <select class="form-control selectpicker" name="ref-list" id="ref-list_write">
+			    	<!-- 여기에 참조인 정보 append -->
+			    </select>
+				<div class="input-group-append" id="button-for-select-ref-write">
+					<span class="input-group-text text-dark"><i class="fa-solid fa-user-plus"></i></span>
+				</div>	    				
+				<div style="width:100%; height:70px; border:1px solid #c9c8c8; border-radius:3px;">
+					<div>
+								
+					</div>
+				
 				</div>
+			
 			</div>
-
 			<%-- 
 			<div class="form-group">
 				<label for="selectDeptMember">참조인 변경</label> 
@@ -305,17 +410,13 @@
 			--%>
 			<input type="hidden" name="sche_status" id="sche_status_write" value="0"/>
 			<input type="hidden" id="calendarList" name="calendarList" value="${calendarList}"/>
-	       modal body end
       </div>
-
       <!-- Modal footer -->
-      <div class="modal-footer">
+      <div class="modal-footer">     
 		<input type="submit" class="btn btn-primary" id="" value="저장하기"/>
 		<input type="button" class="btn btn-primary close closeModal" value="닫기" data-dismiss="modal">   
       </div>
-      
       </form>
-
     </div>
   </div>
 </div>
@@ -326,14 +427,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	$(function(){
 		
-		
-		var request = $.ajax({
+//////////////////////////////////////////////////////////////////////////////////////////////////////		
+		// fullcalendar 가져오기
+		$.ajax({
 			url: "<c:url value='/Schedule/fullcalendarData.kosmo'/>",
 			method: "GET",
 			dataType: "json"
-		});
-		
-		request.done(function(data){
+		})
+		// fullcalendar 가져오기 성공시			
+		.done(function(data){
 			var calendarEl = document.getElementById('calendar');
 			var calendar = new FullCalendar.Calendar(calendarEl, {
 				initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
@@ -379,36 +481,120 @@ document.addEventListener('DOMContentLoaded', function() {
 							$("#color_front").css('background-color',data['sche_color']);
 						$('#sche_status').val(data['sche_status']);
 						$('#sche_type').val(data['sche_type']);
-						//console.log("ref-list 출력:"+data['ref-list']);
-						var people='';
-						
 						for(var person of data['ref-list']){
-							var personInfo;
-							personInfo ='<h6 class="personInfo" name="ref-list">'+person['dept_name']+' '+person['team_name']+' '+person['m_name']+' '+person['position_name']+'<h6/>'
+							//<h6> 시작태그만 넣어도 종료태그는 저절로 따라붙네... 오히려 종료태그 넣으면 <h6>이 2개가 되어버림
+							var personInfo ='<h6 class="personInfo" name="ref-list">'+person['dept_name']+' '+person['team_name']+' '+person['m_name']+' '+person['position_name'];
 							$('#ref-list').append(personInfo);
 							//console.log("안녕 나는 "+person['m_name']+"야");
-							people= people+personInfo;
 						}
+						$('.deleteSchedule').on('click',function(){
+							console.log("이건 String인가요? "+(typeof info.event._def.publicId)+' 값은요? '+info.event._def.publicId);
+							console.log("이건 String인가요? "+(typeof info.event._def.publicId.toString())+' 값은요? '+info.event._def.publicId.toString());
+							console.log("이건 String인가요? "+(typeof String(info.event._def.publicId))+' 값은요? '+String(info.event._def.publicId));
+							confirm("해당 일정을 삭제하시겠습니까?");
+							
+							var deleteData = {};
+							deleteData["sche_no"] = String(info.event._def.publicId);
+							
+							
+							$.ajax({
+								url: "<c:url value='/Schedule/delete.kosmo'/>",
+								contentType:'text/plain',
+								dataType: 'json', 
+								data: {"sche_no":String(info.event._def.publicId)}
+							})
+							.done(function(data){
+								alert(data+'개의 일정이 삭제되었습니다');
+								$('#viewEventModal').modal('hide');
+							})
+							.fail(function(req,status,error){
+								console.log('응답코드:'+req.status+',에러메시지:'+req.responseText+',error:'+error+',status:'+status);
+								alert('삭제실패...');
+								alert('응답코드:'+req.status+',에러메시지:'+req.responseText+',error:'+error+',status:'+status);
+							});
+						});
 						//console.log("people"+people);
 						//$('#sche_ref').val(data['sche_ref']);
 					});
+				},
+				eventMouseEnter:function(){
+					
 					
 				}
-				
 			});
 			calendar.render();
-		});
-		request.fail(function(jdXHR, textStatus){
+		})
+		// fullcalendar 가져오기 실패시
+		.fail(function(jdXHR, textStatus){
 			console.log(jdXHR);
 			alert("Request failed: "+textStatus );
 		});
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		
+		// 모달 관련 설정
 		$('.closeModal').click(function(){
 			$('#viewEventModal').modal('hide');
 		});
 		
+		$("#viewEventModal").on('hide.bs.modal', function(e){
+			
+			if(e.namespace =='bs.modal'){ //수정 모달창의 이벤트는 로직 넣기
+				//alert('모달 닫기 전에 참조인 목록을 지웁니다');
+				$('#ref-list').empty();
+				location.reload();
+			}
+			else{ //datepicker 모달창의 이벤트는 return false
+				//alert('잉 얘는 내가 원하는 모달창이 아닌걸');
+				return false;
+			}
+			/*
+			//바깥 모달과 안쪽 모달의 차이점 구분하기 위해서 콘솔로 속성 찍어봄...
+			//[object Object]가 뜨므로 Object.keys(대상) 로 키가 뭐 있는지 확인하고 찍어봐서 서로 다른 값 내보내는 키를 사용
+			console.log("================================================================================")
+			console.log("key가져오기:e.type:"+e.type);
+			console.log("key가져오기:e.timeStamp:"+e.timeStamp);
+			//console.log("key가져오기:e.jQuery35103637092563720803:"+e.jQuery35103637092563720803);
+			//console.log("key가져오기:e.isTrigger:"+e.isTrigger);
+			console.log("key가져오기:e.namespace:"+e.namespace);
+			console.log("key가져오기:e.rnamespace:"+e.rnamespace);
+			//console.log("key가져오기:e.result:"+e.result);
+			console.log("key가져오기:e.target:"+e.target);
+			console.log("이건뭘까??:Object.keys(e.target): "+Object.keys(e.target));
+			console.log("key가져오기:e.delegateTarget:"+e.delegateTarget);
+			console.log("key가져오기:e.currentTarget:"+e.currentTarget);
+			console.log("key가져오기:e.handleObj:"+e.handleObj);
+			console.log("key가져오기:e.data:"+e.data);	
+			console.log("이건뭘까??:Object.keys(e.handleObj): "+Object.keys(e.handleObj));
+			//type,origType,data,handler,guid,selector,needsContext,namespace
+			console.log("key가져오기:e.handleObj.type:"+e.handleObj.type);
+			//e.handleObj.handler는 이 이벤트를 다루고 있는 함수 자체의 문자열을 가져옴
+			//console.log("key가져오기:e.handleObj.handler:"+e.handleObj.handler);
+			console.log("key가져오기:e.handleObj.selector:"+e.handleObj.selector);
+			//type,timeStamp,jQuery35103637092563720803,isTrigger,namespace,rnamespace,result,target,delegateTarget,currentTarget,handleObj,data
+			console.log("================================================================================")
+			*/
+		});
+		/*
+		$('#button-for-select-type').click(function(event) {
+		    console.log("클릭은 잘 되는데...");
+			$("#sche_type").click();
+			console.log("클릭후.. 클릭되었나?");
+		});
+		$('#sche_type').on('click',function(e){
+			console.log('이벤트 객체: '+e.originalEvent);//[object MouseEvent]
+			console.log('이벤트 객체ㅔㅔ:e.type '+e.type);
+			console.log('이벤트 객체ㅔㅔ:Object.keys(e.type) '+Object.keys(e.type));
+			console.log('이벤트 객체 속성: '+Object.keys(e.originalEvent));
+			console.log('이벤트 객체 속성의 속성 isTrusted: '+Object.keys(e.originalEvent.isTrusted));
+		});
+		*/
+
 		
+		// jquery의 기능들 사용하기
+		//$('#sche_type').selectmenu({
+		//	icons:{button:"ui-icon-caret-1-s"}
+			
+		//});
 		$('#sche_startdate_d').datepicker({
 			format: "yyyy-mm-dd"
 		});
@@ -428,14 +614,15 @@ document.addEventListener('DOMContentLoaded', function() {
 		$("#color_front").click(function(event) {
 		    $("#sche_color").click();
 		});
-		$("#viewEventModal").on('hide.bs.modal', function(){
-			alert('모달 닫기 전에 참조인 목록을 지웁니다');
-			$('#ref-list').empty();
-		});
 		
-	});
+		
+		
+		var viewEventModal = $("#viewEventModal");
+		console.log("viewEventModal 띄워주라"+viewEventModal);
+		
+	});//////////////////////////jquery 실행공간/////////////////////////////////////
 	
-	//일정 추가
+	//일정 추가 공간
 	$(function(){
 		//BS4 제공 빈칸 validation
 		(function() {
@@ -446,7 +633,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				// Loop over them and prevent submission
 				var validation = Array.prototype.filter.call(forms, function(form) {
 					form.addEventListener('submit', function(event) {
-						if (form.checkValidity() === false) {
+						if(form.checkValidity() === false) {
 						  event.preventDefault();
 						  event.stopPropagation();
 						}
@@ -470,32 +657,24 @@ document.addEventListener('DOMContentLoaded', function() {
 				dataType: "json"
 			})
 			.done(function(data){
-				//alert('우와 JSON으로 받아오기 성공'+data);
-				//console.log("현재 회사 다니는 사람들 목록: "+data);
-				//console.log("목록의 데이터 종류: "+(typeof data));
 				data.forEach(function(item,index){
 					//왜 0번방에 아무도 안 들어가있지..?
 					//일단은 index != 0 조건 설정해서 for문 돌림
 					if(index != 0){	
-						//console.log(index+"번 아이디는"+item.m_id);
-						//console.log(index+"번 이름은"+item.m_name);
-						//console.log("append성공한건가");
-					////////////////////////////////////////////// 이 부분에 에러가 있다... data.forEach 고침... item.index로 넣었었음. 걍 위에꺼랑 합침	
 						var personInfo = item.dept_name+' '+item.team_name+' '+item.m_name+' '+item.position_name;
-						//console.log(personInfo);
-						//$('#ref-list_write').append('<c:forEach var="member" items="${memberList}"></c:forEach>');
+						/*
 						$('#ref-list_write').append(
-								'<div class="form-check">'+
-								'<label class="form-check-label" for="check'+index+'">'+
-								'<input type="checkbox" class="form-check-input" id="check'+index+'" name="memberList" value="'+item.m_id+'"/>'
-								+personInfo+
-								'</label>'+
+								'<div class="form-control">'+
+								'<label class="form-check-label" for="check'+index+'">'+personInfo+'</label>'+
+								'<input type="checkbox" class="form-check-input" id="check'+index+'" name="memberList" value="'+item.m_id+'"/>'+
 								'</div>'
 						);
-					///////////////////////////////////////////////////////////////////////////////////////////////////////
+						*/
+						$('#ref-list_write').append('<option value="'+item.m_id+'">'+personInfo+'</option>');						
 					}////if
 				});
-
+				//디폴트 일정색은 yellow로 일단설정(white는 너무 안 보임..)
+				$("#color_front_write").css('background-color','yellow');
 			})
 			.fail(function(req,status,error){
 				//console.log('응답코드:%s,에러메시지:%s,error:%s,status:%s',req.status,req.responseText,error,status);
@@ -509,7 +688,18 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 		//닫기버튼 클릭시 모달 닫기
 		$('.closeModal').click(function(){
-			$('#viewEventModal').modal('hide');
+			$('#writeEventModal').modal('hide');
+		});
+		$("#writeEventModal").on('hide.bs.modal', function(e){
+			if(e.namespace =='bs.modal'){ //수정 모달창의 이벤트는 로직 넣기
+				//alert('모달 닫기 전에 참조인 목록을 지웁니다');
+				//근데 전송하려면... submit 누르면 전송하고 모달창이 닫히는 건가?
+				$('#ref-list_write').empty();
+				location.reload();
+			}
+			else{ //datepicker 모달창의 이벤트는 return false
+				return false;
+			}
 		});
 		
 		//datepicker 구현
@@ -531,15 +721,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		$("#color_front_write").click(function(event) {
 		    $("#sche_color_write").click();
-		});
-		//디폴트 일정색은 yellow로 일단설정(white는 너무 안 보임..)
-		$("#color_front_write").css('background-color','#F95F53');
-		
-		
-		//모달 닫히기 전 참조인 목록 제거
-		$("#writeEventModal").on('hide.bs.modal', function(){
-			alert('모달 닫기 전에 참조인 목록을 지웁니다');
-			$('#ref-list_write').empty();
 		});
 		
 		

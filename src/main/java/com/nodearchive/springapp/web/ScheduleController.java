@@ -191,7 +191,7 @@ public class ScheduleController {
 	public String writeOk(
 			//Authentication auth,
 			Model model,
-			@RequestParam(value="memberList", required=false) String[] memberList,
+			@RequestParam(value="ref-list", required=false) String[] memberList,
 			@RequestParam Map map, // schedule 테이블의 컬럼명을 키값으로 각 입력값 받아옴
 			HttpServletRequest request
 			) {
@@ -200,7 +200,7 @@ public class ScheduleController {
 		// [1] members 테이블 쫙 뿌려주거나(한 명씩 선택할 수 있게)
 		// [2] 팀/그룹 단위로 고르게 하거나
 ////////////////////////////////////// test용 더미데이터 ////////////////////////////////////////////////
-		
+		map.put("m_id", "kim1234@samsung.com");
 		//참조인 목록을 대체 어떻게 전달해야하지.....
 		//스크립틀릿으로 자바코드로 전달해야하나?
 		//String [] strArr = {"kim1234@samsung.com","song1234@samsung.com","park1234@samsung.com"};
@@ -268,6 +268,20 @@ public class ScheduleController {
 		System.out.println("[ ⚜ ] 참조인 몇명등록됨? (test때는 3명):"+howManyRefs);
 		return "schedule/FullCalendar.noa";
 		// 이 페이지에서 fullCalendarData 호출함
+	}
+	
+	//일정 삭제시
+	//우와... 23/01/26까지 삭제를 안 생각하고 있었음 - sche_no 전달
+	@ResponseBody
+	@RequestMapping("/delete.kosmo")
+	public int delete(
+			//Authentication auth,
+			@RequestParam("sche_no") String sche_no
+			) {
+		//System.out.println("전달된 게 뭔지 보기나 하자: "+sche_no);
+		Map map = new HashMap();
+		map.put("sche_no", sche_no);
+		return scheduleService.delete(map);
 	}
 	
 	//일정 검색시
