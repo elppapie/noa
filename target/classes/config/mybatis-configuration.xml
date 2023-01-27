@@ -22,6 +22,8 @@
 		<mapper resource="mappers/attendance.xml"/>
 		<mapper resource="mappers/approval.xml"/>
 		<mapper resource="mappers/admin.xml"/>
+		<mapper resource="mappers/meet.xml"/>
+		<mapper resource="mappers/meetRoom.xml"/>
 		
 	</mappers>
 </configuration>
