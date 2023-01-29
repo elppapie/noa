@@ -317,17 +317,24 @@ public class ScheduleController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/oneEvent.kosmo", produces="application/json; charset=UTF-8")
+	@RequestMapping("/oneEvent.kosmo")
 	public Map oneEvent(
 			//Authentication auth,
 			//@RequestBody Map map, //sche_no를 전달받음
-			@RequestParam Map map //sche_no를 전달받음
+			@RequestParam("sche_no") String sche_no //sche_no를 전달받음
+			//@RequestParam Map map
 			) throws JsonProcessingException {
+		System.out.println("이벤트 클릭시 모달창이 떠야하는데 그때 sche_no를 전달받아야 하는데");
 		//클릭한 일정의 내용 전달받음
-		Map oneSchedule = scheduleService.view(map);
+		System.out.println("★sche_no 잘 들어왔나용:"+sche_no);
 		//임의의 로그인한 자 
-		map.put("m_id", "kim1234@samsung.com");
-		System.out.println("★sche_no 잘 들어왔나용:"+map.get("sche_no").toString());
+		//map.put("m_id", "kim1234@samsung.com");
+		Map map_ = new HashMap<>();
+		map_.put("sche_no", sche_no);
+		map_.put("m_id", "kim1234@samsung.com");
+		
+		
+		Map oneSchedule = scheduleService.view(map_);
 		
 		HashMap<String, Object> hash = new HashMap<>();
         //JSONObject jsonObj = new JSONObject();
@@ -339,9 +346,14 @@ public class ScheduleController {
         hash.put("sche_type", oneSchedule.get("sche_type").toString());
         hash.put("sche_color", oneSchedule.get("sche_color").toString());
         hash.put("sche_status", oneSchedule.get("sche_status").toString());
-        hash.put("ref-list", scheduleService.viewRef(map));
         
-		map.put("ref-list", scheduleService.viewRef(map));
+        //로그인한 본인 제거하기
+        List list = scheduleService.viewRef(map_);
+        list.remove("kim1234@samsung.com");
+        //본인 제외한 목록 넣기
+        hash.put("ref-list", list);
+        
+		//map.put("ref-list", scheduleService.viewRef(map));
         //jsonObj = new JSONObject(hash);
         
 		
@@ -410,7 +422,7 @@ public class ScheduleController {
 	            hash.put("color", color);
 ////////////////////////////////////////잠시 url 비활성화
 	            //hash.put("url", "view.kosmo?sche_no="+calendar.get(i).get("SCHE_NO").toString());
-	            hash.put("url", "oneEvent.kosmo?sche_no="+calendar.get(i).get("sche_no").toString());
+	            //hash.put("url", "oneEvent.kosmo?sche_no="+calendar.get(i).get("sche_no").toString());
 	            
 	            
 	            //System.out.println("그래서 이거 파라미터로 잘 넘어가니???? :"+"view.kosmo?SCHE_NO="+calendar.get(i).get("SCHE_NO").toString());

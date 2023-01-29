@@ -254,10 +254,11 @@
 				</div>
 			    <select class="form-control selectpicker" name="sche_type" id="sche_type" required>
 					<option value="PERSONAL" class="options-for-sche-type">개인일정</option>
-					<option value="PROJECT" class="options-for-sche-type">프로젝트</option>
-					<option value="TASK" class="options-for-sche-type">업무</option>
-					<option value="AUL" class="options-for-sche-type">연차</option>
-					<option value="MRR" class="options-for-sche-type">회의실예약</option>
+					<option value="PROJECT" class="options-for-sche-type" disabled>프로젝트</option>
+					<option value="TASK" class="options-for-sche-type" disabled>업무</option>
+					<option value="AUL" class="options-for-sche-type" disabled>연차</option>
+					<option value="MRR" class="options-for-sche-type" disabled>회의실예약</option>
+					<!-- 위 옵션들은 a href를 걸어서  -->
 			    </select>
 				<div class="input-group-append" id="button-for-select-type">
 					<span class="input-group-text text-dark"><i class="fa-solid fa-caret-down"></i></span>
@@ -414,7 +415,7 @@
       <!-- Modal footer -->
       <div class="modal-footer">     
 		<input type="submit" class="btn btn-primary" id="" value="저장하기"/>
-		<input type="button" class="btn btn-primary close closeModal" value="닫기" data-dismiss="modal">   
+		<button class="btn btn-primary close closeModal">닫기</button>
       </div>
       </form>
     </div>
@@ -457,13 +458,16 @@ document.addEventListener('DOMContentLoaded', function() {
 				eventClick:function(info){
 					//링크 안 뜨게끔 하기
 					//info.jsEvent.preventDefault();
-					
+					//console.log("일정 번호:sche_no:"+info.event._def.publicId);
+					//console.log("일정 번호:sche_no:"+String(info.event._def.publicId));
+					//console.log("일정 번호:sche_no:"+(typeof info.event._def.publicId));
 					    //url:"<c:url value='/Schedule/oneEvent.kosmo'/>",
 					$.ajax({
-					    url: "<c:url value='/Schedule/oneEvent.kosmo?sche_no="+info.event._def.publicId+"'/>",
-					    type:'POST',
-					    contentType:'application/json',
-					    dataType:'json'
+					    url: "<c:url value='/Schedule/oneEvent.kosmo'/>",
+					    //type:'POST',
+					    contentType:'text/plain',
+					    dataType:'json',
+					    data: {"sche_no":String(info.event._def.publicId)}
 					})
 					.done(function(data){
 						$('#viewEventModal').modal('show');
@@ -491,7 +495,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							console.log("이건 String인가요? "+(typeof info.event._def.publicId)+' 값은요? '+info.event._def.publicId);
 							console.log("이건 String인가요? "+(typeof info.event._def.publicId.toString())+' 값은요? '+info.event._def.publicId.toString());
 							console.log("이건 String인가요? "+(typeof String(info.event._def.publicId))+' 값은요? '+String(info.event._def.publicId));
-							confirm("해당 일정을 삭제하시겠습니까?");
+							if(!confirm("해당 일정을 삭제하시겠습니까?")) return false;
 							
 							var deleteData = {};
 							deleteData["sche_no"] = String(info.event._def.publicId);
@@ -515,7 +519,13 @@ document.addEventListener('DOMContentLoaded', function() {
 						});
 						//console.log("people"+people);
 						//$('#sche_ref').val(data['sche_ref']);
+					})
+					.fail(function(req,status,error){
+						console.log('응답코드:'+req.status+',에러메시지:'+req.responseText+',error:'+error+',status:'+status);
+						alert('일정조회 실패...');
+						alert('응답코드:'+req.status+',에러메시지:'+req.responseText+',error:'+error+',status:'+status);
 					});
+					
 				},
 				eventMouseEnter:function(){
 					
@@ -534,6 +544,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		// 모달 관련 설정
 		$('.closeModal').click(function(){
 			$('#viewEventModal').modal('hide');
+			$('#writeEventModal').modal('hide');
 		});
 		
 		$("#viewEventModal").on('hide.bs.modal', function(e){
@@ -682,14 +693,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 			
 			
-			
-			
-			
-		});
-		//닫기버튼 클릭시 모달 닫기
-		$('.closeModal').click(function(){
-			$('#writeEventModal').modal('hide');
-		});
+		});////////$('#addSchedule').click
+
 		$("#writeEventModal").on('hide.bs.modal', function(e){
 			if(e.namespace =='bs.modal'){ //수정 모달창의 이벤트는 로직 넣기
 				//alert('모달 닫기 전에 참조인 목록을 지웁니다');
@@ -700,7 +705,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			else{ //datepicker 모달창의 이벤트는 return false
 				return false;
 			}
-		});
+		});///////$("#writeEventModal").on('hide.bs.modal', function(e){
 		
 		//datepicker 구현
 		$('#sche_startdate_d_write').datepicker({

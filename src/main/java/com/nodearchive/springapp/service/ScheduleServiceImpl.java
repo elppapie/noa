@@ -198,6 +198,8 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 	// |sche_no |
 	// |일정번호	|
 	public List viewRef(Map map) {
+		//List list = new Vector<>();
+		
 		
 		return dao.findRefByNo(map);
 	}
