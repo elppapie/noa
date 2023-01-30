@@ -6,7 +6,7 @@
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
 <c:set var="view" value="${pageContext.request.contextPath}/WEB-INF/views"/>
-<c:set var="m_name" ><sec:authentication property="principal.username"/></c:set>
+<c:set var="m_id" ><sec:authentication property="principal.username"/></c:set>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +96,7 @@
       <div class="navbar-menu-wrapper d-flex align-items-top"> 
         <ul class="navbar-nav">
           <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-            <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">${m_name}</span></h1>
+            <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">${m_id}</span></h1>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto">
@@ -150,7 +150,7 @@
           	<div class="form-group" style="margin:0px;">
           		<div class="input-group">
           			<input type="text" class="form-control" placeholder="구성원 검색" id="top-input-search-members"/>
-          			<div class="input-group-append d-flex justify-content-center align-items-center top-btn-search-members-append" onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo')">
+          			<div class="input-group-append d-flex justify-content-center align-items-center top-btn-search-members-append" onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo?m_id=${m_id}')">
           				<button type="button" class="btn btn-rounded top-btn-search-members">
           					<i class="ti-search"></i>
          				</button>
