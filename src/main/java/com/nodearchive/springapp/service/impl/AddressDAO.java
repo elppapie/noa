@@ -21,11 +21,19 @@ public class AddressDAO {
 	public List getAllMembers(Map map) {
 		return template.selectList("addressGetAllMembers", map);
 	}
+	
+	public List getAllMembersNoPaging(Map map) {
+		return template.selectList("addressGetAllMembersNoPaging", map);
+	}
 
 	public String getEmpCodeByMId(Map map) {
 		return template.selectOne("addressGetEmpCodeByMId", map);
 	}
 
+	public Map getEmpInfoByMId(Map map) {
+		return template.selectOne("addressGetEmpInfoByMId", map);
+	}
+	
 	public List getDeptOrg(Map map) {
 		return template.selectList("addressGetDeptOrg", map);
 	}
@@ -37,6 +45,8 @@ public class AddressDAO {
 	public List<Map> getTeamMembers(List<Integer> teamNoList) {
 		return template.selectList("addressGetTeamMembers", teamNoList);
 	}
+
+	
 	
 	
 	

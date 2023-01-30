@@ -18,6 +18,7 @@ import com.nodearchive.springapp.service.utils.PagingUtil;
 
 
 
+
 // AddressController용 서비스
 // 여기서 주소록 관련 비즈니스 로직을 처리한다.
 @Service
@@ -32,11 +33,17 @@ public class AddressServiceImpl implements AddressService<Map> {
 	@Value("${blockPage}")
 	private int blockPage;
 	
+	
+	
+	
+	//페이징 있는 전체 구성원 목록 조회
 	@Override
 	public ListPagingData<Map> selectList(Map map, HttpServletRequest req, int nowPage) {
 		//페이징을 위한 로직 시작]
+		Map temp = dao.getEmpInfoByMId(map);
 		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
-		map.put("emp_code", dao.getEmpCodeByMId(map));
+		map.put("emp_code", temp.get("emp_code"));
+		map.put("emp_name", temp.get("emp_name"));
 		
 		//전체 레코드수	
 		int totalRecordCount = dao.getTotalRecordCount(map); //검색시에도 페이징 해야 함으로 맵을 넘겨준다
@@ -75,6 +82,23 @@ public class AddressServiceImpl implements AddressService<Map> {
 													.build();
 		return listPagingData;
 	}//////////selectList()
+	
+	
+	//⚠️페이징 없는 전체 구성원 목록 조회
+	public List selectListNoPaging(Map map) {
+		Map temp = dao.getEmpInfoByMId(map);
+		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
+		map.put("emp_code", temp.get("emp_code"));
+		map.put("emp_name", temp.get("emp_name"));
+		
+		//내 기업의 구성원 전체 목록 얻기
+		//membersList의 key
+		//|mark |m_profile_img |m_name  |position_name |team_name |m_id        |m_private_contact |m_hiredate | emp_name 
+		//즐겨찾기|프로필사진링크   | 이름    | 직급명         | 팀명      |이메일주소(id)| 개인연락처          | 입사일     |       기업 명
+		List membersList = dao.getAllMembersNoPaging(map);		
+		
+		return membersList;
+	}//////////selectList()
 
 	@Override
 	public Map selectOne(Map map) {
@@ -101,8 +125,10 @@ public class AddressServiceImpl implements AddressService<Map> {
 	}
 
 	public OrganizationDTO getOrg(Map map) {
+		Map temp = dao.getEmpInfoByMId(map);
 		//로그인 중인 구성원의 기업코드 구해서 map에 전달하기
-		map.put("emp_code", dao.getEmpCodeByMId(map));
+		map.put("emp_code", temp.get("emp_code"));
+		map.put("emp_name", temp.get("emp_name"));
 		//기업의 부서 얻어오기 
 		//<Map> dept_code=부서코드, dept_name=부서명, m_dept_leader=부서책임자, dept_leader_name=부서책임자이름 의 List컬렉션 
 		//|dept_code |dept_name |dept_leader_id      |dept_leader_name |
@@ -131,5 +157,8 @@ public class AddressServiceImpl implements AddressService<Map> {
 		dto.setTeamMembersList(teamMembersList);
 		return dto;
 	}////////////getOrg()
+
+
+	
 
 }

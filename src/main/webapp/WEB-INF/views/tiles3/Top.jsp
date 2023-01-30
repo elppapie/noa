@@ -150,7 +150,7 @@
           	<div class="form-group" style="margin:0px;">
           		<div class="input-group">
           			<input type="text" class="form-control" placeholder="구성원 검색" id="top-input-search-members"/>
-          			<div class="input-group-append d-flex justify-content-center align-items-center top-btn-search-members-append" onclick="openSearchOrg('${path}/Address/allList.kosmo')">
+          			<div class="input-group-append d-flex justify-content-center align-items-center top-btn-search-members-append" onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo')">
           				<button type="button" class="btn btn-rounded top-btn-search-members">
           					<i class="ti-search"></i>
          				</button>

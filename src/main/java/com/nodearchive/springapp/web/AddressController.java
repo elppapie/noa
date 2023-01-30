@@ -1,5 +1,6 @@
 package com.nodearchive.springapp.web;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -67,6 +68,47 @@ public class AddressController {
 		//뷰정보 반환
 		return "address/addressList.noa";
 	}
+	
+	//컨트롤러 메소드 - 주소록 전체 구성원 목록 (주소록 메인페이지)
+	@GetMapping("/allListNoPaging.kosmo")
+	public String allListNoPaging(
+//			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
+			Model model,
+			@RequestParam Map map,
+			@RequestParam(required = false, defaultValue = "1") int nowPage,
+			//nowPage가 전달된다면 해당 값이, nowPage가 없으면 기본값 1로 초기화한다.
+			HttpServletRequest req
+			) {
+		//map으로 전달될 데이터
+		/*
+		 * 1. m_id = 로그인 중인 구성원의 id
+		 */
+/////////////////////////////////////////////////test //* ⚠️테스트할 때만 임의로 m_id전달
+		map.put("m_id", "kim1234@samsung.com");
+		Set keys=map.keySet();
+		for(Object o:keys) {
+			System.out.println(String.format("[🔔컨트롤러] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
+		}
+///////////////////////////////////////////////
+		
+		//서비스 호출 + 데이터 저장
+		// key=value
+		/*
+		 * lists = 뿌려줄 구성원 목록 List<Map>타입
+			 mark=즐겨찾기표시 ,m_profile_img=프로필사진링크, m_name=이름, position_name=직급 이름, team_name=팀 이름, 
+			 m_id=이메일, m_private_contact개인연락처, m_hiredate=입사일
+		 * map = 페이징 관련 데이터(pageSize,nowPage,...) XXXXXXXXXX
+		 * pagingString = 페이징 문자열  XXXXXXXXXXX
+		 */
+		List membersList = addrService.selectListNoPaging(map);
+		//데이터 저장
+		model.addAttribute("membersList",membersList);
+		//map에 담겨있는 정보 : m_id(내 아이디), emp_code(내 기업코드), emp_name(내 기업명)
+		model.addAttribute("myInfo", map);
+		//뷰정보 반환
+		return "address/addressList.noa";
+	}
+
 	
 	@GetMapping("/searchMyTeamMembers.kosmo")
 	public String searchMyTeamMembers(
