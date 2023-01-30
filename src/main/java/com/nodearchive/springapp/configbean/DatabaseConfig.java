@@ -18,7 +18,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 public class DatabaseConfig {
-
+	/*
 	//히카리 커넥션 풀 사용:server.xml 및 context.xml에 커넥션 풀 관련 설정 불 필요
 	@Value("${driverClassName}")
 	private String driverClassName;
@@ -40,7 +40,10 @@ public class DatabaseConfig {
 		hikariConfig.setUsername(username);
 		hikariConfig.setPassword(password);
 		return new HikariDataSource(hikariConfig);
-	}	
+	}
+	*/
+	@Autowired
+	private HikariDataSource hikariDataSource;
 	//https://mybatis.org/spring/ko/factorybean.html
 	//마이바티스 관련 빈
 	@Bean

@@ -6,9 +6,13 @@ import java.util.Map;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nodearchive.springapp.service.impl.AddressDAO;
+import com.nodearchive.springapp.service.impl.AdminDAO;
 import com.nodearchive.springapp.service.utils.AuthMailHandler;
 import com.nodearchive.springapp.service.utils.AuthMailTempKey;
 
@@ -17,11 +21,16 @@ public class LoginServiceImpl {
 	
 	@Autowired
 	private AddressDAO dao;
+	@Autowired
+	private AdminDAO admin_dao;
 	//난수 인증코드를 생성하기 위한 클래스 주입 
 	@Autowired
 	private AuthMailTempKey authKey;
 	@Autowired
 	private AuthMailHandler mailHandler;
+	//스프링 씨큐리티 password 암호화
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 
 	public void signUp(Map map) {
@@ -59,5 +68,19 @@ public class LoginServiceImpl {
 		map.put("isSuccess", true); //인증메일 발송 성공여부 저장. catch절에 안 들어갔다면 성공한 것.
 		return map;
 	}
+	
+	public Map insertUser(Map<String,String> map) {
+		//사용자가 입력한 비밀번호를 암호화
+		String rawPassword=map.get("m_password");
+		String encodedPassword=passwordEncoder.encode(rawPassword);//원문을 암호화
+		//암호화된 비밀번호로 다시 설정
+		map.put("m_password", encodedPassword);
+		System.out.println("비밀번호 원문:"+rawPassword);
+		System.out.println("암호화된 비밀번호:"+encodedPassword);
+		System.out.println("암호일치여부 판단"+passwordEncoder.matches(rawPassword, encodedPassword));
+		int affected=admin_dao.saveUser(map);	
+		System.out.println(affected+"행이 입력되었어요");
+		return map;
+	} 
 
 }

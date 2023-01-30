@@ -5,6 +5,53 @@
 
 
 <mapper namespace="mappers.admin">
+
+	<!-- 스프링 씨큐리티 회원 입력용 -->
+	<insert id="saveUser" parameterType="Map">
+		INSERT INTO members(
+			m_id, 
+			emp_code,
+			team_no,
+			m_team_leader,
+			m_dept_leader,
+			position_code,
+			er_code,
+			m_name,
+			m_ssn,
+			m_password,
+			m_enabled,
+			m_private_contact,
+			m_private_email,
+			m_emp_contact,
+			m_hiredate,
+			m_resigndate,
+			m_profile_img,
+			m_status,
+			m_profile_msg,
+			m_spare_annual
+		) VALUES(
+			#{m_id}, 
+			#{emp_code},
+			#{team_no},
+			#{m_team_leader},
+			#{m_dept_leader},
+			#{position_code},
+			#{er_code},
+			#{m_name},
+			#{m_ssn},
+			#{m_password},
+			1,
+			#{m_private_contact},
+			#{m_private_email},
+			#{m_emp_contact},
+			#{m_hiredate},
+			#{m_resigndate},
+			#{m_profile_img},
+			#{m_status},
+			#{m_profile_msg},
+			#{m_spare_annual}
+		)	
+	</insert>
 	
 	<select id="getGroupList" parameterType="Map" resultType="Map">
 		SELECT gml.group_no, eg.group_name, eg.m_id, eg.group_separator 

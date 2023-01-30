@@ -161,6 +161,7 @@
 	#button-for-select-ref-write{
 		cursor:pointer;
 	}
+
 	
 </style>
 
@@ -352,10 +353,10 @@
 				</div>
 			    <select class="form-control selectpicker" name="sche_type" id="sche_type_write" required>
 					<option value="PERSONAL" class="options-for-sche-type">개인일정</option>
-					<option value="PROJECT" class="options-for-sche-type">프로젝트</option>
-					<option value="TASK" class="options-for-sche-type">업무</option>
-					<option value="AUL" class="options-for-sche-type">연차</option>
-					<option value="MRR" class="options-for-sche-type">회의실예약</option>
+					<option value="PROJECT" class="options-for-sche-type" disabled>프로젝트</option>
+					<option value="TASK" class="options-for-sche-type" disabled>업무</option>
+					<option value="AUL" class="options-for-sche-type" disabled>연차</option>
+					<option value="MRR" class="options-for-sche-type" disabled>회의실예약</option>
 			    </select>
 				<div class="input-group-append" id="button-for-select-type-write">
 					<span class="input-group-text text-dark"><i class="fa-solid fa-caret-down"></i></span>
@@ -367,7 +368,7 @@
 					<span class="input-group-text text-dark">시작시간</span>
 				</div>
 				<input type="text" class="form-control" placeholder="시작시간을 선택하세요" name="sche_startdate_d" id="sche_startdate_d_write" required>
-				<input type="time" class="form-control" name="sche_startdate_t" id="sche_startdate_t_write" required>					
+				<input type="time" class="form-control" name="sche_startdate_t" id="sche_startdate_t_write"required>					
 			</div>			
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
@@ -551,6 +552,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			if(e.namespace =='bs.modal'){ //수정 모달창의 이벤트는 로직 넣기
 				//alert('모달 닫기 전에 참조인 목록을 지웁니다');
+				if(!confirm('일정 수정을 취소하겠습니까?')) return false;
 				$('#ref-list').empty();
 				location.reload();
 			}
@@ -699,6 +701,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			if(e.namespace =='bs.modal'){ //수정 모달창의 이벤트는 로직 넣기
 				//alert('모달 닫기 전에 참조인 목록을 지웁니다');
 				//근데 전송하려면... submit 누르면 전송하고 모달창이 닫히는 건가?
+				if(!confirm('일정 입력을 취소하시겠습니까?')) return false;
 				$('#ref-list_write').empty();
 				location.reload();
 			}

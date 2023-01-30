@@ -66,7 +66,8 @@
                     <p class="card-description">
                       ID와 비밀번호를 입력하세요 <i class="fa fa-light fa-question-circle-o" title='"아이디@기업도메인"형식의 ID를 입력하세요&nbsp;'></i>
                     </p>
-                    <form class="form-sample" action="#" method="post">
+                    <form class="form-sample" action='<c:url value="/Login/login.kosmo"/>' method="post">
+                      <input type="hidden" id="login-3" name="m_id"/>
                       <div class="form-group mb-2">
                         <div class="input-group">
                           <input type="text" class="form-control flex-grow-1" placeholder="로그인 ID"/>
@@ -79,7 +80,7 @@
                         </div>  
                       </div>
                       <div class="form-group">  
-                        <input type="text" class="form-control flex-grow-1" placeholder="비밀번호"/>
+                        <input type="password" class="form-control flex-grow-1" name="m_password" placeholder="비밀번호"/>
                         <button type="submit" class="btn btn-secondary mt-2 btn-submit-fitX fsu-sm">로그인</button>
                         <div class="d-flex align-items-baseline">
                           <div class="col-6">
@@ -138,11 +139,24 @@
   <script src="${path}/resources/js/dashboard.js"></script>
   <script src="${path}/resources/js/Chart.roundedBarCharts.js"></script>
   <!-- End custom js for this page-->
-  <script>
-    var availHeightPX = window.screen.availHeight + "px";
-    $(".mp-height").css("height",availHeightPX);
-    var logoWidthPX = $(".loginpage-logo-img").width() - 10 + "px";
-    $('.emp-description').css("width",logoWidthPX);
+  <script>  
+    $(function(){
+	    var availHeightPX = window.screen.availHeight + "px";
+	    $(".mp-height").css("height",availHeightPX);
+	    var logoWidthPX = $(".loginpage-logo-img").width() - 10 + "px";
+	    $('.emp-description').css("width",logoWidthPX);
+    	
+	    //분리된 아이디 input 연결하기
+    	$('.form-group > button[type="submit"]').on('click', function(){
+    		var arr = [];
+    		$('input:text').each(function(){
+    			arr.push($(this).val());
+    		})
+    		$('#login-3').val(arr.join('@'));
+    		$('form').submit();
+    	});
+    });
+    
   </script>
 </body>
 

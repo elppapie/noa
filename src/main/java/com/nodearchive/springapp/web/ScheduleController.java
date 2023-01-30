@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -148,7 +149,7 @@ public class ScheduleController {
 	@RequestMapping("/view.kosmo")
 	public String view(
 			Model model,
-			//Authentication auth,
+			Authentication auth,
 			@RequestParam Map map
 			) {
 //		System.out.println("안녕 난 view.kosmo야 컨트롤러에 있어");
@@ -161,8 +162,9 @@ public class ScheduleController {
 //		System.out.println("일정시작:"+oneSchedule.get("SCHE_STARTDATE"));
 //		System.out.println("일정끝:"+oneSchedule.get("SCHE_ENDDATE"));
 //		System.out.println("일정 번호ㅗㅗㅗㅗ:"+oneSchedule.get("SCHE_NO"));
-		
-		map.put("m_id", "kim1234@samsung.com");
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
+		//map.put("m_id", "kim1234@samsung.com");
 		
 		model.addAttribute("m_id",map.get("m_id"));
 		model.addAttribute("organization", adminService.getOrgAdmin(map));
@@ -176,10 +178,12 @@ public class ScheduleController {
 	@RequestMapping("/write.kosmo")
 	public String write(
 			Model model,
-			//Authentication auth,
+			Authentication auth,
 			@RequestParam Map map
 			) {
-		map.put("m_id", "kim1234@samsung.com");
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
+		//map.put("m_id", "kim1234@samsung.com");
 		model.addAttribute("m_id",map.get("m_id"));
 		model.addAttribute("organization", adminService.getOrgAdmin(map));
 		return "schedule/Write.noa";
@@ -189,7 +193,7 @@ public class ScheduleController {
 	//사람을 map에다가 저장해서 list에다가 담기
 	@RequestMapping("/writeOk.kosmo")
 	public String writeOk(
-			//Authentication auth,
+			Authentication auth,
 			Model model,
 			@RequestParam(value="ref-list", required=false) String[] memberList,
 			@RequestParam Map map, // schedule 테이블의 컬럼명을 키값으로 각 입력값 받아옴
@@ -200,7 +204,8 @@ public class ScheduleController {
 		// [1] members 테이블 쫙 뿌려주거나(한 명씩 선택할 수 있게)
 		// [2] 팀/그룹 단위로 고르게 하거나
 ////////////////////////////////////// test용 더미데이터 ////////////////////////////////////////////////
-		map.put("m_id", "kim1234@samsung.com");
+		
+		//map.put("m_id", "kim1234@samsung.com");
 		//참조인 목록을 대체 어떻게 전달해야하지.....
 		//스크립틀릿으로 자바코드로 전달해야하나?
 		//String [] strArr = {"kim1234@samsung.com","song1234@samsung.com","park1234@samsung.com"};
@@ -208,8 +213,9 @@ public class ScheduleController {
 		List<String> list = new Vector<>();
 		for(String str:memberList) list.add(str);
 		
-		//입력하는 사람도 넣어야 하는데
-		list.add(String.valueOf(map.get("m_id")));
+		//입력하는 사람도 참조인 목록에 넣기
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		list.add(authenticated.getUsername());
 		
 		//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
 		map.put("list", list);
@@ -236,7 +242,7 @@ public class ScheduleController {
 	//일정 수정폼 작성 후 제출 - 달력폼으로 이동 - 해당 일정 등록된 곳으로??
 	@RequestMapping("/editOk.kosmo")
 	public String editOk(
-			//Authentication auth,
+			Authentication auth,
 			Model model,
 			@RequestParam(value="memberList", required=false) String[] memberList,
 			@RequestParam Map map //파라미터로 폼의 name=value 저장됨
@@ -258,8 +264,9 @@ public class ScheduleController {
 		List<String> list = new Vector<>();
 		for(String str:memberList) list.add(str);
 		
-		//입력하는 사람도 넣어야 하는데
-		//list.add("");
+		//입력하는 사람도 참조인 목록에 저장
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		list.add(authenticated.getUsername());
 		
 		//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
 		map.put("list", list);
@@ -319,7 +326,7 @@ public class ScheduleController {
 	@ResponseBody
 	@RequestMapping("/oneEvent.kosmo")
 	public Map oneEvent(
-			//Authentication auth,
+			Authentication auth,
 			//@RequestBody Map map, //sche_no를 전달받음
 			@RequestParam("sche_no") String sche_no //sche_no를 전달받음
 			//@RequestParam Map map
@@ -331,7 +338,8 @@ public class ScheduleController {
 		//map.put("m_id", "kim1234@samsung.com");
 		Map map_ = new HashMap<>();
 		map_.put("sche_no", sche_no);
-		map_.put("m_id", "kim1234@samsung.com");
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map_.put("m_id", authenticated.getUsername());
 		
 		
 		Map oneSchedule = scheduleService.view(map_);

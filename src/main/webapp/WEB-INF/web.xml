@@ -9,10 +9,35 @@
 	</welcome-file-list>
 	
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<!-- <1>스프링 시큐리티 설정 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
 	</context-param>
+	-->
+	<!-- <2>자바코드로 설정하기위한 컨텍스트 파라미터 등록-->
+	<!--XML이 아닌 어노테이션기반의 자바코드로 설정하기위한 파라미터-->
+	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+	<!-- <3>스프링씨큐리티 자바코드 설정 파일등록-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>com.nodearchive.springapp.configbean.SecurityConfig</param-value>
+	</context-param>
+	<!-- <4>springSecurityFilterChain -->
+	<!-- spring boot은 이거 등록할 필요 x -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- @EnableWebSecurity 랑 extends WebSecurityConfigurerAdapter 해서 불필요 -->
+	<!-- 하다고 생각했지만??? 넣어야 한다고... -->
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>

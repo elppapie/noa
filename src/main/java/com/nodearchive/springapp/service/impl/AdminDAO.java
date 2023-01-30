@@ -13,6 +13,11 @@ public class AdminDAO {
 	@Autowired
 	private SqlSessionTemplate template;
 
+	//스프링 씨큐리티용 구성원 입력...
+	public int saveUser(Map<String,String> map) {
+		return template.insert("saveUser",map);
+	}
+
 	public List<Map> selectGroupList(Map map) { 
 		return template.selectList("getGroupList",map);
 	}

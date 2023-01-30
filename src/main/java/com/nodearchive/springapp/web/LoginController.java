@@ -5,10 +5,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +23,7 @@ public class LoginController {
 
 	@Autowired
 	private LoginServiceImpl service;
+	
 	
 	//로그인 페이지로 이동하는 메소드
 	@GetMapping("/login.kosmo")
@@ -69,6 +72,13 @@ public class LoginController {
 		return "forward:/Login/login.kosmo";
 	}
 	
+	@ResponseBody
+	@PostMapping("/users.kosmo")
+	private Map insertUser(@RequestBody Map<String,String> map) {
+		//씨큐리티 전용 유저 입력... 회원가입 절차
+		map = service.insertUser(map);
+		return map;
+	}
 	
 	
 }
