@@ -12,11 +12,9 @@
 
 <div class="tab-content tab-content-basic">
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-	
-	
-
+	<h2>받은 메일함</h2>
 	<div class="text-right mb-2">
-		<a href="<c:url value="/Mail/writeToOthers.kosmo"/>" class="btn btn-light"></a>
+		<a href="<c:url value="/Mail/writeToOthers.kosmo"/>" class="btn btn-light">메일 쓰기</a>
 	</div>
 	<table class="table table-light table-hover text-center">
 
@@ -26,14 +24,15 @@
 				<th class="col-2">메일 읽음/안읽음 표시</th>
 				<th class="col-3">보낸 사람</th>
 				<th class="col-4">제목</th>
-				<th class="col-5">수신 날짜</th>				
+				<th class="col-5">내용</th>
+				<th class="col-6">수신 날짜</th>				
 				
 			</tr>
 		</thead>
 		<tbody class="table-sm down-file-body">
 			<c:if test="${empty receviemail}" var="isEmpty">
 				<tr>
-					<td colspan="4">받은 메일이 없습니다.</td>
+					<td colspan="7">받은 메일이 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${not isEmpty }">
@@ -43,6 +42,7 @@
 						<td>${mail.MAIL_TYPE}</td>
 						<td>${mail.M_ID}</td>						
 						<td>${mail.MAIL_TITLE}</td>
+						<td>${mail.M_CONTENT}</td>	
 						<td>${mail.MAIL_REGIDATE}</td>
 					</tr>
 				</c:forEach>

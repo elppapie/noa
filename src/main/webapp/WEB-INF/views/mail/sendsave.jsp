@@ -12,6 +12,7 @@
 
 <div class="tab-content tab-content-basic">
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
+	<h3>보낸 메일함</h3>
 	<div class="text-right mb-2">
 	</div>
 	<table class="table table-light table-hover text-center">
