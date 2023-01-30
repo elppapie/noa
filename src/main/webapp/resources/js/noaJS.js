@@ -24,12 +24,13 @@ function openWebRTCMain(path,m_id){
 
 /////////////////구성원 검색 iframe창 띄우기(아직은 팝업창...)
 function openSearchOrg(path,m_id){
-	const searchName = document.querySelector("#top-input-search-members").value;
+	const searchName = document.querySelector("#top-input-search-members").value.trim();
 	
 	let width=970;
     let height=680;
+    console.log(path+"m_id="+m_id+"&searchColumn=m_name&searchWord="+searchName);
 	window.open(
-		path+"?searchColumn=m_name&searchWord="+searchName,
+		path+"m_id="+m_id+"&searchColumn=m_name&searchWord="+searchName,
 		"조직도",
 		"left="+(availWidth/2-width/2)+",top="+(availHeight/2-height/2)+",width="+width+",height="+height
 		);

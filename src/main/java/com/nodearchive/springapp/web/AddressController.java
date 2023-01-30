@@ -74,21 +74,20 @@ public class AddressController {
 	public String allListNoPaging(
 //			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
 			Model model,
-			@RequestParam Map map,
-			@RequestParam(required = false, defaultValue = "1") int nowPage,
-			//nowPage가 전달된다면 해당 값이, nowPage가 없으면 기본값 1로 초기화한다.
-			HttpServletRequest req
+			@RequestParam Map map
 			) {
 		//map으로 전달될 데이터
+		System.out.println("map으로 전달될 데이터 m_id: "+map.get("m_id"));
+		System.out.println("map으로 전달될 데이터 searchC,searchW: "+map.get("searchColumn")+", "+map.get("searchWord"));
 		/*
 		 * 1. m_id = 로그인 중인 구성원의 id
 		 */
 /////////////////////////////////////////////////test //* ⚠️테스트할 때만 임의로 m_id전달
-		map.put("m_id", "kim1234@samsung.com");
-		Set keys=map.keySet();
-		for(Object o:keys) {
-			System.out.println(String.format("[🔔컨트롤러] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
-		}
+//		map.put("m_id", "kim1234@samsung.com");
+//		Set keys=map.keySet();
+//		for(Object o:keys) {
+//			System.out.println(String.format("[🔔컨트롤러] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
+//		}
 ///////////////////////////////////////////////
 		
 		//서비스 호출 + 데이터 저장
@@ -105,6 +104,10 @@ public class AddressController {
 		model.addAttribute("membersList",membersList);
 		//map에 담겨있는 정보 : m_id(내 아이디), emp_code(내 기업코드), emp_name(내 기업명)
 		model.addAttribute("myInfo", map);
+		
+//		test
+		System.out.println("📢test:"+((Map)membersList.get(0)).get("m_name"));
+		
 		//뷰정보 반환
 		return "address/addressList.noa";
 	}

@@ -80,17 +80,19 @@
                   <table class="table table-stripped table-hover">
                     <thead>
                       <tr>
-                        <th>  </th>
+                        <th class="addr-list-checkbox-td-padding-right-0">
+                        	<input type="checkbox"/>  
+                        </th>
                         <th> 프로필 </th>
                         <th> 이름 </th>
                         <th> 소속 팀 </th>
-                        <th> 연락처ㆍ비고 </th>
+                        <th> 개인 연락처 </th>
                       </tr>
                     </thead>
                     <tbody>
                       
                       <!-- 여기서 forEach반복 -->
-                      <c:forEach items="membersList" var="member">
+                      <c:forEach items="${membersList}" var="member">
 	                      <!-- tr : 행 , td : 열 (여기 td 개수는 <thead>의 th개수랑 맞춰야 함.)-->
 	                      <tr>
 	                      	<td class="addr-list-checkbox-td-padding-right-0">
@@ -99,7 +101,7 @@
 	                        <td class="py-1"> <img src="${path}/resources/images/logo-noa-messanger.png" alt="프로필사진"/> </td>
 	                        <td> ${member['m_name']} </td>
 	                        <td> ${member['team_name']} </td>
-	                        <td> ${fn:substring(member['m_private_contact'],0,2)} </td>
+	                        <td> ${fn:substring(member['m_private_contact'],0,3)}-${fn:substring(member['m_private_contact'],3,7)}-${fn:substring(member['m_private_contact'],7,11)} </td>
 	                      </tr>
                       </c:forEach>
                     </tbody>

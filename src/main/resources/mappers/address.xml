@@ -76,7 +76,7 @@
 		JOIN position p ON memb.position_code=p.position_code
 		JOIN team t ON memb.team_no=t.team_no
 		WHERE e.emp_code=#{emp_code} and m_id!=#{m_id}
-		<if test="searchColumn != null">
+		<if test="searchWord.length() > 0">
 		AND ${searchColumn} LIKE '%' || #{searchWord} || '%'		
 		</if>
 		ORDER BY "mark" DESC , "m_name"
