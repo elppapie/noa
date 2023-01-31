@@ -125,6 +125,7 @@
 	<insert id="scheInsert" parameterType="Map">
 		INSERT INTO schedule VALUES(
 			SEQ_SCHE.NEXTVAL,
+			#{m_id},
 			#{sche_title},
 			#{sche_content},
 			SYSTIMESTAMP,
@@ -135,6 +136,9 @@
 			#{sche_color},
 			#{sche_type}		
 		)
+		<selectKey keyColumn="SCHE_NO" keyProperty="sche_no" order="AFTER" resultType="java.lang.String">
+			SELECT LAST_NUMBER-1 "sche_no" FROM USER_SEQUENCES WHERE SEQUENCE_NAME ='SEQ_SCHE'
+		</selectKey>
 <!--  		
 		<foreach item="dto" collection="list" open="INSERT ALL" separator=" ">
 			INTO sche_ref(
@@ -160,7 +164,8 @@
 	<!--  -->
 	<insert id="scheInsertRef" parameterType="List">
 		<foreach item="dto" collection="list" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
-			INTO sche_ref(
+			INTO 
+			sche_ref(
 				m_id,
 				sche_no,
 				sr_regidate	
@@ -260,7 +265,7 @@
 -->
 	
 	<!-- fullCalendar에서 가져오기 -->
-	<select id="fullCalendarAllSchedule" resultType="Map">
+	<select id="fullCalendarAllScheduleforOne" parameterType="Map" resultType="Map">
 		SELECT 
 			sche_no "sche_no",
 			sche_title "sche_title",
@@ -272,9 +277,23 @@
 			sche_color "sche_color",
 			sche_type "sche_type"
 		FROM schedule
+		WHERE m_id = #{m_id}
 	</select>
 	
-	
+	<!-- fullCalendar에서 가져오기 -->
+	<select id="fullCalendarAllScheduleForAdmin" parameterType="Map" resultType="Map">
+		SELECT 
+			sche_no "sche_no",
+			sche_title "sche_title",
+			sche_content "sche_content",
+			sche_regidate "sche_regidate",
+			sche_startdate "sche_startdate",
+			sche_enddate "sche_enddate",
+			sche_status "sche_status",
+			sche_color "sche_color",
+			sche_type "sche_type"
+		FROM schedule
+	</select>	
 	
 	<!--  -->
 	<!--  -->

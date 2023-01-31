@@ -54,8 +54,9 @@ public class ScheduleDAO {
 
 	
 	//일정 입력
-	public int insertSche(Map map) {
-		return template.insert("scheInsert",map);
+	public void insertSche(Map map) {
+		//이렇게만 하면 이 map 에 저절로 일정 번호가 들어온다고?
+		template.insert("scheInsert",map);
 	}
 	
 	//가장 최근의 일정 번호 가져오기
@@ -111,8 +112,8 @@ public class ScheduleDAO {
 	}
 */	
 	//fullCalendar 사용
-	public List<Map> useFullCalendar() {
-		return template.selectList("fullCalendarAllSchedule");
+	public List<Map> useFullCalendar(Map map) {
+		return template.selectList("fullCalendarAllScheduleforOne",map);
 	}
 	
 	

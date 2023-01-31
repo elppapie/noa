@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,12 +39,14 @@ public class AdminController {
 	public String deptList(
 			Model model,
 			@RequestParam Map map,
-			//Authentication auth,
+			Authentication auth,
 			HttpServletRequest req
 			) {
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
 		//map에 m_id로 현재 로그인한 사람의 아이디 전달
 ////////////////////////////////////테스트용 아이디 전달///////////////////////////////////////////////////
-		map.put("m_id", "song1234@samsung.com");
+		//map.put("m_id", "song1234@samsung.com");
 //////////////////////////////////////////////////////////////////////////////////////////////////		
 		model.addAttribute("emp_code", adminService.getEmpCode(map));
 		model.addAttribute("organization", adminService.getOrgAdmin(map));
@@ -54,12 +58,14 @@ public class AdminController {
 	public String memberList(
 			Model model,
 			@RequestParam Map map,
-			//Authentication auth,
+			Authentication auth,
 			HttpServletRequest req
 			) {
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
 		//map에 m_id로 현재 로그인한 사람의 아이디 전달
 ////////////////////////////////////테스트용 아이디 전달///////////////////////////////////////////////////
-		map.put("m_id", "song1234@samsung.com");
+		//map.put("m_id", "song1234@samsung.com");
 //////////////////////////////////////////////////////////////////////////////////////////////////
 		model.addAttribute("emp_code", adminService.getEmpCode(map));
 		model.addAttribute("organization", adminService.getOrgAdmin(map));		
@@ -71,12 +77,14 @@ public class AdminController {
 	public String groupList(
 			Model model,
 			@RequestParam Map map,
-			//Authentication auth,
+			Authentication auth,
 			HttpServletRequest req
 			) {
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
 		//map에 m_id로 현재 로그인한 사람의 아이디 전달
 ////////////////////////////////////테스트용 아이디 전달///////////////////////////////////////////////////
-		map.put("m_id", "song1234@samsung.com");
+		//map.put("m_id", "song1234@samsung.com");
 //////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		
@@ -91,15 +99,16 @@ public class AdminController {
 	public String enrollment(
 			Model model,
 			@RequestParam Map map,
-			//Authentication auth,
+			Authentication auth,
 			HttpServletRequest req
 			) {
 		//파라미터 enroll 키로 값이 각각 아래 값이 넘어온다
 		//dept/member/team 등록 페이지
 		//파라미터 emp_code 키로 회사코드가 넘어온다
-		
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
 ////////////////////////////////////테스트용 아이디 전달///////////////////////////////////////////////////
-map.put("m_id", "song1234@samsung.com");
+//map.put("m_id", "song1234@samsung.com");
 //////////////////////////////////////////////////////////////////////////////////////////////////		
 		
 		System.out.println("[⚜] enroll--> "+map.get("enroll"));
@@ -117,22 +126,20 @@ map.put("m_id", "song1234@samsung.com");
 			Model model,
 			@RequestParam(value="memberList", required=false) String[] memberList,
 			@RequestParam Map map,
-			//Authentication auth,
+			Authentication auth,
 			HttpServletRequest req
 			) {
 		// |memberList | String형 배열로 선택했던 구성원들 받아오기 - map에 담기
 		// RequestParam의 map으로 전달되는 정보
 		// |enroll | (부서일때) = |dept_name |m_dept_leader | (팀일때) = |team_name |m_team_leader |
 		// |등록분류  |			|부서이름 	  |부서 리더	     |			|팀이름		|팀 리더		  |
-			
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());	
 ////////////////////////////////////테스트용 아이디 전달 원래는 세션에서 가져와야///////////////////////////////////////////////////
-map.put("m_id", "song1234@samsung.com"); //map.put("m_id", session.get("아이디 저장할 키값");
+//map.put("m_id", "song1234@samsung.com"); //map.put("m_id", session.get("아이디 저장할 키값");
 //////////////////////////////////////////////////////////////////////////////////////////////////		
 		map.put("memberList", memberList);
 		adminService.insertDept(map);
-		
-		
-
 
 		// 입력한 내용들 가져오기
 		model.addAttribute("enroll_info",map);
@@ -148,11 +155,13 @@ map.put("m_id", "song1234@samsung.com"); //map.put("m_id", session.get("아이�
 	public String edit(
 			Model model,
 			@RequestParam Map map,
-			//Authentication auth,
+			Authentication auth,
 			HttpServletRequest req
 			) {
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
 ////////////////////////////////////테스트용 아이디 전달///////////////////////////////////////////////////
-map.put("m_id", "song1234@samsung.com");
+//map.put("m_id", "song1234@samsung.com");
 //////////////////////////////////////////////////////////////////////////////////////////////////		
 		System.out.println("dept code 들어왔니"+map.get("dept_code"));
 		System.out.println("team no 들어왔니"+map.get("team_no"));
@@ -186,10 +195,11 @@ map.put("m_id", "song1234@samsung.com");
 	public String myPage(
 			Model model,
 			@RequestParam Map map,
-			//Authentication auth,
+			Authentication auth,
 			HttpServletRequest req
 			) {
-		
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
 		
 		return "admin/Mypage.noa";
 	}

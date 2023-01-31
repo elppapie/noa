@@ -4,11 +4,17 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!-- Top.jsp -->
 <c:set var="path" value="${pageContext.request.contextPath}"/>
-<c:set var="loginFail" value="${requestScope['login-failure']}"/>
 
 <!DOCTYPE html>
 <html lang="en">
-
+<style>
+	#logo-image{
+	/*
+		width:70%;
+		height:70%;
+	*/
+	}
+</style>
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -41,33 +47,35 @@
         <div class="content-wrapper d-flex justify-content-center">
           <div class="d-flex py-5">
           <div class="row flex-grow" >
-            <div class="col-sm-6 d-flex align-items-stretch px-5">
+          
+            <div class="col-sm-9 d-flex align-items-stretch px-5">
               <div class="grid-margin stretch-card flex-grow">
                 <div class="card card-rounded">
                   <div class="card-body d-flex flex-column justify-content-center">
                     <div class="logo-img-div">
-                      <img src="${path}/resources/images/logo-removebg-preview.png" class="loginpage-logo-img mx-auto d-block " alt="노아 이미지 로고"/>
+                      <img src="${path}/resources/images/logo-removebg-preview.png" id="logo-image" class="loginpage-logo-img mx-auto d-block " alt="노아 이미지 로고"/>
                     </div>
                     <div class="logo-txt-div">
-                      <img src="${path}/resources/images/textlogo-NodeArchive.svg" class="mx-auto d-block loginpage-logo-img" alt="노아 텍스트 로고"/>
+                      <img src="${path}/resources/images/textlogo-NodeArchive.svg" id="logo-text" class="mx-auto d-block loginpage-logo-img" alt="노아 텍스트 로고"/>
                     </div>
                     <div class="d-flex justify-content-center">
                       <p class="emp-description mt-2 px-5 py-3">
-                        우리 노드아카이브 그룹웨어는 재택근무에 특화된 그룹웨어 서비스를 제공합니다.
+                        ${requestScope['access-failure']}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>    
             </div>
+            <%-- 
             <div class="col-sm-6 d-flex align-items-stretch px-5">
               <div class="grid-margin stretch-card flex-grow">
                 <div class="card card-rounded">
                   <div class="card-body d-flex flex-column align-items-center justify-content-center">
                     <h2 class="card-title fsu-lg"> 로그인 </h2>
-                    <c:if test="${! empty loginFail}" var="loginFailed">
+                    <c:if test="${! empty requestScope.NotMember}" var="loginFailed">
 	                    <p class="card-description" style="color:red;">
-    	                  ${loginFail} <i class="fa fa-light fa-circle-exclamation" title='"아이디@기업도메인"형식의 ID를 입력하세요&nbsp;'></i>
+    	                  ID와 비밀번호가 일치하지 않습니다 <i class="fa-light fa-circle-exclamation" title='"아이디@기업도메인"형식의 ID를 입력하세요&nbsp;'></i>
         	            </p>
 					</c:if>
 					<c:if test="${not loginFailed}">
@@ -111,17 +119,12 @@
                 </div>
               </div>    
             </div>
+            --%>
           </div>
           </div>
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2021. All rights reserved.</span>
-          </div>
-        </footer>
+
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
@@ -150,14 +153,6 @@
   <!-- End custom js for this page-->
   <script>  
     $(function(){
-    	console.log("===================")
-    	var loginFailloginFail = $('#loginFailloginFail')
-    	console.log(loginFailloginFail)
-    	console.log(loginFailloginFail.val())
-    	console.log("===================")
-    	console.log("로그인실패원인")
-    	console.log('${login-failure}')
-    	console.log('${white}')
 	    var availHeightPX = window.screen.availHeight + "px";
 	    $(".mp-height").css("height",availHeightPX);
 	    var logoWidthPX = $(".loginpage-logo-img").width() - 10 + "px";

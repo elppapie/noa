@@ -223,9 +223,55 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		// 파라미터로 넘어온 시간/ 날짜 합치기
 		map = scheSetTime(map);
 		//Schedule 테이블에 레코드 1행 입력
-		int record = dao.insertSche(map);
+		//int record = 
+				dao.insertSche(map);
+				
+		System.out.println("과연 map에 방금 입력한 sche_no가 가져와질까?"+map.get("sche_no"));
 		//가장 최근 입력된 SEQ번호 가져오기 - sche_no 가져오기
-		int sche_no = Integer.parseInt(String.valueOf(dao.selectCurrentSeqNo().get("sche_no")));
+		int sche_no = Integer.parseInt(map.get("sche_no").toString());
+/////////////////////			
+		//map에 저장된 참조인 리스트를 꺼내서 sche_no 저장하기
+		if(map.containsKey("list")) { // 참조인(목록)이 전달되었을 경우
+			List<String> idList = (List<String>)map.get("list");
+			List<ScheduleDTO> list = new Vector<>(); 
+			for(String str:idList) {
+				ScheduleDTO dto = new ScheduleDTO();
+				dto.setM_id(str);
+				dto.setSche_no(sche_no);
+				list.add(dto);
+			}
+			//참조인 입력하기
+			dao.insertScheRef(list);
+			for(int i=0; i<map.size(); i++) {
+				Map mapForOne = new HashMap();
+				mapForOne.put("id",(map.get(Integer.toString(i+1)))); // 나 이 코드 이해 못함
+				mapForOne.put("sche_no", sche_no);
+//			dao.i n s e r t R e f(mapForOne); //한사람씩 레코드에 넣음
+			}
+		}//////////// if "list" key exists
+		
+/////////////////////		
+		// (우선은)메세지 출력 - 상황에 따라 request 객체 반환해도 되고? 매개변수로 받아서 사용해도 되고?
+		//if(record ==0) System.out.println("일정 입력 실패~~");
+		//else  System.out.println("일정 입력성공, 참조인 몇 명 입력했어?"+record);
+		
+		//입력된 일정 수 반환
+		return sche_no;
+	}
+	
+	/*
+		일정을 입력한 후에 해당 일정번호를 가져오는 (TOP 쿼리문) 쿼리를 실행해서
+		일정 참조인 입력용 테이블에 sche_no를 전달해야하는데...  
+	*/
+	
+	// 일정 참조인 입력용 - 일단은 일정 입력용에서 입력하는걸로 시도해보고 안되면 다시 살리기
+	// 일정 입력시에만 사용해야 하는 메소드
+	public int insertRef(Map map) {
+		int sche_no = -1;
+		//가장 최근에 입력된 sche_no 가져오기...
+		if(map.get("sche_no") == null) sche_no = Integer.parseInt(String.valueOf(dao.selectCurrentSeqNo().get("sche_no")));
+		else sche_no = Integer.parseInt(map.get("sche_no").toString());
+
 		//map에 저장된 참조인 리스트를 꺼내서 sche_no 저장하기
 		List<String> idList = (List<String>)map.get("list");
 		List<ScheduleDTO> list = new Vector<>(); 
@@ -237,31 +283,9 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		}
 		//참조인 입력하기
 		dao.insertScheRef(list);
-			
-		// (우선은)메세지 출력 - 상황에 따라 request 객체 반환해도 되고? 매개변수로 받아서 사용해도 되고?
-		//if(record ==0) System.out.println("일정 입력 실패~~");
-		//else  System.out.println("일정 입력성공, 참조인 몇 명 입력했어?"+record);
-		
-		//입력된 일정 수 반환
-		return record;
-	}
-	
-	/*
-		일정을 입력한 후에 해당 일정번호를 가져오는 (TOP 쿼리문) 쿼리를 실행해서
-		일정 참조인 입력용 테이블에 sche_no를 전달해야하는데...  
-	*/
-	
-	/*
-	// 일정 참조인 입력용 - 일단은 일정 입력용에서 입력하는걸로 시도해보고 안되면 다시 살리기
-	public int insertRef(Map map) {
-		String sche_no="";
-		
-		// 참조인 이름-아이디를 고르게 한 후 아이디를 가져와서
-		// AddressDAO.java 에 getOneMember메소드 작성 - 가져온 아이디를 분리해서...id를 해당 메소드에 넣어서 
-		
 		for(int i=0; i<map.size(); i++) {
-			Map mapForOne = null;
-			mapForOne.put("id",(map.get(Integer.toString(i+1))));
+			Map mapForOne = new HashMap();
+			mapForOne.put("id",(map.get(Integer.toString(i+1)))); // 나 이 코드 이해 못함
 			mapForOne.put("sche_no", sche_no);
 //			dao.i n s e r t R e f(mapForOne); //한사람씩 레코드에 넣음
 		}
@@ -270,6 +294,7 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		return 0;
 	}
 	
+	/*
 	*/
 
 	@Override
@@ -298,23 +323,28 @@ public class ScheduleServiceImpl implements ScheduleService<Map>{
 		//map에 저장된 참조인 리스트를 꺼내서 sche_no 저장하기
 		List<String> idList = (List<String>)map.get("list");
 		List<ScheduleDTO> list = new Vector<>(); 
-		for(String str:idList) {
-			ScheduleDTO dto = new ScheduleDTO();
-			dto.setM_id(str);
-			dto.setSche_no(sche_no);
-			list.add(dto);
+		if(idList != null) {
+			for(String str:idList) {
+				ScheduleDTO dto = new ScheduleDTO();
+				dto.setM_id(str);
+				dto.setSche_no(sche_no);
+				list.add(dto);
+			}
+			//기존 참조인 목록 제거하기
+			dao.deleteRef(map);
+			//참조인 새로 입력하기
+			dao.insertScheRef(list);			
 		}
-		//기존 참조인 목록 제거하기
-		dao.deleteRef(map);
-		//참조인 새로 입력하기
-		dao.insertScheRef(list);	
+		else { // 수정하면서 참조인을 아무도 선택하지 않았을 경우
+			dao.deleteRef(map);
+		}
 		return record;
 	}
 
 	
 	//fullCalendar 사용
-	public List<Map> useFullCalendar(){
-		return dao.useFullCalendar();
+	public List<Map> useFullCalendar(Map map){
+		return dao.useFullCalendar(map);
 	}
 
 	//시간 설정 로직 따로 빼기

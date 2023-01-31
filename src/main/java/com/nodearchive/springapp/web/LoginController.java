@@ -1,10 +1,13 @@
 package com.nodearchive.springapp.web;
 
+import java.util.Enumeration;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +36,22 @@ public class LoginController {
 	}
 	//로그인 처리하는 메소드
 	@PostMapping("/login.kosmo")
-	public String login() {
-		
-		return "forward:/home.kosmo";
+	public String login(
+			HttpServletRequest req,
+			HttpServletResponse res
+			) {
+		//return "forward:/home.kosmo";
+		return "login/login";
+	}
+	//에러메세지 띄우기
+	@RequestMapping("/errorPage.kosmo")
+	public String errorPage() {
+		return "login/errorPage.noa";
+	}
+	//마이페이지 이동
+	@RequestMapping("/myPage.kosmo")
+	public String myPage() {
+		return "login/MyPage.noa";
 	}
 	
 	//회원가입 폼 페이지로 이동하는 메소드

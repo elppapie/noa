@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%--@ page import="java.util.List" --%>
 <%--@ page import="java.util.Map"--%>
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="login_id"><sec:authentication property="principal.username"/></c:set>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
 <c:set var="memberList" value="${organization.getTeamMembersList()}" />
 <c:set var="one" value="${oneSchedule}"/>
+
 <!-- fullcalendar css -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
@@ -197,8 +200,8 @@
       <%-- 
       <a href="<c:url value="/Notice/list.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 공지사항(임시)</a>
       --%>
-      <a href="#" class="btn btn-otline-dark"><i class="fa-solid fa-download"></i> 달력저장</a>
-      <a href="#" class="btn btn-otline-dark"><i class="fa-solid fa-magnifying-glass"></i> 일정검색</a>
+      <a href="#" class="btn btn-primary text-white me-0 align-items-center"><i class="fa-solid fa-magnifying-glass"></i> 일정검색</a>
+      <a href="#" class="btn btn-primary text-white me-0 align-items-center"><i class="fa-solid fa-download"></i> 달력저장</a>
       <%-- 
       <a href="#" id="addSchedule" class="btn  btn-primary text-white me-0 align-items-center"><i class="fa-solid fa-square-plus"></i> 일정추가</a>
     	--%>
@@ -311,7 +314,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-danger deleteSchedule" data-dismiss="modal">삭제</button>
 		<input type="submit" class="btn btn-primary" value="저장하기"/>
-		<input type="button" class="btn btn-primary close closeModal" value="닫기" data-dismiss="modal">
+		<button type="button" class="btn btn-primary close closeModal" data-dismiss="modal">닫기</button>
       </div>
 	</form>
     </div>
@@ -415,7 +418,7 @@
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">     
-		<input type="submit" class="btn btn-primary" id="" value="저장하기"/>
+		<input type="submit" class="btn btn-primary" value="저장하기"/>
 		<button class="btn btn-primary close closeModal">닫기</button>
       </div>
       </form>
@@ -426,7 +429,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-
+	//var login_id = '<c:out value="${login_id}"/>'
+	var login_id = "${login_id}".replace('&#64;','@').replace('&#46;','.');
+	
 	$(function(){
 		
 //////////////////////////////////////////////////////////////////////////////////////////////////////		
@@ -486,6 +491,11 @@ document.addEventListener('DOMContentLoaded', function() {
 							$("#color_front").css('background-color',data['sche_color']);
 						$('#sche_status').val(data['sche_status']);
 						$('#sche_type').val(data['sche_type']);
+						
+						//참조인 목록에 select박스 만들어서 change할 때마다 추가되게 하기
+						//$('#ref-list_write').append('<select>');
+						
+						
 						for(var person of data['ref-list']){
 							//<h6> 시작태그만 넣어도 종료태그는 저절로 따라붙네... 오히려 종료태그 넣으면 <h6>이 2개가 되어버림
 							var personInfo ='<h6 class="personInfo" name="ref-list">'+person['dept_name']+' '+person['team_name']+' '+person['m_name']+' '+person['position_name'];
@@ -670,10 +680,20 @@ document.addEventListener('DOMContentLoaded', function() {
 				dataType: "json"
 			})
 			.done(function(data){
+				var numberCount = 0;
+				var flag = data.length; 
+				console.log("참조인 목록:1이면 필시 아무도 없는 것:자기자신도 있어서..."+flag);
 				data.forEach(function(item,index){
 					//왜 0번방에 아무도 안 들어가있지..?
 					//일단은 index != 0 조건 설정해서 for문 돌림
-					if(index != 0){	
+//////////////////////현재 로그인한 사람 아닌 사람만 띄우기
+					$('#ref-list_write').append('<select>');
+					
+					if(index == 0){
+						$('#ref-list_write').append('<option disabled selected>참조인을 선택하세요</option>');
+					}
+					else if(index != 0 && item.m_id != login_id){	
+						console.log("에잉 이게 왜 출력되는 거야??? login_id를 모르나? "+item.m_id+" 진짜 몰라? "+login_id);
 						var personInfo = item.dept_name+' '+item.team_name+' '+item.m_name+' '+item.position_name;
 						/*
 						$('#ref-list_write').append(
@@ -683,9 +703,12 @@ document.addEventListener('DOMContentLoaded', function() {
 								'</div>'
 						);
 						*/
-						$('#ref-list_write').append('<option value="'+item.m_id+'">'+personInfo+'</option>');						
+						$('#ref-list_write').append('<option value="'+item.m_id+'">'+personInfo+'</option>');
+						numberCount += 1;
 					}////if
-				});
+				});////////////////forEach
+				//참조할 같으 회사 사람이 없는 경우
+				if(numberCount == 0) $('#ref-list_write').append('<option disabled>선택할 참조자가 없습니다</option>');
 				//디폴트 일정색은 yellow로 일단설정(white는 너무 안 보임..)
 				$("#color_front_write").css('background-color','yellow');
 			})
@@ -732,9 +755,17 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 		
 		
+		// 제출 전 확인사항: 즉 validation
+		/*
+		$('input[type="submit"]').click(function(event){
+			
+			
+			
+		});
+		*/
 		
-		
-		
+		$('#ref-list')
+		$('#ref-list_write')
 
 		
 		

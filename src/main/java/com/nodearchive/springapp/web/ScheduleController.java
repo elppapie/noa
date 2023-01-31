@@ -196,8 +196,7 @@ public class ScheduleController {
 			Authentication auth,
 			Model model,
 			@RequestParam(value="ref-list", required=false) String[] memberList,
-			@RequestParam Map map, // schedule 테이블의 컬럼명을 키값으로 각 입력값 받아옴
-			HttpServletRequest request
+			@RequestParam Map map // schedule 테이블의 컬럼명을 키값으로 각 입력값 받아옴
 			) {
 		//참조인 목록은 request 영역에 addAttribute로 list로 넣어서 받아와야할듯 - 자스 or request 속성에 하나씩 저장해서 여기서 list로 만들거나
 		//Write.jsp 페이지에서 
@@ -210,21 +209,24 @@ public class ScheduleController {
 		//스크립틀릿으로 자바코드로 전달해야하나?
 		//String [] strArr = {"kim1234@samsung.com","song1234@samsung.com","park1234@samsung.com"};
 /////////////////////////////////////////////////////////////////////////////////////////////////		
-		List<String> list = new Vector<>();
-		for(String str:memberList) list.add(str);
-		
-		//입력하는 사람도 참조인 목록에 넣기
 		UserDetails authenticated = (UserDetails)auth.getPrincipal();
-		list.add(authenticated.getUsername());
-		
-		//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
-		map.put("list", list);
-		int howManyRefs = scheduleService.insert(map);
+		//참조인 목록이 넘어올 경우 - 참조인 테이블에도 등록
+		if(memberList != null) {
+			List<String> list = new Vector<>();
+			for(String str:memberList) list.add(str);
+			//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
+			map.put("list", list);
+			//int howManyRefs = scheduleService.insertRef(map);			
+			//System.out.println(howManyRefs+"명의 참조인이 등록됨");
+		}// 참조인 목록이 넘어오지 않을 경우 - 아무일도 일어나지 않았다
+		//로그인한 사람 아이디
+		map.put("m_id", authenticated.getUsername());
+		System.out.println(scheduleService.insert(map)+"번 일정이 등록됨");
+
 		model.addAttribute("message", "입력폼 작성 후 전송(등록)");
-		System.out.println("[ ⚜ ] 참조인 몇명등록됨? (test때는 3명):"+howManyRefs);
 		
 		//fullcalendar용 일정 정보 다운받기..하면 안됨 sche_no를 요구하기 때문
-		fullcalendar(model, map);
+		fullcalendar(model,auth,map);
 
 		return "schedule/FullCalendar.noa";
 	}
@@ -262,14 +264,16 @@ public class ScheduleController {
 		//근데 알고보니 mybatis foreach구문은 list타입 array타입만 사용가능.... 아니다!!! 공식페이지에서 아니래!!
 		//Map 속의 list면 ... 가능하지 않으려나
 		List<String> list = new Vector<>();
-		for(String str:memberList) list.add(str);
+		if(memberList != null) {
+			for(String str:memberList) list.add(str);
+			//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
+			map.put("list", list);
+		}
 		
 		//입력하는 사람도 참조인 목록에 저장
-		UserDetails authenticated = (UserDetails)auth.getPrincipal();
-		list.add(authenticated.getUsername());
+		//UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		//list.add(authenticated.getUsername());
 		
-		//참조인 목록(List<ScheduleDTO>) map에 "list" 키값으로 저장
-		map.put("list", list);
 		int howManyRefs = scheduleService.update(map);
 		model.addAttribute("message", "입력폼 작성 후 전송(등록)");
 		System.out.println("[ ⚜ ] 참조인 몇명등록됨? (test때는 3명):"+howManyRefs);
@@ -313,11 +317,13 @@ public class ScheduleController {
 	@RequestMapping("/month.kosmo")
 	public String fullcalendar(
 			Model model,
-			//Authentication auth,
+			Authentication auth,
 			@RequestParam Map map
 			) {
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
 		System.out.println("풀캘린더 만나러 갑니다~~★");
-			List<Map> calendar = scheduleService.useFullCalendar();
+			List<Map> calendar = scheduleService.useFullCalendar(map);
 			model.addAttribute("calendarList",calendar);
 
 		return "schedule/FullCalendar.noa";
@@ -379,9 +385,11 @@ public class ScheduleController {
 	@ResponseBody
 	@RequestMapping("/getMember.kosmo")
 	public List<Map> memberFromEmp(
-				@RequestParam Map map
+			Authentication auth,	
+			@RequestParam Map map
 			) {
-		map.put("m_id", "kim1234@samsung.com");
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("m_id", authenticated.getUsername());
 		map.put("emp_code", adminService.getEmpCodeByMId(map));
         JSONObject jsonObj = new JSONObject();
         JSONArray jsonArr = new JSONArray();
@@ -401,12 +409,18 @@ public class ScheduleController {
 	
 	@ResponseBody
 	@RequestMapping("/fullcalendarData.kosmo")
-	public List<Map> fullcalendarData() {
+	public List<Map> fullcalendarData(
+				Authentication auth
+			) {
 			//fullCalendar.jsp에서 이 메소드를 호출해서 정보를 받아옴
 			//System.out.println("일단 컨트롤러로 이동은 성공: <c:url> ");
 			//구현하고 나서 service로 로직 옮기기
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		Map map = new HashMap();
+		map.put("m_id", authenticated.getUsername());
 		
-			List<Map> calendar = scheduleService.useFullCalendar();
+		
+			List<Map> calendar = scheduleService.useFullCalendar(map);
 	        JSONObject jsonObj = new JSONObject();
 	        JSONArray jsonArr = new JSONArray();
 	 
