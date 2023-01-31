@@ -37,7 +37,7 @@
 				<c:forEach var="mail" items="${receviemail}" varStatus="loop">
 					<tr>
 						<td>${mail.MAIL_CHECK}</td>
-						<td>${mail.MAIL_TYPE}</td>
+						<td>${mail.MAIL_MARK}</td>
 						<td>${mail.M_ID}</td>						
 						<td>${mail.MAIL_TITLE}</td>
 						<td>${mail.MAIL_REGIDATE}</td>

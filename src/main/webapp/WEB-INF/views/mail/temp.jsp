@@ -38,7 +38,7 @@
 				<c:forEach var="mail" items="${tempmail}" varStatus="loop">
 					<tr>
 						<td>${mail.MAIL_CHECK}</td>
-						<td>${mail.MAIL_TYPE}</td>
+						<td>${mail.MAIL_MARK}</td>
 						<td>${mail.M_ID}</td>
 						<td>${mail.M_CONTENT}</td>						
 						<td>${mail.MAIL_TITLE}</td>

@@ -28,16 +28,16 @@
 			</tr>
 		</thead>
 		<tbody class="table-sm down-file-body">
-			<c:if test="${empty receviemail}" var="isEmpty">
+			<c:if test="${empty sendmail}" var="isEmpty">
 				<tr>
 					<td colspan="6">보낸 메일이 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${not isEmpty }">
-				<c:forEach var="mail" items="${receviemail}" varStatus="loop">
+				<c:forEach var="mail" items="${sendmail}" varStatus="loop">
 					<tr>
 						<td>${mail.MAIL_CHECK}</td>
-						<td>${mail.MAIL_TYPE}</td>
+						<td>${mail.MAIL_MARK}</td>
 						<td>${mail.M_ID}</td>						
 						<td>${mail.MAIL_TITLE}</td>
 						<td>${mail.MAIL_REGIDATE}</td>

@@ -29,16 +29,16 @@
 			</tr>
 		</thead>
 		<tbody class="table-sm down-file-body">
-			<c:if test="${empty listmail}" var="isEmpty">
+			<c:if test="${empty allmail}" var="isEmpty">
 				<tr>
 					<td colspan="7">메일이 없습니다.</td>
 				</tr>
 			</c:if>
 			<c:if test="${not isEmpty }">
-				<c:forEach var="mail" items="${listmail}" varStatus="loop">
+				<c:forEach var="mail" items="${allmail}" varStatus="loop">
 					<tr>
 						<td>${mail.MAIL_CHECK}</td>
-						<td>${mail.MAIL_TYPE}</td>
+						<td>${mail.MAIL_MARK}</td>
 						<td>${mail.M_ID}</td>						
 						<td>${mail.MAIL_TITLE}</td>
 						<td>${mail.M_CONTENT}</td>	

@@ -103,6 +103,6 @@
 	<!-- 전체 메일 목록 -->
 	<select id="mailByLists" parameterType="Map" resultType="Map" >
 		SELECT mail_no,m_id,mail_mark,mail_check,mail_type,mail_title,mail_regidate
-		FROM MAIL	
+		FROM MAIL
 	</select>	
 </mapper>
