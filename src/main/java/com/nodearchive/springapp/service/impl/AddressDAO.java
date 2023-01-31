@@ -41,6 +41,10 @@ public class AddressDAO {
 	public List<Map> getTeamOrg(List deptCodeList) {
 		return template.selectList("addressGetTeamOrg", deptCodeList);
 	}
+	
+	public List<Map> getTeamListByDept(String dept_code) {
+		return template.selectList("addressGetTeamListByDept", dept_code);
+	}
 
 	public List<Map> getTeamMembers(List<Integer> teamNoList) {
 		return template.selectList("addressGetTeamMembers", teamNoList);

@@ -1,3 +1,6 @@
+<%@page import="com.nodearchive.springapp.service.impl.OrganizationDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -15,6 +18,13 @@
 }
 .addr-list-checkbox-td-padding-right-0{
 	padding-right:0px !important;
+}
+#addr-list-org-my-emp-name{
+	font-weight:bold !important;
+}
+#addr-list-org-my-emp-name:hover{
+	background-color: #c1c1c1;
+	cursor:pointer !important;
 }
 </style>
 
@@ -57,18 +67,32 @@
 	<div class="col-sm-4">
 		<div class="card card-rounded">
 			<div class="card-body addr-list-overflow-y-auto">
-			${myInfo['emp_name']}
-			<ul class="list-unstyled">
+			<div id="addr-list-org-my-emp-name">${myInfo['emp_name']}</div>
+			<ul class="list-unstyled" >
+			<c:set value="${requestScope.org}" var="org" scope="page"/>
+			  <c:forEach items="${requestScope.org.deptList}" var="depts">
+				
 				<li>
-				<a data-bs-toggle="collapse" href="#dept1">여기에 부서명</a>
-					<div class="collapse" id="dept1">
+				<a data-bs-toggle="collapse" href="#${depts['dept_code']}">${depts['dept_name']} - ${depts['dept_leader_name']}</a>
+					<div class="collapse" id="${depts['dept_code']}">
 						<ul class="list-unstyled">
+						  <%
+						  Map deptss=(Map)pageContext.getAttribute("depts");
+						  //String dept_code = deptss.get("dept_code").toString();
+						  List teamList = ((OrganizationDTO)pageContext.getAttribute("org")).getTeamListByDept().get(deptss.get("dept_code").toString());
+						  pageContext.setAttribute("team", teamList);
+						  %>
+						  <c:forEach var="teams" items="${pageScope.team}">	
 							<li>
-							여기에 팀명
+								<a href="${teams['team_no']}">
+									${teams['team_name']} - ${teams['team_leader_name']}
+								</a>
 							</li>
+						  </c:forEach>
 						</ul>
 					</div>
 				</li>
+			  </c:forEach>	
 			</ul>
 			</div>
 		</div>

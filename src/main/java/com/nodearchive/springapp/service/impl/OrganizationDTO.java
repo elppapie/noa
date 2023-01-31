@@ -22,6 +22,8 @@ public class OrganizationDTO {
 	private List<Map> teamList;
 	//팀별 팀원들
 	private List<Map> teamMembersList;
+	//부서별 팀 목록
+	private Map<String,List> teamListByDept;
 	//그룹 구성원들
 	private List<Map> groupMembersList;
 }

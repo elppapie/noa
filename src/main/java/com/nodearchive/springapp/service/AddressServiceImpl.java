@@ -1,5 +1,6 @@
 package com.nodearchive.springapp.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -135,12 +136,20 @@ public class AddressServiceImpl implements AddressService<Map> {
 		// 부서코드    |부서명     | 부서책임자 아이디      |  부서책임자 이름
 		List<Map> deptList = dao.getDeptOrg(map);
 		
-		//부서별 팀 얻어오기
+		//팀 목록 얻어오기
 		List<String> deptCodeList = new Vector<>();
 		deptList.forEach(t->deptCodeList.add(t.get("dept_code").toString()));
 		
 		//<Map> dept_code=부서코드, team_no=팀일련번호, team_name=팀명, m_team_leader=팀책임자, team_leader_name=팀책임자이름의 List컬렉션
 		List<Map> teamList = dao.getTeamOrg(deptCodeList);
+		
+		//해당 부서를 key값으로 부서의 팀 목록을 value값으로 가지는 컬렉션
+		// key값: dept_code=부서코드 
+		// value값: List<Map> dept_code=부서코드, team_no=팀일련번호, team_name=팀명, m_team_leader=팀책임자, team_leader_name=팀책임자이름  
+		Map<String,List> teamListByDept = new HashMap<>();
+		deptCodeList.forEach(deptCode->  
+			teamListByDept.put(deptCode, dao.getTeamListByDept(deptCode))
+		);		
 
 		//팀별 팀 구성원 얻어오기
 		//리스트 컬렉션에 팀 일련번호 넣기
@@ -155,6 +164,7 @@ public class AddressServiceImpl implements AddressService<Map> {
 		dto.setDeptList(deptList);
 		dto.setTeamList(teamList);
 		dto.setTeamMembersList(teamMembersList);
+		dto.setTeamListByDept(teamListByDept);
 		return dto;
 	}////////////getOrg()
 

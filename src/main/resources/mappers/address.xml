@@ -94,7 +94,7 @@
 		ORDER BY dept_name
 	</select>
 	
-	<!-- 부서별 팀 조회하기 -->
+	<!-- 내 기업 모든 팀 조회하기 -->
 	<select id="addressGetTeamOrg" parameterType="List" resultType="Map">
 		SELECT tt.TEAM_NO "team_no", tt.TEAM_NAME "team_name", d.dept_code "dept_code" ,
 			(SELECT m_id FROM members m JOIN team t ON m.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
@@ -106,6 +106,17 @@
 		<foreach collection="list" item="item" open="(" close=")" separator=",">
 			#{item}
 		</foreach>
+	</select>
+	
+	<!-- 해당 부서의 팀 조회하기 -->
+	<select id="addressGetTeamListByDept" parameterType="String" resultType="Map">
+		SELECT tt.TEAM_NO "team_no", tt.TEAM_NAME "team_name", d.dept_code "dept_code" ,
+			(SELECT m_id FROM members m JOIN team t ON m.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_id", 
+		    (SELECT m_name FROM members mm JOIN team t ON mm.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_name"
+		FROM team tt JOIN dept d ON tt.dept_code=d.dept_code
+		WHERE d.dept_code=#{dept_code}
 	</select>
 	
 	<!-- 팀별 팀 구성원 조회 -->

@@ -173,4 +173,17 @@ if(document.querySelector("#project-todo-list-remove-btn")!=null){
 }
 ////////////////project/project.jsp 끝 ////////////////
 
+///////////////addressList.jsp 조직도 불러오기 시작///////////////
+const myEmpName = document.querySelector("#addr-list-org-my-emp-name");
+const ulForDeptList = myEmpName.nextElementSibling;
+	
+function addrListOrgSearch(){
+	console.log(ulForDeptList)
 
+	
+	
+}
+
+
+
+///////////////addressList.jsp 조직도 불러오기 끝///////////////
