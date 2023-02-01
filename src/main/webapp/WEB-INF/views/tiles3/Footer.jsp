@@ -33,7 +33,7 @@
   <script src="${path}/resources/vendors/chart.js/Chart.min.js"></script>
   <script src="${path}/resources/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
   <script src="${path}/resources/vendors/progressbar.js/progressbar.min.js"></script>
-
+  <script src="${path}/resources/vendors/select2/select2.min.js"></script>
   <!-- End plugin js for this page -->
   <!-- inject:js -->
   <script src="${path}/resources/js/off-canvas.js"></script>
@@ -45,6 +45,7 @@
   <!-- Custom js for this page-->
   <script src="${path}/resources/js/dashboard.js"></script>
   <script src="${path}/resources/js/Chart.roundedBarCharts.js"></script>
+  <script src="${path}/resources/js/select2.js"></script>
   <!-- End custom js for this page-->
   <script src="${path}/resources/js/noaJS.js"></script>
   <script src="${path}/chatResources/js/noaChatJS.js"></script>
