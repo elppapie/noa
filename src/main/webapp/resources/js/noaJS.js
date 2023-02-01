@@ -22,7 +22,7 @@ function openWebRTCMain(path,m_id){
 }
 
 
-/////////////////구성원 검색 iframe창 띄우기(아직은 팝업창...)
+/////////////////구성원 검색창 띄우기
 function openSearchOrg(path,m_id){
 	const searchName = document.querySelector("#top-input-search-members").value.trim();
 	
@@ -33,8 +33,9 @@ function openSearchOrg(path,m_id){
 		path+"m_id="+m_id+"&searchColumn=m_name&searchWord="+searchName,
 		"조직도",
 		"left="+(availWidth/2-width/2)+",top="+(availHeight/2-height/2)+",width="+width+",height="+height
-		);
+	);
 };
+
 
 /////////////////sidebar sticky로 만들기
 const sidebar = document.querySelector("nav#sidebar");
@@ -173,16 +174,20 @@ if(document.querySelector("#project-todo-list-remove-btn")!=null){
 }
 ////////////////project/project.jsp 끝 ////////////////
 
+
+
 ///////////////addressList.jsp 조직도 불러오기 시작///////////////
 const myEmpName = document.querySelector("#addr-list-org-my-emp-name");
 const ulForDeptList = myEmpName.nextElementSibling;
 	
 function addrListOrgSearch(){
 	console.log(ulForDeptList)
-
+	
 	
 	
 }
+
+
 
 
 
