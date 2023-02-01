@@ -103,13 +103,14 @@ public class TaskServiceImpl implements TaskService<Map>{
 		if(map.containsKey("project_no")) {
 			searchString+="project_no="+map.get("project_no")+"&";
 		}
+		System.out.println("PagingUtil.TOTAL_COUNT_S:"+map.get(PagingUtil.TOTAL_COUNT));
 		//페이징 표시 문자열 얻기
 		String pagingString=PagingUtil.pagingBootStrapStyle(
 				totalRecordCount, 
 				pageSize, 
 				blockPage, 
 				nowPage,
-				req.getContextPath()+"/Task/list.kosmo?"+searchString);
+				req.getContextPath()+"/Task/listbyporj.kosmo?"+searchString);
 		//페이징과 관련된 정보 및 모든 목록을 담는 ListPagingData객체 생성		
 		ListPagingData<Map> listPagingData = ListPagingData.builder()
 											.lists(lists)//글 전체 목록 설정

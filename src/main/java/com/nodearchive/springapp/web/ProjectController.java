@@ -8,17 +8,29 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.tiles.request.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nodearchive.springapp.service.ProjectService;
 import com.nodearchive.springapp.service.ProjectServiceImpl;
+import com.nodearchive.springapp.service.TaskService;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 
 @Controller
@@ -28,38 +40,49 @@ public class ProjectController {
 	//**기본 crud 작업이 동일한 service 주입받음
 	@Autowired
 	private ProjectService projectService;
-/*
-	@RequestMapping(value="/list.kosmo",produces = "text/html; charset=UTF-8")
-	public String testProject(
-			//Authentication auth,
-			@RequestParam Map map, 
-			HttpServletRequest req,
-			Model model
-			) {
-		return "/project/Project.noa";
-		//return "/Project/Project123.noa";
-	}
-	*/
-	
+	@Autowired
+	private TaskService taskService;
 	
 	//프로젝트 목록(post) - 테스트 완료
 	//로그인 유저 정보 파악하여 사용자가 포함된 프로젝트만 select 
 	@RequestMapping("/list.kosmo")
 	public String listProject(
-			//Authentication auth,
+			Authentication auth,
 			@RequestParam Map map, 
 			HttpServletRequest req,
 			Model model
 			) {
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
-		//UserDetails userDetails=(UserDetails)auth.getPrincipal();
-		//map.put("loginId", userDetails.getUsername());
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername());
 		
-		//test
+		/*test-----------------  
 		map.put("loginId", "park1234@samsung.com");
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		HttpSession session = request.getSession();
+		session.setAttribute("loginId", "park1234@samsung.com");
+		---------------------  */
 		
 		int nowPage=1;
-		model.addAttribute("projectList", projectService.selectList(map, req, nowPage));
+		ListPagingData<Map> projects = projectService.selectList(map, req, nowPage);
+		List<Map> lists = projects.getLists();
+		
+		//하위 업무 추가를 위한 로직
+		for(Map list:lists) {
+			int project_no = Integer.parseInt(list.get("PROJECT_NO").toString());
+			
+			map.put("project_no", project_no);
+			ListPagingData<Map> tasks = taskService.selectListByProj(map, req, 1);
+			List<Map> tlists = tasks.getLists();
+			list.put("tlists", tlists);
+			/*
+			list.forEach((key, value)->{
+		          System.out.println( String.format("키 -> %s, 값 -> %s", key, value) );
+		    });
+		    */
+		}
+		
+		model.addAttribute("projectList", projects);
 		//return "project/list.noa";
 		return "project/Project.noa";
 	}
@@ -68,30 +91,28 @@ public class ProjectController {
 	//프로젝트 생성(post) - /Project/create.kosmo / - 테스트 완료
 	@RequestMapping("/create.kosmo")
 	public String createProject(
-			//Authentication auth,
+			Authentication auth,
 			Model model,
 			@RequestParam Map map
 			,HttpServletRequest req //로그인 계정 정보를 세션에서 가져오기 위한 인자
 			) {
 		
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
-		//UserDetails userDetails=(UserDetails)auth.getPrincipal();
-		//map.put("login_Id", userDetails.getUsername());
-
-		List<String> members=new Vector<String>();
-		Map row = new HashMap<>();
+		UserDetails authenticated = (UserDetails)auth.getPrincipal();
+		map.put("loginId", authenticated.getUsername());
+		
+		//test
+		//map.put("loginId", "kim1234@samsung.com");
+		System.out.println("프로젝트 입력 실행됨");
 		
 		//프론트 엔드에서 전달 받는 member 리스트를 배열에 저장
 		String[] memberArray = req.getParameterValues("member");
 		map.put("memberArray", memberArray);
 		
-		
 		projectService.insert(map);
 		model.addAttribute("project", map);
 		//프로젝트 리스트 페이지로 이동
-		//return "forward:project/list.noa";
-		//[TEST용 주소]
-		return "project/Project.noa";
+		return "redirect:/Project/list.kosmo";
 	}
 	
 	//프로젝트 상세보기(get) - 테스트 완료
@@ -168,16 +189,36 @@ public class ProjectController {
 	
 	//멤버 리스트 불러오기(get) - 테스트 완
 	@RequestMapping("/viewmlist.kosmo")
+	@ResponseBody
 	public String viewMember(
 			//Authentication auth,
 			@RequestParam Map map, 
-			Model model) {
+			Model model) throws JsonProcessingException {
 		
-		model.addAttribute("projMember", projectService.selectMember(map));
-		return "project/view.noa";
+		//model.addAttribute("projMember", projectService.selectMember(map));
+		//return "project/view.noa";
+		List mlist = projectService.selectMember(map);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		//String mapperData = mapper.writeValueAsString(records);
+		//System.out.println(mapper.writeValueAsString(records));
+		String mapperData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mlist);
+		System.out.println(mapperData);
+		return mapperData;
 	}
 		
-	
+	//체크리스트 ajax 추가용
+	@RequestMapping(value="/checklist.kosmo",produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String addChecklist(@RequestParam Map map) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		//String mapperData = mapper.writeValueAsString(records);
+		//System.out.println(mapper.writeValueAsString(records));
+		String mapperData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+		System.out.println(mapperData);
+		return mapperData;
+	}
 	
 	//*****프로젝트 메소드 추가 필요 *****
 	/*

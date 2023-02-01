@@ -10,7 +10,7 @@
 	<!-- **프로젝트 시작일 - 마감일 TIMESTAMP 속성 인자 적용 필요 -->
 	<insert id="projectInsert" parameterType="Map">
 		INSERT ALL
-		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, '프로젝트 생성', '프로젝트 생성', SYSDATE, #{set_startdate}, #{set_enddate}, 0, 0, 'BLUE', 'PROJECT')
+		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, #{loginId}, '프로젝트 생성', '프로젝트 생성', SYSDATE, #{set_startdate}, #{set_enddate}, 0, 0, 'BLUE', 'PROJECT')
 		  INTO project VALUES (SEQ_PROJ.NEXTVAL, #{loginId}, SEQ_SCHE.CURRVAL, #{project_name})
 		  <foreach collection="memberArray" item="arr" open="" close="" separator=" ">
 			INTO proj_m_list(project_no, m_id) VALUES(SEQ_PROJ.CURRVAL, #{arr})

@@ -9,7 +9,7 @@
 	<!-- 업무 생성 : 스케줄 테이블 동시 생성-->
 	<insert id="taskInsert" parameterType="Map">
 		INSERT ALL
-		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, '업무추가', '업무추가', SYSDATE, #{set_startdate}, #{set_enddate}, 0,0, 'ORANGE','TASK')
+		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, #{m_id}, '업무추가', '업무추가', SYSDATE, #{set_startdate}, #{set_enddate}, 0,0, 'ORANGE','TASK')
 		  INTO task VALUES (SEQ_TASK.NEXTVAL, #{m_id}, #{project_no}, SEQ_SCHE.CURRVAL, #{task_name}, #{task_content}, #{task_category})
 		SELECT * FROM DUAL
 	</insert>
