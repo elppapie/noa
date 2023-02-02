@@ -9,6 +9,7 @@
 		<typeAlias type="com.nodearchive.springapp.service.impl.AttendanceDTO" alias="AttendanceDTO"/>
 		<typeAlias type="com.nodearchive.springapp.service.impl.MeetingResrvDTO" alias="MeetingResrv"/>
         <typeAlias type="com.nodearchive.springapp.service.impl.MeetingRoomDTO" alias="MeetingRoom"/>
+        <typeAlias type="com.nodearchive.springapp.service.impl.MembersDTO" alias="MembersDTO"/>
 	</typeAliases>
 	
 	<!-- 매퍼파일(SQL쿼리 결과와 자바빈 매핑)의 위치정보 설정 -->
