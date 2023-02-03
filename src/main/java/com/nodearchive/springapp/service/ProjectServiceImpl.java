@@ -143,9 +143,11 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 			public Integer doInTransaction(TransactionStatus status) {
 				int deletedTaskCount=0;
 				
-				//project_no에 따른 모든 하위 업무 삭제
+				//project_no에 따른 모든 하위업무/멤버 삭제
 				tdao.deleteList(map);
 				System.out.println("업무 삭제 완료");
+				dao.deleteMember(map);
+				System.out.println("프로젝트 멤버 삭제 완료");
 				//해당 project 삭제
 				dao.projectDelete(map);
 				System.out.println("프로젝트 삭제 완료");
@@ -171,5 +173,12 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 		return mlist;
 	}
 	
+	//project 참여 멤버 리스트 삭제
+	@Override
+	public int deleteMember(Map map) {
+		int dmlist = dao.deleteMember(map);
+		return dmlist;
+	}
+		
 
 }

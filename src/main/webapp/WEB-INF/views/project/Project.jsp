@@ -9,7 +9,7 @@
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
-
+<c:set var="loginId"><sec:authentication property="principal.username"/></c:set>
 <style>
 /* project.jsp start */
 .project-list-accordion-bgCustom{
@@ -54,8 +54,18 @@
 .select2.select2-container {
   width: 100% !important;
 }
+.badge-opacity-info {
+    background: #97d7f2;
+    color: #08597b;
+}
+.badge-opacity-secondary {
+    background: #d8d8d8;
+    color: #8d8a8a;
+}
 /* project.jsp end */
 </style>
+
+
 
 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
 <!----Main Page의 Nav 메뉴 작성---->
@@ -65,7 +75,6 @@
 	<div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
 		<div class="row">
 			<div class="col-sm-8">
-                        
                         <div class="row flex-grow">
                           <div class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card">
                             <div class="card card-rounded">
@@ -74,7 +83,7 @@
 								<div class="d-sm-flex justify-content-between align-items-start mb-3">
                                   <ul class="list-unstyled project-list-ul-custom fg-1">
 									<li>
-                                      프로젝트 목록
+                                      프로젝트 목록 
                                     </li>
                                     <li>
                                       <button class="btn dropdown-toggle project-list-btn-dropdownbtn fg-1 project-dropdown-btngroup-border-leftonly" type="button" id="project-dropdown-setting-button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,7 +92,9 @@
                                       <div class="dropdown-menu" aria-labelledby="project-dropdown-setting-button">
                                         <a class="dropdown-item" data-toggle="modal" data-target="#project-Create-Modal" data-whatever="@mdo" id="project_create">프로젝트 추가</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">마감빠른순 정렬</a>
+                                        <a class="dropdown-item" href='<c:url value="/Project/list.kosmo?order=enddate"/>'>마감빠른순 정렬</a>
+                                        <div class="dropdown-divider"></div>
+										<a class="dropdown-item" href='<c:url value="/Project/list.kosmo"/>'>프로젝트순 정렬</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">내 업무만 표시</a>
                                         <div class="dropdown-divider"></div>
@@ -91,94 +102,36 @@
                                     </li>
                                   </ul>
                                 </div>
-                              <div id="project-list-accordion">
-                                  <!-- 프로젝트 하나 시작 , href=#프로젝트일련번호 -->
-                                  <div class="card project-list-accordion-bgCustom">
-                                    <div class="btn-group" role="group" style="height: 50px;">
-                                      <!-- href=#프로젝트일련번호 -->
-                                      <div class="card-header card-link hover project-list-accordion-card-header btn fg-10 project-list-btn-dropdownbtn" data-toggle="collapse" href="#project1" style="border:none; flex-grow:15;">
-                                        <span class="project-list-ul-custom" style="line-height:25px">${projectList.lists[0].PROJECT_NAME}</span>
-                                      </div>
-                                      <!-- 드롭다운 쓰리닷 메뉴 시작, id=프로젝트일련번호-dropdown-menu-button -->
-                                      <button class="btn dropdown-toggle project-list-btn-dropdownbtn fg-1 project-dropdown-btngroup-border-leftonly" type="button" id="project1-dropdown-menu-button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-light fa-bars"></i>
-                                      </button>
-                                      <div class="dropdown-menu" aria-labelledby="project1-dropdown-menu-button">
-                                        <a class="dropdown-item" href="#">공유</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">업무추가</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">수정</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="/schedule/month.noa">캘린더</a>
-                                      </div>
-                                      <!-- 드롭다운 쓰리닷 메뉴 끝 -->
-                                    </div>
-                                    <!-- 프로젝트 업무 목록 시작 , id=프로젝트일련번호 -->
-                                    <div id="project1" class="collapse">
-                                      <div class="card-body project-list-accordion-card-body">
-                                        <div class="table-reponsive overflow-x-scroll">
-                                          <table class="table table-stripped table-hover">
-                                            <thead>
-                                              <tr>
-                                                <th> 프로필 </th>
-                                                <th> 이름 </th>
-                                                <th> 업무명 </th>
-                                                <th> 진행도 </th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              <!-- tr : 행 , td : 열 (여기 td 개수는 <thead>의 th개수랑 맞춰야 함.)-->
-                                              <tr>
-                                                <td class="py-1"> <img src="../projectResources/profile1.jsp" alt="프로필사진"/> </td>
-                                                <td> 김길동 </td>
-                                                <td> 업무1 </td>
-                                                <td> 
-                                                  <div class="progress">
-                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                  </div>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <!-- 프로젝트 업무 목록 끝 -->
-                                  </div>
-                                  <!-- 프로젝트 하나 끝 -->
-                                  
-<!--    여기서부터 목록 테스트 시작    -->                               
-                                  <c:if test="${!(empty projectList.lists)}" var="isNotEmpty">
+                              <div id="project-list-accordion">                      
+                                  <c:if test="${!(empty projectList.lists)}" var="isNotEmpty">         
                                   	<c:forEach var="item" items="${projectList.lists}" varStatus="vs">
-                                  	 <!-- 프로젝트 하나 시작 , href=#프로젝트일련번호 -->
-	                                  <div class="card project-list-accordion-bgCustom"  >
+                                  	 <!-- 프로젝트 하나 시작 , href=#프로젝트일련번호 -->	                                  
+	                                  <div class="card project-list-accordion-bgCustom">
 	                                    <div class="btn-group" role="group" style="height: 50px;">
 	                                      <!-- href=#프로젝트일련번호 -->
-	                                      <div class="card-header card-link hover project-list-accordion-card-header btn fg-10 project-list-btn-dropdownbtn" data-toggle="collapse" href="#project2" style="border:none; flex-grow:15;">
-	                                        <span id="${projectList.lists[vs.index].PROJECT_NO}" class="project-list-ul-custom project-span" style="line-height:25px">${projectList.lists[vs.index].PROJECT_NAME}</span>
-	                                      	
+	                                      <div class="card-header card-link hover project-list-accordion-card-header btn fg-10 project-list-btn-dropdownbtn" data-toggle="collapse" href="#project${projectList.lists[vs.index].PROJECT_NO}" style="border:none; flex-grow:15;">
+	                                        <span id="${projectList.lists[vs.index].PROJECT_NO}" class="project-list-ul-custom project-span" style="line-height:25px">${projectList.lists[vs.index].PROJECT_NAME}</span>	                                        	                                     
 	                                      </div>
 	                                      <!-- 드롭다운 쓰리닷 메뉴 시작, id=프로젝트일련번호-dropdown-menu-button -->
-	                                      <button class="btn dropdown-toggle project-list-btn-dropdownbtn fg-1 project-dropdown-btngroup-border-leftonly" type="button" id="project-dropdown-menu-button" name="${projectList.lists[vs.index].PROJECT_NAME}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                                      <button class="btn dropdown-toggle project-list-btn-dropdownbtn fg-1 project-dropdown-btngroup-border-leftonly project-foreach-setting" type="button" name="${projectList.lists[vs.index].PROJECT_NAME}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                                        <i class="fa fa-light fa-bars" name="${projectList.lists[vs.index].PROJECT_NAME}"></i>
 	                                      </button>
-	                                      <div class="dropdown-menu" aria-labelledby="project-dropdown-menu-button">
+	                                      <div class="dropdown-menu" aria-labelledby="${projectList.lists[vs.index].PROJECT_NO}-dropdown-menu-button">
 	                                        <a class="dropdown-item" href="#">공유</a>
 	                                        <div class="dropdown-divider"></div>
-	                                        <a class="dropdown-item" data-toggle="modal" data-target="#task-Create-Modal" data-whatever="@mdo" id="task_create">업무추가</a>
-	                                        <div class="dropdown-divider"></div>
-	                                        <a class="dropdown-item" href="#">수정</a>
+	                                        <a class="dropdown-item" data-toggle="modal" data-target="#task-Create-Modal" data-whatever="@mdo" id="task_create">업무추가</a>	                                     
+	                                        <span class="project-manager-span"></span>
 	                                        <div class="dropdown-divider"></div>
 	                                        <a class="dropdown-item" href="/schedule/Month.noa">캘린더</a>
 	                                      </div>
 	                                      <!-- 드롭다운 쓰리닷 메뉴 끝 -->
 	                                    </div>
 	                                    <!-- 프로젝트 업무 목록 시작 , id=프로젝트일련번호 -->
-	                                    <div id="project2" class="collapse">
-	                                      <div class="card-body project-list-accordion-card-body">
+	                                    <div id="project${projectList.lists[vs.index].PROJECT_NO}" class="collapse" data-parent="#project-list-accordion">	                                    
+	                                      <div class="card-body project-list-accordion-card-body">	                                        
 	                                        <div class="table-reponsive overflow-x-scroll">
-	                                          <table class="table table-stripped table-hover">
+	                                        <p>프로젝트 담당자:<label class=" project-manager-label" style="line-height:25px; text-size:20px;">${projectList.lists[vs.index].M_ID}</label></p>
+	                                          <table class="table table-stripped table-hover">	                                        
 	                                            <thead>
 	                                              <tr>
 	                                                <th> 프로필 </th>
@@ -193,7 +146,7 @@
 		                                              <!-- tr : 행 , td : 열 (여기 td 개수는 <thead>의 th개수랑 맞춰야 함.)-->
 		                                              <tr>
 		                                                <td class="py-1"> <img src="/webapp/projectResources/profile1.jpg" alt="프로필사진"/> </td>
-		                                                <td>${projectList.lists[vs.index].tlists[ts.index].M_ID}</td>
+		                                                <td>${projectList.lists[vs.index].tlists[ts.index].M_NAME}</td>
 		                                                <td>${projectList.lists[vs.index].tlists[ts.index].TASK_NAME}</td>
 		                                                <td> 
 		                                                  <div class="progress">
@@ -212,83 +165,13 @@
 	                                  </div>
 	                                  </c:forEach>
 	                               </c:if>
-	                                  <!-- 프로젝트 하나 끝 -->
-<!--     여기가 목록 테스트 끝     -->          
+	                               <!-- 프로젝트 하나 끝 -->        
                                 </div>
                               </div>
                               <!-- 카드 바디 끝 -->
                             </div>
                           </div>
-                        </div>
-                        
-<!-- 중간발표를 위한 임시 텍스트 박스 추가 : 중간 발표 후 삭제 -->
-<%Map map = new HashMap<>(); %>
-<div class="col-md-6 grid-margin stretch-card">
-   <div class="card">
-     <div class="card-body">
-       <h4 class="card-title">Default form</h4>
-       <p class="card-description">
-         Basic form layout
-       </p>
-       <form class="forms-sample">
-         <div class="form-group">
-           <label for="exampleInputUsername1">Username</label>
-           <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Username">
-         </div>
-         <div class="form-group">
-           <label for="exampleInputEmail1">Email address</label>
-           <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-         </div>
-         <div class="form-group">
-           <label for="exampleInputPassword1">Password</label>
-           <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-         </div>
-         <div class="form-group">
-           <label for="exampleInputConfirmPassword1">Confirm Password</label>
-           <input type="password" class="form-control" id="exampleInputConfirmPassword1" placeholder="Password">
-         </div>
-         <div class="form-check form-check-flat form-check-primary">
-           <label class="form-check-label">
-             <input type="checkbox" class="form-check-input">
-             Remember me
-           </label>
-         </div>
-         <button type="submit" class="btn btn-primary me-2">Submit</button>
-         <button class="btn btn-light">Cancel</button>
-       </form>
-     </div>
-   </div>
- </div>
-
-<div class="col-md-6 grid-margin stretch-card">
-   <div class="card">
-     <div class="card-body">
-       <h4 class="card-title">Select 2</h4>
-       <div class="form-group">
-         <label>Single select box using select 2</label>
-         <select class="js-example-basic-single w-100">
-           <option value="AL">Alabama</option>
-           <option value="WY">Wyoming</option>
-           <option value="AM">America</option>
-           <option value="CA">Canada</option>
-           <option value="RU">Russia</option>
-         </select>
-       </div>
-	   <div class="form-group">
-	     <label>프로젝트 멤버 선택:</label>
-	     <select class="js-example-basic-multiple w-100" multiple="multiple">
-	       <option value="kim1234@samsung.com" name="member">kim1234@samsung.com</option>
-	       <option value="park1234@samsung.com" name="member">park1234@samsung.com</option>
-	       <option value="song1234@samsung.com" name="member">song1234@samsung.com</option>
-	       <option value="hong1234@samsung.com" name="member">hong1234@samsung.com</option>
-	     </select>
-    </div>
-  </div>
-</div>
-	
-</div>
-<!-- 중간발표를 위한 임시 텍스트 박스 추가 끝-->
-                        
+                        </div>                        
                      </div>
                       
                       <div class="col-sm-4">
@@ -330,7 +213,7 @@
                                       <div class="add-items d-flex mb-0 pt-2">
                                         <!-- <input type="text" class="form-control todo-list-input" placeholder="What do you need to do today?"> -->
                                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" id="project-todo-list-add-btn">
-                                        	<i class="mdi mdi-plus" data-toggle="modal" data-target="#check-Add-Modal" id="check_add"></i>
+                                        	<i class="mdi mdi-plus checklist-add-btn" data-toggle="modal" data-target="#check-Add-Modal" id="check_add"></i>
                                         </button>
                                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" id="project-todo-list-remove-btn"><i class="mdi mdi-minus"></i></button>
                                       </div>
@@ -339,18 +222,7 @@
                                     <div class="list-wrapper overflow-y-scroll" >
                                       <!-- 체크리스트 목록 ul 태그 시작 -->
                                       <ul class="todo-list todo-list-rounded project-todo-list-ulelement-custom">
-                                        <li class="d-block">
-                                          <div class="form-check w-100">
-                                            <label class="form-check-label">
-                                              <input class="checkbox proj-todo-list-chbox" type="checkbox"> Lorem Ipsum is simply dummy text of the printing <i class="input-helper rounded"></i>
-                                            </label>
-                                            <div class="d-flex mt-2">
-                                              <div class="ps-4 text-small me-3">24 June 2020</div>
-                                              <div class="badge badge-opacity-warning me-3">Due tomorrow</div>
-                                              <i class="mdi mdi-flag ms-2 flag-color"></i>
-                                            </div>
-                                          </div>
-                                        </li>
+                                        <span class="checklist-place"/>
                                       </ul>
                                       <!-- 체크리스트 목록 ul 태그 끝 -->
                                     </div>
@@ -378,6 +250,8 @@
 	        </button>
 	      </div>
 	      <div class="modal-body">
+	      	<label for="project-manager" class="col-form-label">프로젝트 담당자:</label>
+	        <input type="text" class="form-control" id="project_manager" name="project_manager" value="${loginId}"disabled>
 	      	<label for="project-name" class="col-form-label">프로젝트명:</label>
 	        <input type="text" class="form-control" id="project_name" name="project_name" required>
 	        <label for="project-start-date" class="col-form-label">프로젝트 시작일:</label>
@@ -394,16 +268,53 @@
 	      </div>
 		  <div class="modal-footer">
 		    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-		    <button id="merong" type="submit" class="btn btn-primary">Create</button>
+		    <button type="submit" class="btn btn-primary">Create</button>
 		  </div>
 		</form>
     </div>
   </div>
 </div>
 <!-- 프로젝트 생성 모달 끝 - 부트스트랩 -->
+<!-- 프로젝트 수정/삭제 모달 시작 - 부트스트랩 -->
+<div class="modal fade" id="project-Edit-Modal" aria-labelledby="project-Edit-Modal-Label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <form action="/NodeArchive/Project/update.kosmo">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">프로젝트 수정</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<label for="project-manager" class="col-form-label">프로젝트 담당자:</label>
+	        <input type="text" class="form-control" id="edit_project_manager" name="m_id" placeholder="${loginId}">
+	      	<label for="project-name" class="col-form-label">프로젝트명:</label>
+	        <input type="text" class="form-control" id="edit_project_name" name="project_name" required>
+	        <label for="project-start-date" class="col-form-label">프로젝트 시작일:</label>
+	        <input type="text" class="form-control" id="edit_set_startdate" name="set_startdate" required>
+	        <label for="project-end-date" class="col-form-label">프로젝트 마감일:</label>
+			<input type="text" class="form-control" id="edit_set_enddate" name="set_enddate" required>
+			<label id="edit-project-members">프로젝트 멤버 선택:</label><br/>
+			<select class="js-example-basic-multiple project-edit-select" multiple="multiple" name="member" data-dropdown-parent="#edit-project-members">				      
+			   <option value="kim1234@samsung.com" >kim1234@samsung.com</option>
+			   <option value="park1234@samsung.com">park1234@samsung.com</option>
+			   <option value="song1234@samsung.com">song1234@samsung.com</option>
+			   <option value="hong1234@samsung.com">hong1234@samsung.com</option>
+			</select>
+	      </div>
+		  <div class="modal-footer">
+		    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		    <button type="submit" class="btn btn-primary">Update</button>
+		  </div>
+		</form>
+    </div>
+  </div>
+</div>
+<!-- 프로젝트 수정/삭제 모달 끝 - 부트스트랩 -->
 <!-- 업무 생성 모달 시작 - 부트스트랩 -->
 <div class="modal fade" id="task-Create-Modal" aria-labelledby="task-Create-Modal-Label" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
     	<form action="/NodeArchive/Task/create.kosmo">
 	      <div class="modal-header">
@@ -412,9 +323,9 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
-	      <div class="modal-body">
+	      <div class="modal-body" style="max-height: calc(100vh - 200px); overflow-x: hidden; overflow-y: auto;">
           	<label for="task_m_id" class="col-form-label">업무 담당자:</label>
-            <input type="text" class="form-control" id="task_m_id" name="m_id" value="<c:set var="변수명"><sec:authentication property="principal.username"/></c:set>" required>
+            <input type="text" class="form-control" id="task_m_id" name="m_id" value="${loginId}" required>
           	<div class="form-check form-check-flat form-check-primary">
 	           <label class="form-check-label">
 	             <input type="checkbox" class="form-check-input">
@@ -445,7 +356,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-	        <button type="submit" class="btn btn-primary">Create</button>
+	        <button type="submit" class="btn btn-primary" >Create</button>
 	      </div>
     	</form>
     </div>
@@ -454,9 +365,9 @@
 <!-- 업무 생성 모달 끝 - 부트스트랩 -->
 <!-- 체크리스트 추가 모달 시작 - 부트스트랩 -->
 <div class="modal fade" id="check-Add-Modal" aria-labelledby="check-Add-Modal-Label" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
-      
+      <form class="checklist-add-form">
 		  <div class="modal-header">
 		    <h5 class="modal-title" id="exampleModalLabel">체크리스트 추가</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -483,7 +394,7 @@
 	       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 	       <button type="button" class="btn btn-primary checklist-submit-btn" data-dismiss="modal">Create</button>
 	     </div>
-     
+     	</form>
     </div>
   </div>
 </div>
@@ -491,17 +402,87 @@
 
 <script>
 
-//[1] 프로젝트 3dot 클릭시 업무 추가 목록에 프로젝트 정보 자동 로드하는 스크립트
-$(".project-dropdown-btngroup-border-leftonly").click(function(e){
+//[1] 프로젝트 3dot 클릭시 이벤트
+//1-1 : 업무 추가 목록에 프로젝트 정보 자동 로드하는 스크립트
+//1-2 : 프로젝트 생성자와 사용자 정보 비교하여 프로젝트 수정/삭제 버튼 추가하기
+//1-3 : 프로젝트 수정 버튼 클릭시 모달에 띄울 데이터 불러오는 ajax
+$(".project-foreach-setting").click(function(e){
+	e.stopPropagation();
+	$('.project-edit-delete').remove();
+	var projectNo = $(this).parent().children().children('.project-span').prop("id");
+	console.log('projectNo:',projectNo)
+	//1-1.
 	var params=e.target.name;
 	console.log(params);
 	$('#t_create_project_name').val(params);
 	//e.target.children('li')
-	var projectNo = $('.project-span').prop("id");
+	//var projectNo = $('.project-span').prop("id");
 	console.log('projectNo:',projectNo);
 	$('#t_create_project_no').val(projectNo);
+	
+	//1-2.
+	var projManager = $('.project-manager-label').html()
+	console.log('projManager:',projManager)
+	var loginId = $('#project_manager').val();
+	console.log('loginId:',loginId)
+	if(projManager == loginId){
+		$('.project-manager-span').after(
+			'<div class="dropdown-divider project-edit-delete"></div>'+
+            '<a class="dropdown-item project-edit-delete" data-toggle="modal" data-target="#project-Edit-Modal" data-whatever="@mdo" id="project_edit">수정</a>'+
+            '<div class="dropdown-divider project-edit-delete"></div>'+
+            '<a class="dropdown-item project-edit-delete" href="/NodeArchive/Project/delete.kosmo?project_no='+projectNo+'">삭제</a>'
+		);
+	}
+	 
+	//1-3.
+	$("#project_edit").click(function(e){
+		//projectNo = $(this).children('.project-span').prop("id");
+		console.log('projectNoE:',projectNo);
+		
+		$.ajax({
+		    url:'<c:url value="/Project/edit.kosmo"/>',
+		    method:'post',   
+		    data: {            
+		        project_no:projectNo
+		    },
+		    dataType:'json' // text, xml, json, script, html
+		 }).done(function(data){
+		    	console.log('서버로부터 받은 데이타:',data);
+		    	$('#edit_project_name').val(data.PROJECT_NAME);
+		    	$('#edit_set_startdate').val(data.SCHE_STARTDATE);
+		    	$('#edit_set_enddate').val(data.SCHE_ENDDATE);
+		    	//$('#edit-project-members').val(data.MEMBER);
+		    	
+		 }).fail(function(error){
+		    	console.log('%O',error);
+		});
+		
+	
+	/*휴전
+		$('div.modal-body > span').remove();
+		$('.project-edit-select').after(
+				'<span class="select2 select2-container select2-container--default select2-container--above select2-container--focus" dir="ltr" data-select2-id="9" style="width: auto;">'+
+				'<span class="selection">'+
+				'<span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false">'+
+				'<ul class="select2-selection__rendered">'+
+				'<li class="select2-selection__choice" title="kim1234@samsung.com" data-select2-id="32">'+
+				'<span class="select2-selection__choice__remove" role="presentation">×</span>kim1234@samsung.com'+
+				'</li>'+
+				'<li class="select2-search select2-search--inline">'+
+				'<input class="select2-search__field" type="search" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox" aria-autocomplete="list" placeholder="" style="width: 0.75em;">'+
+				'</li>'+
+				'</ul>'+
+				'</span>'+
+				'</span>'+
+				'</span>'
+				);*/
+		/*
+		var source = '<span class="select2-container select2-container--default select2-container--open" style="position: absolute; top: 226.3px; left: 26px;"><span class="select2-dropdown select2-dropdown--above" dir="ltr" style="width: 446.4px;"><span class="select2-results"><ul class="select2-results__options" role="listbox" aria-multiselectable="true" id="select2-member-p7-results" aria-expanded="true" aria-hidden="false"><li class="select2-results__option select2-results__option--highlighted" id="select2-member-p7-result-yulr-kim1234@samsung.com" role="option" aria-selected="false" data-select2-id="select2-member-p7-result-yulr-kim1234@samsung.com">kim1234@samsung.com</li><li class="select2-results__option" id="select2-member-p7-result-gfip-park1234@samsung.com" role="option" aria-selected="false" data-select2-id="select2-member-p7-result-gfip-park1234@samsung.com">park1234@samsung.com</li><li class="select2-results__option" id="select2-member-p7-result-j6pm-song1234@samsung.com" role="option" aria-selected="false" data-select2-id="select2-member-p7-result-j6pm-song1234@samsung.com">song1234@samsung.com</li><li class="select2-results__option" id="select2-member-p7-result-om21-hong1234@samsung.com" role="option" aria-selected="false" data-select2-id="select2-member-p7-result-om21-hong1234@samsung.com">hong1234@samsung.com</li></ul></span></span></span>';
+		$('#edit-project-members').append(source);
+		*/		
+	})
 });
-
+/*
 $(".fa").click(function(e){
 	e.stopPropagation();
 	var param=e.target.name;
@@ -512,14 +493,16 @@ $(".fa").click(function(e){
 	console.log('projectNo:',projectNo);
 	$('#t_create_project_no').val(projectNo);
 });
+*/
 ////////////////[1]
 
-//[2] 프로젝트 아코디언 클릭시 해당 프로젝트 구성원 자동 로드하는 ajax
+//[2] 프로젝트 아코디언 클릭시 이벤트
+//2-1. 해당 프로젝트 구성원 자동 로드하는 ajax
 $(".project-list-accordion-card-header").click(function(e){
 	$(".project_member_lists").remove();
 	projectNo = $(this).children('.project-span').prop("id");
 	console.log('projectNo:',projectNo);
-	
+	//2-1.
 	$.ajax({
 	    url:'<c:url value="/Project/viewmlist.kosmo"/>',
 	    method:'post',   
@@ -530,7 +513,7 @@ $(".project-list-accordion-card-header").click(function(e){
 	 }).done(function(data){
 	    	console.log('서버로부터 받은 데이타:',data);
 	    	$.each(data , function(i){
-	    		var project_member=data[i].M_ID;
+	    		var project_member=data[i].M_NAME;
 	    		console.log(project_member);
 	    		$('#insert-project-members').after(
 	    				  "<div class='project_member_lists'>"+
@@ -542,7 +525,7 @@ $(".project-list-accordion-card-header").click(function(e){
 			                    "<span>"+ project_member + "</span>"+
 			                  "</div>"+
 			                  "<div class='d-flex align-items-center py-2'>"+
-			                    "<span>hello</span>"+
+			                    "<span>부서명</span>"+
 			                  "</div>"+
 			                "</div>"+
 			              "</div>"		
@@ -557,11 +540,9 @@ $(".project-list-accordion-card-header").click(function(e){
 
 //[3]체크리스트 추가용 ajax
 $(".checklist-submit-btn").click(function(e){
-	$(".border-bottom-0").remove();
 	var checkContent = $('#modal_checklist_content').val();
 	var checkEndDate = $('#modal_checklist_end_date').val();
 	var checkCategory = $('#modal_checklist_category').val();  
-	
 	$.ajax({
 	    url:'<c:url value="/Project/checklist.kosmo"/>',
 	    method:'post',   
@@ -571,7 +552,6 @@ $(".checklist-submit-btn").click(function(e){
 	    dataType:'json' // text, xml, json, script, html
 	 }).done(function(data){
 	    	console.log('서버로부터 받은 데이타:',data);
-	    	
 	    	//$('#checklist_content:last-child').append(checkContent);
 	    	var source = '<li class="border-bottom-0"> '+
 	            '<div class="form-check w-100"> '+
@@ -588,7 +568,7 @@ $(".checklist-submit-btn").click(function(e){
 		          '</li>'
               };
               if(checkCategory=='피드백'){
-                  source +='<div class="btn btn-info btn-rounded btn-sm me-3">'+ checkCategory +'</div> '+
+                  source +='<div class="badge badge-opacity-info me-3">'+ checkCategory +'</div> '+
 	               '</div> '+
 	            '</div> '+
 	          '</li>'
@@ -600,18 +580,52 @@ $(".checklist-submit-btn").click(function(e){
 	          '</li>'
         	  };
         	  if(checkCategory=='완료'){
-                  source +='<div class="btn btn-secondary btn-rounded btn-sm me-3">'+ checkCategory +'</div> '+
+                  source +='<div class="badge badge-opacity-secondary me-3">'+ checkCategory +'</div> '+
  	               '</div> '+
  	            '</div> '+
  	          '</li>'
          	  };
-             
-         	 $('.d-block:last-child').after(source);
+         	 $('.checklist-place').before(source);
+         	 $('#check-Add-Modal').find('form')[0].reset();
 	 }).fail(function(error){
 		   	console.log('%O',error);
 	});
-})
+});
+/////////////////////[3]
 
+//[4] 프로젝트 생성시 로그인 정보 파악하여 유저를 멤버로 우선 포함 시키기
+//  미완성
+$('#project_create').click(function(e){
+	
+	/*var loginId = $('#project_manager').val();
+	console.log(loginId);
+	var selectId = $('.select2-results__option');
+	console.log('li 저장 성공');
+	if(loginId == selectId.val()){
+		console.log('조건문 통과');
+		selectId.trigger("click");
+	}*/
+	
+	var loginId = $('#project_manager').val();
+	var tags = $('.select2-results__option'); 
+    var tags_len = tags.lengh; //선택된 태그의 개수를 구함
+    console.log('tags_len:',tags);
+    for(var i=0;i<tags_len;i++){ //for문을 이용한 순차접근
+    	var selectId = tags.eq(i).val();
+    	console.log('selectId:',selectId);
+    	if(loginId == selectId){
+    		console.log('조건문 통과');
+    		tags.eq(i).trigger("click");
+    	}
+    }
+  });
+////[4]
+
+//[5]
+
+
+
+////////[5]
 /*
 function sendPost(url,params){
 	var form = document.createElement('form');

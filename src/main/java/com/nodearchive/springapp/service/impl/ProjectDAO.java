@@ -86,5 +86,10 @@ public class ProjectDAO {
 		List mlist = template.selectList("projectGetMList",map);
 		return mlist;
 	}
+
+	public int deleteMember(Map map) {
+		int affected = template.delete("projectDelMList",map);
+		return affected;
+	}
 	
 }

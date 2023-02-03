@@ -131,7 +131,6 @@ top3BarIcon.onclick = ()=>{
 	//+버튼 클릭 시 체크리스트 추가. (모달창 먼저 띄워서 입력받은 후에 입력받은 값을 htmlString에 넣어서 추가할 것.)
 if(document.querySelector("#project-todo-list-add-btn")!=null){
 	document.querySelector("#project-todo-list-add-btn").onclick=function(e){
- 	var lastLiElement = document.querySelector('ul.project-todo-list-ulelement-custom li:last-child');
 	 lastLiElement.classList.remove('border-bottom-0','d-block');
 	 lastLiElement.classList.add('d-block');
 	 var htmlString = '<li class="border-bottom-0"> '+

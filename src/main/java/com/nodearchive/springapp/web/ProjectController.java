@@ -54,34 +54,18 @@ public class ProjectController {
 			) {
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
 		UserDetails userDetails=(UserDetails)auth.getPrincipal();
-		map.put("loginId", userDetails.getUsername());
-		
-		/*test-----------------  
-		map.put("loginId", "park1234@samsung.com");
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		HttpSession session = request.getSession();
-		session.setAttribute("loginId", "park1234@samsung.com");
-		---------------------  */
-		
+		map.put("loginId", userDetails.getUsername());		
 		int nowPage=1;
 		ListPagingData<Map> projects = projectService.selectList(map, req, nowPage);
 		List<Map> lists = projects.getLists();
-		
 		//하위 업무 추가를 위한 로직
 		for(Map list:lists) {
 			int project_no = Integer.parseInt(list.get("PROJECT_NO").toString());
-			
 			map.put("project_no", project_no);
 			ListPagingData<Map> tasks = taskService.selectListByProj(map, req, 1);
 			List<Map> tlists = tasks.getLists();
 			list.put("tlists", tlists);
-			/*
-			list.forEach((key, value)->{
-		          System.out.println( String.format("키 -> %s, 값 -> %s", key, value) );
-		    });
-		    */
 		}
-		
 		model.addAttribute("projectList", projects);
 		//return "project/list.noa";
 		return "project/Project.noa";
@@ -96,19 +80,12 @@ public class ProjectController {
 			@RequestParam Map map
 			,HttpServletRequest req //로그인 계정 정보를 세션에서 가져오기 위한 인자
 			) {
-		
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
 		UserDetails authenticated = (UserDetails)auth.getPrincipal();
 		map.put("loginId", authenticated.getUsername());
-		
-		//test
-		//map.put("loginId", "kim1234@samsung.com");
-		System.out.println("프로젝트 입력 실행됨");
-		
 		//프론트 엔드에서 전달 받는 member 리스트를 배열에 저장
 		String[] memberArray = req.getParameterValues("member");
 		map.put("memberArray", memberArray);
-		
 		projectService.insert(map);
 		model.addAttribute("project", map);
 		//프로젝트 리스트 페이지로 이동
@@ -116,28 +93,36 @@ public class ProjectController {
 	}
 	
 	//프로젝트 상세보기(get) - 테스트 완료
-	@RequestMapping("/view.kosmo")
+	@RequestMapping(value="/view.kosmo",produces = "text/plain; charset=UTF-8")
+	@ResponseBody
 	public String viewProject(
-			//Authentication auth,
+			Authentication auth,
 			@RequestParam Map map, 
-			Model model) {
+			Model model) throws JsonProcessingException {
 		
-		model.addAttribute("selectOneProject", projectService.selectOne(map));
+		//model.addAttribute("selectOneProject", projectService.selectOne(map));
+		Map record = (Map) projectService.selectOne(map);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		String mapperData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(record);
+		System.out.println(mapperData);
+		
 		//상세보기 페이지로 이동
-		return "project/view.noa";
+		//return "project/view.noa";
+		return mapperData;
 	} 
 	
 	//프로젝트 수정(post) - 테스트 완
 	@RequestMapping("/edit.kosmo")
 	public String editProject(
-			//Authentication auth,
+			Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
-		//UserDetails userDetails=(UserDetails)auth.getPrincipal();
-		//map.put("login_Id", userDetails.getUsername());
-		
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername());
 		model.addAttribute("editProject", projectService.update(map));
+		
 		//수정 완료 후 해당 프로젝트 상세보기 페이지로 이동
 		return "project/view.noa";
 	}
@@ -145,18 +130,17 @@ public class ProjectController {
 	//프로젝트 삭제 (get) - 테스트 완
 	@RequestMapping("/delete.kosmo")
 	public String deleteProject(
-			//Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
-		
-		boolean checkMember = projectService.isSameMember(map);
-		System.out.println("checkMember:"+checkMember);
-		if(checkMember) {
-			model.addAttribute("deleteProject", projectService.delete(map));
-		}
-		else System.out.println("해당 요청물의 작성자가 아닙니다.");
+		//boolean checkMember = projectService.isSameMember(map);
+		//System.out.println("checkMember:"+checkMember);
+		//if(checkMember) {
+		model.addAttribute("deleteProject", projectService.delete(map));
+		System.out.println("삭제 완료 후 컨트롤러로 돌아옴");
+		//}
+		//else System.out.println("해당 요청물의 작성자가 아닙니다.");
 		//삭제 후 목록 페이지로 반환
-		return "project/list.noa";
+		return "redirect:/Project/list.kosmo";
 	}
 		
 	
@@ -188,7 +172,7 @@ public class ProjectController {
 	}
 	
 	//멤버 리스트 불러오기(get) - 테스트 완
-	@RequestMapping("/viewmlist.kosmo")
+	@RequestMapping(value="/viewmlist.kosmo" ,produces = "text/plain; charset=UTF-8")
 	@ResponseBody
 	public String viewMember(
 			//Authentication auth,

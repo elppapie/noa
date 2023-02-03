@@ -8,6 +8,8 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,21 +67,20 @@ public class TaskController {
 	//@RequestMapping(value={"/list.kosmo", "/Project/list.kosmo"})
 	@RequestMapping("/list.kosmo")
 	public String selectTasks(
-			//Authentication auth,
+			Authentication auth,
 			@RequestParam Map map,
 			HttpServletRequest req,
 			Model model,
 			@RequestParam(required = false,defaultValue = "1") int nowPage) {
 		
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
-		//UserDetails userD  etails=(UserDetails)auth.getPrincipal();
-		//map.put("login_Id", userDetails.getUsername());
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername());
 		System.out.println("loginId_C:"+map.get("loginId"));
 		ListPagingData<Map> selectTaskList = taskService.selectList(map, req, nowPage);
 		model.addAttribute("selectTaskList", selectTaskList);
 		//리포트 작성 페이지로 .0. 이동
-		//return "task/list.noa";
-		return "forward:/Project/list.kosmo";
+		return "project/Task.noa";
 	}
 	
 	//업무 리스트 구하기 - 프로젝트별 하위 업무 셀렉트 용
