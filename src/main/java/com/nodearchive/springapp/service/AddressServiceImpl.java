@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.nodearchive.springapp.service.impl.AddressDAO;
+import com.nodearchive.springapp.service.impl.MembersDTO;
 import com.nodearchive.springapp.service.impl.OrganizationDTO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 import com.nodearchive.springapp.service.utils.PagingUtil;
@@ -167,6 +168,11 @@ public class AddressServiceImpl implements AddressService<Map> {
 		dto.setTeamListByDept(teamListByDept);
 		return dto;
 	}////////////getOrg()
+
+
+	public boolean isMember(MembersDTO dto) {
+		return dao.isMember(dto)==0?false:true;
+	}
 
 
 	

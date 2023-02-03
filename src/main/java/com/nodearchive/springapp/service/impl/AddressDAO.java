@@ -50,11 +50,11 @@ public class AddressDAO {
 		return template.selectList("addressGetTeamMembers", teamNoList);
 	}
 
-	
-	
-	
-	
-	
+	public int isMember(MembersDTO dto) {
+		System.out.println("dao단: "+dto.getM_id());
+		return template.selectOne("addressIsMember",dto);
+	}
+
 	
 	
 	

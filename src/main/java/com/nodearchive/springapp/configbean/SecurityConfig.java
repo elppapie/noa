@@ -85,7 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http
 			.authorizeRequests()
-			.antMatchers("/Login/**","/home.kosmo","/","/resources/**").permitAll() // "/resources/**" 안 넣으면 css 파일 다 깨져서 보임
+			.antMatchers("/Login/**","/home.kosmo","/","/resources/**","/Android/**","/Android/**/**","/Android/*/*").permitAll() // "/resources/**" 안 넣으면 css 파일 다 깨져서 보임
 			.antMatchers("/Address/**","/Mail/**","/Schedule/**","/Chat/**","/Attendance/**","/Approval/**","/Project/**","/Task/**","/Report/**","/Meet/**","/Notice/**").hasAnyRole("USER","ADMIN")//ROLE_는 반드시 생략.자동으로 추가됨으로
 			.antMatchers("/Admin/**").hasRole("ADMIN")
 			.anyRequest().authenticated()

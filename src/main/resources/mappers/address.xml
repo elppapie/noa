@@ -130,4 +130,9 @@
 		</foreach>
 	</select>
 	
+	<!-- 회원인지 아닌지 selectOne하는 쿼리 - 안드로이드 로그인 시 사용 -->
+	<select id="addressIsMember" parameterType="MembersDTO" resultType="int">
+		SELECT COUNT(*) FROM members WHERE m_id=#{m_id} AND m_password=#{m_password}
+	</select>
+	
 </mapper>

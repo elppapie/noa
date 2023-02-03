@@ -2,10 +2,20 @@ package com.nodearchive.springapp.service.impl;
 
 import java.sql.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 //@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MembersDTO {//구성원
 	
 	private String m_id;
@@ -47,19 +57,5 @@ public class MembersDTO {//구성원
 	private String m_profile_msg;
 	
 	private int  m_spare_annual;
-
-	public Object getUser_id() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Object getUser_no() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	
-
 
 }
