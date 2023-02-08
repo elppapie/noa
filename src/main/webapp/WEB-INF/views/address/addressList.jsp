@@ -44,12 +44,7 @@
 <!--  Custom CSS   -->
 
 <style>
-.addr-list-scroll-x-auto{
-	overflow-x:auto;
-}
-.addr-list-scroll-y-auto{
-	overflow-y:auto;
-}
+.
 .addr-list-checkbox-td-padding-right-0{
 	padding-right:0px !important;
 }
@@ -65,10 +60,10 @@
 	height:550px !important;
 }
 .addr-list-tab-one{
-	padding-left:15px;
+	padding-left:10px;
 }
 .addr-list-tab-two{
-	padding-left:25px;
+	padding-left:18px;
 }
 .addr-list-tab-two a , .addr-list-tab-one a {
 	text-decoration:none;
@@ -78,36 +73,35 @@
 	margin-top:3px;
 	margin-bottom:3px;
 }
+.addr-list-no-member-exits > h2{
+	text-align:center;
+	height:60px;
+	line-height:60px !important;
+	font-size:1.2rem !important;
+	color: #c1c1c1 !important;
+}
 </style>
+<script type="text/javascript">
+</script>
 </head>
 <body>
 <div class="container-scroller"> 
-<div class="content-wrapper">
+<div class="content-wrapper" style="height:680px;padding-top:10px;">
 <div class="d-sm-flex align-items-center justify-content-between border-bottom">
   <ul class="nav nav-tabs aligh-items-center" role="tablist">
-    <li class="nav-item align-items-baseline">
-<!--  
-<div class="form-check">
- <label class="form-check-label">
-  <input type="checkbox" class="form-check-input"/>전체 선택
- </label>
- <i class="input-helper"></i>
-</div>
--->
+    <li class="nav-item">
+      <a class="nav-link" href="#" ><i class="fa fa-color-gray fa-light fa-envelope"></i> 메일 </a>
     </li>
-    <li class="nav-item d-flex align-items-baseline">
-      <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#" role="tab"><i class="fa fa-color-gray fa-light fa-envelope"></i> 메일 </a>
+    <li class="nav-item addr-list-messanger-border-top-custom">
+      <a class="nav-link border-0" href="#" ><i class="fa fa-color-gray fa-light fa-comment"></i> 메신저 </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link border-0" id="more-tab" data-bs-toggle="tab" href="#" role="tab"><i class="fa fa-color-gray fa-light fa-comment"></i> 메신저 </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#" role="tab"><i class="fa fa-color-gray fa-light fa-share-nodes"></i> 공유 </a>
+      <a class="nav-link"  href="#" ><i class="fa fa-color-gray fa-light fa-share-nodes"></i> 공유 </a>
     </li>
   </ul>
-  <div class="form-group" style="margin:0px;float:right;">
+  <div class="form-group member-search0914-box-shadow" style="margin:0px;float:right;">
 	<div class="input-group">
-		<input type="text" class="form-control" placeholder="구성원 검색" id="top-input-search-members"/>
+		<input class='navbar-member-search-input0914' type="text" class="form-control" placeholder="구성원 검색" id="top-input-search-members" value="${param.searchWord}"/>
 		<div class="input-group-append d-flex justify-content-center align-items-center top-btn-search-members-append" onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo?','${param.m_id}')">
 			<button type="button" class="btn btn-rounded top-btn-search-members">
 				<i class="ti-search"></i>
@@ -115,22 +109,19 @@
 		</div>
 	</div>
   </div>
-  <div class="btn-wrapper">
-    <a href="#" class="btn btn-otline-dark align-items-center"><i class="fa fa-light fa-filter"></i> 정렬</a>
-  </div>
 </div> 
 
 <div class="tab-content tab-content-basic">
 <!----Main Page의 Content 작성---->
 <div class="row">
-	<div class="col-sm-4">
+	<div class="col-sm-3">
 		<div class="card card-rounded">
 			<div class="card-body addr-list-overflow-y-auto addr-list-card-body-custom-height">
 			<h4 class="card-title card-title-dash border-bottom pb-2 mb-2"><i class="fa fa-light fa-address-book"></i> 조직도</h4>
-			<div id="addr-list-org-my-emp-name" onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo?','${param.m_id}')"><i class="fa fa-solid fa-building-user"></i> ${myInfo['emp_name']}</div>
+			<div id="addr-list-org-my-emp-name" onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo?','${param.m_id}',true)"><i class="fa fa-solid fa-building-user"></i> ${myInfo['emp_name']}</div>
 			<ul class="list-unstyled addr-list-tab-one" >
 			  <c:set value="${requestScope.org}" var="org" scope="page"/>
-			  <c:forEach items="${requestScope.org.deptList}" var="depts">
+		  	  <c:forEach items="${requestScope.org.deptList}" var="depts">
 				<li>
 				  <a data-bs-toggle="collapse" href="#${depts['dept_code']}"><i class="fa fa-solid fa-user-group"></i> ${depts['dept_name']}</a>
 					<div class="collapse" id="${depts['dept_code']}">
@@ -143,8 +134,8 @@
 						  %>
 						  <c:forEach var="teams" items="${pageScope.team}">	
 							<li>
-								<a href="${teams['team_no']}">
-									${teams['team_name']} - ${teams['team_leader_name']}
+								<a href="${teams['team_no']}" class="addr-list-team-no-onclick-ajax">
+									└ ${teams['team_name']}
 								</a>
 							</li>
 						  </c:forEach>
@@ -156,12 +147,12 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-8">
+	<div class="col-sm-9">
 		<div class="card card-rounded">
 			<div class="card-body addr-list-card-body-custom-height" id="addr-list-card-body-memberlist-card">
-				<div class="table-reponsive addr-list-scroll-x-auto">
-                  <table class="table table-stripped table-hover">
-                    <thead>
+				<div class="table-reponsive overflow-y-scroll custom-scrollbar" style='height:506px; padding-right:8px;padding-top:50px;overflow-x:hidden;'>
+                  <table class="table table-stripped table-hover ">
+                    <thead class="table-thead-sticky">
                       <tr>
                         <th class="addr-list-checkbox-td-padding-right-0">
                         	<input type="checkbox"/>  
@@ -169,6 +160,7 @@
                         <th> 프로필 </th>
                         <th> 이름 </th>
                         <th> 소속 팀 </th>
+                        <th> 직급 </th>
                         <th> 개인 연락처 </th>
                       </tr>
                     </thead>
@@ -184,13 +176,18 @@
 	                        <td class="py-1"> <img src="${path}/resources/images/logo-noa-messanger.png" alt="프로필사진"/> </td>
 	                        <td> ${member['m_name']} </td>
 	                        <td> ${member['team_name']} </td>
+	                        <td> ${member['position_name']} </td>
 	                        <td> ${fn:substring(member['m_private_contact'],0,3)}-${fn:substring(member['m_private_contact'],3,7)}-${fn:substring(member['m_private_contact'],7,11)} </td>
 	                      </tr>
                       </c:forEach>
                     </tbody>
                   </table>
                 </div>		
-
+                <c:if test="${empty membersList}">
+                	<div class="addr-list-no-member-exits">
+                		<h2>${param.searchWord}(으)로 검색된 구성원이 없습니다⚠️</h2>
+                	</div>
+                </c:if>
 			</div>
 		</div>
 	</div>
@@ -221,9 +218,37 @@
   <script src="${path}/resources/js/noaJS.js"></script>
   <script src="${path}/chatResources/js/noaChatJS.js"></script>
   <script>
-	  
-	  const addrMemberListCardBody = document.querySelector("#addr-list-card-body-memberlist-card");
-	   
+  	  const addrListTbody = document.querySelector('#addr-list-card-body-memberlist-card > div > table > tbody')
+	  // * 팀 목록 클릭 시 해당 팀원들 목록 출력하기
+	  $('.addr-list-team-no-onclick-ajax').click(e=>{
+	      e.preventDefault();
+	      let team_no = e.target.href;
+	      team_no = team_no.substring(team_no.lastIndexOf('/')+1,team_no.length);
+	      console.log('팀 번호는?????'+team_no)
+	      $.ajax({
+	      	url:'<c:url value="/Address/searchOneTeam.kosmo"/>',
+	      	data: "team_no="+team_no,
+	      	dataType:'json'
+	      }).done(data=>{ //data는 [{json},{json},...] 형태
+	    	  console.log('🔔ajax 응답 성공')
+	    	  addrListTbody.innerHTML=''
+	    	  for(member of data){
+	    		  let html = '<tr>'+
+			                    '<td class="addr-list-checkbox-td-padding-right-0">'+
+			                 	  '<input type="checkbox"/>'+
+			                	'</td>'+
+			                    '<td class="py-1"> <img src="'+member["m_profile"]+'" alt="프로필 사진"/> </td>'+
+			                    '<td> '+member["m_name"]+' </td>'+
+			                    '<td> '+member["team_name"]+' </td>'+
+			                    '<td> '+member["position_name"]+' </td>'+
+			                    '<td> '+String(member["m_private_contact"]).substr(0,3)+String(member["m_private_contact"]).substr(3,7)+String(member["m_private_contact"]).substr(7,11)+' </td>'+
+							  '</tr>'
+                  addrListTbody.innerHTML+=html
+	    	  }
+	      }).fail(error=>{
+	    	  console.log(error)
+	      });
+	  })//////onclick() 
   </script>
 </body>
 

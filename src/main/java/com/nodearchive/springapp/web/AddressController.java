@@ -11,8 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nodearchive.springapp.service.AddressService;
 import com.nodearchive.springapp.service.AddressServiceImpl;
@@ -44,14 +46,9 @@ public class AddressController {
 		//map으로 전달될 데이터
 		/*
 		 * 1. m_id = 로그인 중인 구성원의 id
-		 */
-/////////////////////////////////////////////////test //* ⚠️테스트할 때만 임의로 m_id전달
-		map.put("m_id", "kim1234@samsung.com");
-		Set keys=map.keySet();
-		for(Object o:keys) {
-			System.out.println(String.format("[🔔컨트롤러] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
-		}
-///////////////////////////////////////////////
+		 * 2. searchColumn = m_name
+		 * 3. searchWord = ?파라미터
+		 */	
 		
 		//서비스 호출 + 데이터 저장
 		// key=value
@@ -72,7 +69,7 @@ public class AddressController {
 	//컨트롤러 메소드 - 주소록 전체 구성원 목록 (주소록 메인페이지)
 	@GetMapping(value = "/allListNoPaging.kosmo")
 	public String allListNoPaging(
-//			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
+			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
 			Model model,
 			@RequestParam Map map
 			) {
@@ -114,82 +111,24 @@ public class AddressController {
 		model.addAttribute("myInfo", map);
 		model.addAttribute("org", dto);
 		
-		System.out.println(String.format(
-				"팀이름: %s",
-				((Map)(dto.getTeamListByDept().get("E100D100").get(0))).get("team_name")));
-		
 		//뷰정보 반환
 		return "address/addressList";
 	}
-
 	
-	@GetMapping("/searchMyTeamMembers.kosmo")
-	public String searchMyTeamMembers(
-			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
-			Model model,
-			@RequestParam Map map,
-			@RequestParam(required = false, defaultValue = "1") int nowPage,
-			//nowPage가 전달된다면 해당 값이, nowPage가 없으면 기본값 1로 초기화한다.
-			HttpServletRequest req
+	//구성원 검색창의 팀목록에서 해당 팀 클릭했을 때 보여줄 팀원 목록 조회
+	@GetMapping(value = "/searchOneTeam.kosmo", produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public List searchOneTeam(
+			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.
+			@RequestParam Map map
 			) {
+		//넘어오는 파라미터
+		// team_no = 검색할 팀 일련번호
+//test
+System.out.println("넘어온 파라미터:"+map.get("team_no"));
 		
-		return "address/myTeamList.noa";
-	}
-	
-	@GetMapping("/searchMyGroupList.kosmo")
-	public String searchMyGroupList(
-			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
-			Model model,
-			@RequestParam Map map,
-			@RequestParam(required = false, defaultValue = "1") int nowPage,
-			//nowPage가 전달된다면 해당 값이, nowPage가 없으면 기본값 1로 초기화한다.
-			HttpServletRequest req
-			) {
-			
-		return "address/myGroupList.noa";
-	}
-	
-	@GetMapping("/searchMyGroupMembersList.kosmo")
-	public String searchMyGroupMembers(
-			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
-			Model model,
-			@RequestParam Map map,
-			@RequestParam(required = false, defaultValue = "1") int nowPage,
-			//nowPage가 전달된다면 해당 값이, nowPage가 없으면 기본값 1로 초기화한다.
-			HttpServletRequest req
-			) {
-			
-		return "address/searchMyGroupMembersList.noa";
-	}
-	
-	//컨트롤러 메소드 - 주소록 페이지에서 '조직도 검색' 버튼을 눌렀을 때 나타나는 모달에 뿌려줄 데이터를 조회하는 메소드
-	// 로그인한 구성원의 기업의 부서, 팀들, 팀에 속한 구성원 목록을 가져온다.
-	// Org = organization 축약어
-	@GetMapping("/searchOrg.kosmo")
-	public String searchOrg(
-//			Authentication auth, // 인증이 안 된 사용자는 자바 설정파일의 loginPage()메소드에 지정된 페이지로 바로 Redirect가 된다.  
-			Model model,
-			@RequestParam Map map,
-//			@RequestParam(required = false, defaultValue = "1") int nowPage,
-			//nowPage가 전달된다면 해당 값이, nowPage가 없으면 기본값 1로 초기화한다.
-			HttpServletRequest req
-			) {
-		//map으로 전달될 데이터
-		/*
-		 * 1. m_id = 로그인 중인 구성원의 id
-		 */
-/////////////////////////////////////////////////test //* ⚠️테스트할 때만 임의로 m_id전달
-		map.put("m_id", "kim1234@samsung.com");
-		Set keys=map.keySet();
-		for(Object o:keys) {
-		System.out.println(String.format("[🔔컨트롤러] map의 키:%s, value:%s", o.toString(),map.get(o).toString()));
-		}
-///////////////////////////////////////////////
-		//서비스 호출
-		OrganizationDTO dto = addrService.getOrg(map);
-		//데이터 저장
-		model.addAttribute("org", dto);
-		return "address/empOrg.noa";
+		
+		return addrService.searchOneTeam(map);
 	}
 
 }

@@ -23,30 +23,52 @@ function openWebRTCMain(path,m_id){
 
 
 /////////////////구성원 검색창 띄우기
-function openSearchOrg(path,m_id){
+function openSearchOrg(path,m_id,isInit){
 	const searchName = document.querySelector("#top-input-search-members").value.trim();
 	
 	let width=970;
     let height=680;
-    console.log(path+"m_id="+m_id+"&searchColumn=m_name&searchWord="+searchName);
-	window.open(
-		path+"m_id="+m_id+"&searchColumn=m_name&searchWord="+searchName,
-		"조직도",
-		"left="+(availWidth/2-width/2)+",top="+(availHeight/2-height/2)+",width="+width+",height="+height
-	);
+    //console.log(path+"m_id="+m_id+"&searchColumn=m_name&searchWord="+searchName);
+    if(!isInit){
+		window.open(
+			path+"m_id="+m_id+"&searchColumn=m_name&searchWord="+searchName,
+			"조직도",
+			"left="+(availWidth/2-width/2)+",top="+(availHeight/2-height/2)+",width="+width+",height="+height
+		);
+	}
+	else{
+		window.open(
+			path+"m_id="+m_id,
+			"조직도",
+			"left="+(availWidth/2-width/2)+",top="+(availHeight/2-height/2)+",width="+width+",height="+height
+		);
+	}
 };
 
+// 검색창 검색어 입력 후 엔터 클릭 시 submit 되게 하기
+const memberSearchInput = document.querySelectorAll('.navbar-member-search-input0914')
+if(memberSearchInput!==null && memberSearchInput.length > 0){
+	memberSearchInput.forEach(element => {
+		element.addEventListener('keydown',checkForEnterPressedThenSubmit);
+	})
+}
+function checkForEnterPressedThenSubmit(event){
+	
+}
 
 /////////////////sidebar sticky로 만들기
 const sidebar = document.querySelector("nav#sidebar");
 
-var sticky = sidebar.offsetTop;
-
+if(sidebar!=null){
+	var sticky = sidebar.offsetTop;
+}
 function makeSidebarSticky() {
-  if (window.pageYOffset >= sticky) {
+  if (window.pageYOffset >= sticky && navbar!=null) {
     navbar.classList.add("sticky")
   } else {
-    navbar.classList.remove("sticky");
+  	if(navbar!=null){
+    	navbar.classList.remove("sticky");
+    }
   }
 }
 
@@ -59,16 +81,19 @@ window.addEventListener('DOMContentLoaded',()=>{deletePaddingLeft220PX()});
 window.onresize = ()=>{deletePaddingLeft220PX()};
 
 function deletePaddingLeft220PX(){
-	if(window.innerWidth <= 991){
+	if(window.innerWidth <= 991 && mainPanel!=null){
 		mainPanel.classList.remove("padding-left-220px");
 		document.querySelector('.navbar-menu-wrapper').style.borderBottom='none';
 	}
 	else{
-		mainPanel.classList.add("padding-left-220px");
+		if(mainPanel!=null){
+			mainPanel.classList.add("padding-left-220px");
+		}
 	}
 }
 
 const top3BarIcon = document.querySelector("#top-nav-3bar-menu-ic");
+if(top3BarIcon != null){
 top3BarIcon.onclick = ()=>{
 	if(document.querySelector('body').classList.contains('sidebar-icon-only')){
 		mainPanel.classList.add("padding-left-220px");
@@ -78,7 +103,7 @@ top3BarIcon.onclick = ()=>{
 		mainPanel.classList.remove("padding-left-220px");
 		mainPanel.classList.add("padding-left-70px");
 	}
-};
+}};
 
 
 ///////////////sidebar 오류 수정 시작///////////////
@@ -86,7 +111,7 @@ top3BarIcon.onclick = ()=>{
 	const sessionStorage = window.sessionStorage;
     
     const nav_items_a = sidebar.querySelectorAll("#collapse > li > a"); //???
-
+if(sidebar != null){
     sidebar.onclick = (e) => {
 	  console.log("sidebar is clicked")
       if(!(e.target.nodeName==="A" && e.target.children.length==0 )) return true;
@@ -97,7 +122,7 @@ top3BarIcon.onclick = ()=>{
       sessionStorage.setItem("nav-item",a.parentElement.parentElement.parentElement.previousElementSibling.querySelector('span').textContent);
 	  //a.parentElement.parentElement.parentElement.previousElementSibling.querySelector('span').textContent
     };
-
+}
     //세선스토리지에 클릭한 사이드 메뉴가 저장되어 있다면 다른 메뉴의 active를 없애준다.
     console.log(sessionStorage.getItem("nav-item").toString()) //해결
     console.log(sessionStorage.getItem("sub-nav-item")) //해결
@@ -166,21 +191,3 @@ if(document.querySelector("#project-todo-list-remove-btn")!=null){
 }
 ////////////////project/project.jsp 끝 ////////////////
 
-
-
-///////////////addressList.jsp 조직도 불러오기 시작///////////////
-const myEmpName = document.querySelector("#addr-list-org-my-emp-name");
-const ulForDeptList = myEmpName.nextElementSibling;
-	
-function addrListOrgSearch(){
-	console.log(ulForDeptList)
-	
-	
-	
-}
-
-
-
-
-
-///////////////addressList.jsp 조직도 불러오기 끝///////////////

@@ -53,7 +53,7 @@
 			FROM emp e JOIN members memb ON e.emp_code=memb.emp_code 
 			JOIN position p ON memb.position_code=p.position_code
 			JOIN team t ON memb.team_no=t.team_no
-			WHERE e.emp_code=#{emp_code} and m_id!=#{m_id}
+			WHERE e.emp_code=#{emp_code}
 			<if test="searchColumn != null">
 			AND ${searchColumn} LIKE '%' || #{searchWord} || '%'		
 			</if>
@@ -75,7 +75,7 @@
 		FROM emp e JOIN members memb ON e.emp_code=memb.emp_code 
 		JOIN position p ON memb.position_code=p.position_code
 		JOIN team t ON memb.team_no=t.team_no
-		WHERE e.emp_code=#{emp_code} and m_id!=#{m_id}
+		WHERE e.emp_code=#{emp_code} 
 		<if test="searchWord.length() > 0">
 		AND ${searchColumn} LIKE '%' || #{searchWord} || '%'		
 		</if>
@@ -128,6 +128,14 @@
 		<foreach collection="list" item="item" open="(" close=")" separator=",">
 			#{item}
 		</foreach>
+	</select>
+	
+	<!-- 해당 팀의 팀원들 조회 -->
+	<select  id="addressGetOneTeam" parameterType="Map" resultType="Map">
+		SELECT memb.team_no "team_no", t.team_name "team_name", memb.m_id "m_id", memb.m_name "m_name", memb.m_profile_img "m_profile_img", p.position_name "position_name", memb.m_hiredate "m_hiredate", memb.m_private_contact "m_private_contact" 
+		FROM members memb JOIN position p ON memb.position_code=p.position_code
+		JOIN team t ON memb.team_no=t.team_no
+		WHERE memb.team_no=#{team_no}
 	</select>
 	
 	<!-- 회원인지 아닌지 selectOne하는 쿼리 - 안드로이드 로그인 시 사용 -->

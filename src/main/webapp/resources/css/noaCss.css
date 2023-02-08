@@ -19,6 +19,21 @@
 * {
 	font-family:'NanumGothicCoding', "Manrope", sans-serif;
 }
+
+.custom-scrollbar::-webkit-scrollbar-thumb{
+	background: #324a3b; /* 스크롤바의 색상 */
+	border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(50, 74, 59, .1);  /*스크롤바 뒷 배경 색상*/
+}
+.table-thead-sticky{
+	position:fixed;
+	top:105px; 
+	width:541px;
+	background-color:#eaedeb; 
+	border-radius:15px 15px 0px 0px;
+}
 .mifa {
 	width:30px !important;
 }
@@ -26,32 +41,44 @@
 #top-input-search-members{
 	width: 150px;
 	background-color: transparent;
-	border: 1px #1f3bb3 solid;
+	border: 1px #324a3b solid;
 	border-radius: 17px 0px 0px 17px;
-	color:#1f3bb3;
+	color:#324a3b;
 }
 #top-input-search-members::placeholder{
-	color:#4662d9;
+	color:#324a3b;
 }
 .top-wt-icon-search-members:hover{
 	cursor:pointer;
 }
 .top-wt-icon-search-members::before{
 	content:"\f00e";
-	color:#1f3bb3;
+	color:#324a3b;
 }
 .top-btn-search-members{
 	padding: 0px !important;	
 	margin: 0px 10px;
-	color:#1f3bb3;
+	color:#324a3b;
 }
 .top-btn-search-members-append{
-	border: 1px #1f3bb3 solid;
+	border: 1px #324a3b solid;
 	border-radius: 0px 17px 17px 0px;
-	color:#1f3bb3;
+	color:#324a3b;
+	
 }
 .top-btn-search-members-append:hover{
 	cursor:pointer;
+}
+.navbar-member-search-input0914{
+	padding-left:10px;
+}
+.addr-list-messanger-border-top-custom{
+	border-top-width:1px;
+	border-top-color:#d8dce0;
+	border-top-style:solid;
+}
+.addr-list-messanger-border-top-custom:hover{
+	border-top-color:#ebedf2;
 }
 
 /* login.jsp - start */

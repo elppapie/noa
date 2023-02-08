@@ -18,9 +18,6 @@ import com.nodearchive.springapp.service.impl.OrganizationDTO;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 import com.nodearchive.springapp.service.utils.PagingUtil;
 
-
-
-
 // AddressController용 서비스
 // 여기서 주소록 관련 비즈니스 로직을 처리한다.
 @Service
@@ -34,9 +31,6 @@ public class AddressServiceImpl implements AddressService<Map> {
 	private int pageSize;
 	@Value("${blockPage}")
 	private int blockPage;
-	
-	
-	
 	
 	//페이징 있는 전체 구성원 목록 조회
 	@Override
@@ -172,6 +166,11 @@ public class AddressServiceImpl implements AddressService<Map> {
 
 	public boolean isMember(MembersDTO dto) {
 		return dao.isMember(dto)==0?false:true;
+	}
+
+
+	public List<Map> searchOneTeam(Map map) {
+		return dao.getOneTeam(map);
 	}
 
 
