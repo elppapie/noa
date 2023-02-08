@@ -50,6 +50,7 @@ public class TaskServiceImpl implements TaskService<Map>{
 		//전체 레코드수
 		System.out.println("loginId:"+map.get("loginId"));
 		int totalRecordCount=dao.getTotalRecordCount(map);//검색시에도 페이징 해야 함으로 맵을 넘겨준다
+		map.put("totalRecordCount", totalRecordCount);
 		//페이징을 위한 기본정보 설정
 		map.put(PagingUtil.PAGE_SIZE, pageSize);
 		map.put(PagingUtil.BLOCK_PAGE, blockPage);
@@ -83,7 +84,7 @@ public class TaskServiceImpl implements TaskService<Map>{
 		return listPagingData;	
 	}
 	
-
+	//프로젝트 하위 업무 셀렉트
 	@Override
 	public ListPagingData<Map> selectListByProj(Map map, HttpServletRequest req, int nowPage) {
 		//페이징을 위한 로직 시작]
@@ -206,6 +207,12 @@ public class TaskServiceImpl implements TaskService<Map>{
 		return dao.update(map);
 	}
 	
+	//update - progress
+	@Override
+	public int updateProgress(Map map) {
+		return dao.updateProgress(map);
+	}
+	
 	//업무해당 프로젝트의 sche_no 구하기 
 	//업무 수정시 필요
 	//**SCHEDULE 테이블 키값 속성 변동시 수정 필요
@@ -217,7 +224,7 @@ public class TaskServiceImpl implements TaskService<Map>{
 	//수정, 삭제 요청시 등록자와 요청자가 같은지 확인
 	public boolean isSameMember(Map map) {
 		int reqProject = Integer.parseInt(map.get("task_no").toString());
-		String reqMember = map.get("m_id").toString();
+		String reqMember = map.get("loginId").toString();
 		String respMember = dao.checkMember(map);
 		boolean result=false;
 		if(reqMember.equals(respMember)) {
@@ -232,7 +239,6 @@ public class TaskServiceImpl implements TaskService<Map>{
 		int affected=dao.deleteOne(map);
 		return affected;
 	}
-
 	
 
 }

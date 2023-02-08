@@ -3,6 +3,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -149,8 +150,8 @@
 		                                                <td>${projectList.lists[vs.index].tlists[ts.index].M_NAME}</td>
 		                                                <td>${projectList.lists[vs.index].tlists[ts.index].TASK_NAME}</td>
 		                                                <td> 
-		                                                  <div class="progress">
-		                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+		                                                  <div class="progress task-progress">
+		                                                    <div class="progress-bar bg-success task-progress-bar" role="progressbar" style="width: ${projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS}%"></div>
 		                                                  </div>
 		                                                </td>
 		                                              </tr>
@@ -173,8 +174,7 @@
                           </div>
                         </div>                        
                      </div>
-                      
-                      <div class="col-sm-4">
+                     <div class="col-sm-4">
                       	<!-- 프로젝트 구성원 카드 바디 시작 -->
                         <div class="row flex-grow">
                           <div class="col-12 grid-margin stretch-card">
@@ -215,14 +215,43 @@
                                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" id="project-todo-list-add-btn">
                                         	<i class="mdi mdi-plus checklist-add-btn" data-toggle="modal" data-target="#check-Add-Modal" id="check_add"></i>
                                         </button>
-                                        <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" id="project-todo-list-remove-btn"><i class="mdi mdi-minus"></i></button>
+                                        <button class="add btn btn-icons btn-rounded btn-primary todo-list-del-btn text-white me-0 pl-12p" id="project-todo-list-remove-btn">
+                                        	<i class="mdi mdi-minus"></i>
+                                        </button>
                                       </div>
                                     </div>
                                     <!-- 체크리스트 다이브 영역 시작 -->
                                     <div class="list-wrapper overflow-y-scroll" >
                                       <!-- 체크리스트 목록 ul 태그 시작 -->
                                       <ul class="todo-list todo-list-rounded project-todo-list-ulelement-custom">
-                                        <span class="checklist-place"/>
+                                         <c:if test="${!(empty selectListCheck)}" var="isNotEmpty">         
+                                  			<c:forEach var="item" items="${selectListCheck}" varStatus="vs">
+                                        		<li class="border-bottom-0 px-3">
+									            <div class="form-check w-100">
+									              <label class="form-check-label">
+									                <input class="checkbox todo-list-chbox" type="checkbox" id="${selectListCheck[vs.index].CL_NO}">${selectListCheck[vs.index].CL_CONTENT}
+									                <i class="input-helper rounded"></i>
+									              </label>
+									              <div class="d-flex mt-2">
+									                <div class="ps-4 text-small me-3">${fn:substring(selectListCheck[vs.index].CL_DEADLINE,0,10)}</div>
+								              		<c:if test="${selectListCheck[vs.index].CL_CATEGORY=='요청'}" var="isNotEmpty">								            
+								              			<div class="badge badge-opacity-warning me-3">요청</div>
+								              		</c:if>
+								              		<c:if test="${selectListCheck[vs.index].CL_CATEGORY=='피드백'}" var="isNotEmpty">								            
+								              			<div class="badge badge-opacity-info me-3">${selectListCheck[vs.index].CL_CATEGORY}</div>
+								              		</c:if>
+								              		<c:if test="${selectListCheck[vs.index].CL_CATEGORY=='진행'}" var="isNotEmpty">								            
+								              			<div class="badge badge-opacity-success me-3">${selectListCheck[vs.index].CL_CATEGORY}</div>
+								              		</c:if>
+								              		<c:if test="${selectListCheck[vs.index].CL_CATEGORY=='완료'}" var="isNotEmpty">								            
+								              			<div class="badge badge-opacity-secondary me-3">${selectListCheck[vs.index].CL_CATEGORY}</div>
+								              		</c:if>
+										            </div>
+										        </div>
+										      </li>
+                                        	</c:forEach>
+                                        </c:if>
+                                        <p class="checklist-place"/>
                                       </ul>
                                       <!-- 체크리스트 목록 ul 태그 끝 -->
                                     </div>
@@ -376,12 +405,12 @@
 		  </div>
 	      <div class="modal-body">
 			<label for="task_m_id" class="col-form-label">체크 내용</label>
-			<input type="text" class="form-control" id="modal_checklist_content" name="modal_checklist_content" required>
+			<input type="text" class="form-control" id="modal_checklist_content" name="cl_content" required>
 	        <label for="project_name" class="col-form-label">만료 기간</label>
-	        <input type="text" class="form-control" id="modal_checklist_end_date" name="modal_checklist_end_date" required>
+	        <input type="text" class="form-control" id="modal_checklist_end_date" name="cl_deadline" required>
 	       	<div class="mt-3">
 	       		<label>카테고리:</label>
-		    	<select class="js-example-basic-single w-200" name="modal_checklist_category" id="modal_checklist_category" data-dropdown-parent="#check-Add-Modal">
+		    	<select class="js-example-basic-single w-200" name="cl_category" id="modal_checklist_category" data-dropdown-parent="#check-Add-Modal">
 		      		<option value="">카테고리를 선택하세요</option>
 		       		<option value="요청">요청</option>
 		       		<option value="진행">진행</option>
@@ -538,16 +567,16 @@ $(".project-list-accordion-card-header").click(function(e){
 })
 ////////////////[2]
 
-//[3]체크리스트 추가용 ajax
+//[3]체크리스트 추가 / 삭제용 ajax
 $(".checklist-submit-btn").click(function(e){
-	var checkContent = $('#modal_checklist_content').val();
-	var checkEndDate = $('#modal_checklist_end_date').val();
-	var checkCategory = $('#modal_checklist_category').val();  
+	var cl_content = $('#modal_checklist_content').val();
+	var cl_deadline = $('#modal_checklist_end_date').val();
+	var cl_category = $('#modal_checklist_category').val();  
 	$.ajax({
-	    url:'<c:url value="/Project/checklist.kosmo"/>',
+	    url:'<c:url value="/Project/addchecklist.kosmo"/>',
 	    method:'post',   
 	    data: {            
-	    	checkContent,checkEndDate,checkCategory
+	    	cl_content,cl_deadline,cl_category
 	    },
 	    dataType:'json' // text, xml, json, script, html
 	 }).done(function(data){
@@ -556,41 +585,76 @@ $(".checklist-submit-btn").click(function(e){
 	    	var source = '<li class="border-bottom-0"> '+
 	            '<div class="form-check w-100"> '+
 	              '<label class="form-check-label"> '+
-	                '<input class="checkbox proj-todo-list-chbox" type="checkbox">'+ checkContent +
+	                '<input class="checkbox todo-list-chbox" type="checkbox">'+ cl_content +
 	                '<i class="input-helper rounded"></i> '+
 	              '</label> '+
 	              '<div class="d-flex mt-2"> '+
-	                '<div class="ps-4 text-small me-3">'+ checkEndDate +'</div> ';
-              if(checkCategory=='요청'){
-              source +='<div class="badge badge-opacity-warning me-3">'+ checkCategory +'</div> '+
+	                '<div class="ps-4 text-small me-3">'+ cl_deadline +'</div> ';
+              if(cl_category=='요청'){
+              source +='<div class="badge badge-opacity-warning me-3">'+ cl_category +'</div> '+
 		               '</div> '+
 		            '</div> '+
 		          '</li>'
               };
-              if(checkCategory=='피드백'){
-                  source +='<div class="badge badge-opacity-info me-3">'+ checkCategory +'</div> '+
+              if(cl_category=='피드백'){
+                  source +='<div class="badge badge-opacity-info me-3">'+ cl_category +'</div> '+
 	               '</div> '+
 	            '</div> '+
 	          '</li>'
          	  };
-         	  if(checkCategory=='진행'){
-                 source +='<div class="badge badge-opacity-success me-3">'+ checkCategory +'</div> '+
+         	  if(cl_category=='진행'){
+                 source +='<div class="badge badge-opacity-success me-3">'+ cl_category +'</div> '+
 	               '</div> '+
 	            '</div> '+
 	          '</li>'
         	  };
-        	  if(checkCategory=='완료'){
-                  source +='<div class="badge badge-opacity-secondary me-3">'+ checkCategory +'</div> '+
+        	  if(cl_category=='완료'){
+                  source +='<div class="badge badge-opacity-secondary me-3">'+ cl_category +'</div> '+
  	               '</div> '+
  	            '</div> '+
  	          '</li>'
          	  };
-         	 $('.checklist-place').before(source);
+         	 $('.checklist-place').after(source);
          	 $('#check-Add-Modal').find('form')[0].reset();
 	 }).fail(function(error){
 		   	console.log('%O',error);
 	});
 });
+//삭제 쿼리
+var cl_no = new Array();
+$('.todo-list-chbox').click(function(e){
+	var cl_noId = $(this).prop("id");
+	cl_no.push(cl_noId);
+	console.log('cl_no:',cl_no);
+	$('.todo-list-del-btn').click(function(e){
+		console.log('cl_no:',cl_no);
+		$.ajax({
+		    url:'<c:url value="/Project/delchecklist.kosmo"/>',
+		    method:'post',   
+		    data: {            
+		    	cl_no:JSON.stringify(cl_no)
+		    },
+		    dataType:'json' // text, xml, json, script, html
+		 }).done(function(data){
+		    	console.log('서버로부터 받은 데이타:',data);
+		        //체크된 li 아이템들은 삭제 처리
+		        var checkedList = $(".todo-list-chbox");
+		        //console.log((checkedList[0].prop("checked")==true));
+		        //console.log(checkedList[0].is(':checked'))
+		        checkedList.each(function(index, item){
+		    		var checked = $(this).is(':checked');
+		        	if(checked){
+		    			//console.log(item)
+		    			$(this).parent().parent().parent().remove();
+			        }
+		    		
+		    	});
+		 }).fail(function(error){
+			   	console.log('%O',error);
+		 });
+	});
+});
+
 /////////////////////[3]
 
 //[4] 프로젝트 생성시 로그인 정보 파악하여 유저를 멤버로 우선 포함 시키기
@@ -621,11 +685,41 @@ $('#project_create').click(function(e){
   });
 ////[4]
 
-//[5]
-
-
-
-////////[5]
+//[5] 프로그래스바 제어 
+$(document).ready(function(){
+  //프로그래스 바를 클릭
+  $('.task-progress').click(function(e){
+      // 변수 x는 .progress의 left값에서 클릭한 위치의 X값을 뺀다.
+      // e.pageX는 화면에서 클릭한 X의 위치를 가져온다. 
+      var x = e.pageX - $('.task-progress').offset().left;
+      //변수 clickPercentage는 변수 x / .progress.너비
+      clickPercentage = x / $('.task-progress').width();
+      //.state의 너비는 (.progress의 너비에서 변수 clickPercentage를 곱한 값);
+      var task_progress = Math.floor(clickPercentage * 100)+1;
+      $(this).children('.task-progress-bar').css("width",task_progress+'%');
+      //Math.floor() 소수점 버림, 정수를 반환하는 함수
+      $(this).parent().children().children('.progress-range').text(task_progress+'%');
+      $(this).parent().children().children().children('.task-percent').text(task_progress);
+      /////프로그래스바 제어 끝
+      //변경된 진행도 값 저장
+      var task_no = $(this).parent().parent().parent().prop("id");
+      $.ajax({
+  	    url:'<c:url value="/Task/updateprog.kosmo"/>',
+  	    method:'post',   
+  	    data: {
+  	    	task_no,task_progress
+  	    },
+  	    dataType:'json' // text, xml, json, script, html
+  	  }).done(function(data){
+  	    	console.log('서버로부터 받은 데이타:',data);
+  	    	
+  	 }).fail(function(error){
+  	    	console.log('%O',error);
+  	});
+     
+  })
+})
+/////
 /*
 function sendPost(url,params){
 	var form = document.createElement('form');

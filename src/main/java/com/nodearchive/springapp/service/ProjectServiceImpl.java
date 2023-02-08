@@ -179,6 +179,25 @@ public class ProjectServiceImpl implements ProjectService<Map>{
 		int dmlist = dao.deleteMember(map);
 		return dmlist;
 	}
+
+	@Override
+	public int insertCheck(Map map) {
+		int affected = dao.insertCheck(map);
+		return affected;
+	}
+
+	@Override
+	public List<Map> selectListCheck(Map map, HttpServletRequest req) {
+		//글 전체 목록 얻기
+		List lists= dao.findChecklist(map);
+		return lists;
+	}
+
+	@Override
+	public int deleteCheck(List list) {
+		int affected = dao.deleteCheck(list);
+		return affected;
+	}
 		
 
 }

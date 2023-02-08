@@ -1,6 +1,7 @@
 package com.nodearchive.springapp.web;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.tiles.request.Request;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -67,6 +70,7 @@ public class ProjectController {
 			list.put("tlists", tlists);
 		}
 		model.addAttribute("projectList", projects);
+		model.addAttribute("selectListCheck",projectService.selectListCheck(map,req));
 		//return "project/list.noa";
 		return "project/Project.noa";
 	}
@@ -190,16 +194,59 @@ public class ProjectController {
 		System.out.println(mapperData);
 		return mapperData;
 	}
+	/*
+	//체크리스트 목록용
+	@RequestMapping(value={"/list.kosmo","Task/list.kosmo"})
+	public String selectChecklist(@RequestParam Map map,
+			Authentication auth,
+			HttpServletRequest req,
+			Model model){
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername());
 		
+		model.addAttribute("selectListCheck",projectService.selectListCheck(map,req));
+		
+		return "project/Project.noa";
+	}
+	*/
+	
 	//체크리스트 ajax 추가용
-	@RequestMapping(value="/checklist.kosmo",produces = "text/plain; charset=UTF-8")
+	@RequestMapping(value={"/addchecklist.kosmo","Task/addchecklist.kosmo"},produces="text/plain; charset=UTF-8")
 	@ResponseBody
-	public String addChecklist(@RequestParam Map map) throws JsonProcessingException {
+	public String addChecklist(@RequestParam Map map,Authentication auth) throws JsonProcessingException {
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername());
+		ObjectMapper mapper = new ObjectMapper();
+		int affected = projectService.insertCheck(map);
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		String mapperData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(affected);
+		System.out.println(mapperData);
+		return mapperData;
+	}
+	
+	//체크리스트 ajax 삭제용
+	@RequestMapping(value={"/delchecklist.kosmo","Task/delchecklist.kosmo"}, produces="text/plain; charset=UTF-8")
+	@ResponseBody
+	public String delChecklist(@RequestParam Map map) throws JsonProcessingException {
+		System.out.println("map.get(cl_no):"+map.get("cl_no"));
+		String cl_noArr = map.get("cl_no").toString();
+		String cl_noArrStr = cl_noArr.substring(2, cl_noArr.length()-2);
+		
+		List<Map> cl_noList=new Vector<Map>();
+		Map row = new HashMap<>();
+		String[] cl_nos =(cl_noArrStr.split("\",\""));
+		
+		for(String cl_noStr:cl_nos) {
+			row = new HashMap<>();
+			int cl_no =Integer.parseInt(cl_noStr);
+			System.out.println("cl_no:"+cl_no);
+			row.put("cl_no", cl_no);
+			cl_noList.add(row);
+		}
+		int affected = projectService.deleteCheck(cl_noList);
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-		//String mapperData = mapper.writeValueAsString(records);
-		//System.out.println(mapper.writeValueAsString(records));
-		String mapperData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+		String mapperData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(affected);
 		System.out.println(mapperData);
 		return mapperData;
 	}

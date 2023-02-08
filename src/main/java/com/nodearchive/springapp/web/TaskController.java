@@ -1,5 +1,9 @@
 package com.nodearchive.springapp.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +34,8 @@ import com.nodearchive.springapp.service.utils.PagingUtil;
 @Controller
 @RequestMapping("/Task")
 public class TaskController {
-
+	@Autowired
+	private ProjectService projectService;
 	@Autowired
 	private TaskService taskService;
 
@@ -71,14 +76,30 @@ public class TaskController {
 			@RequestParam Map map,
 			HttpServletRequest req,
 			Model model,
-			@RequestParam(required = false,defaultValue = "1") int nowPage) {
+			@RequestParam(required = false,defaultValue = "1") int nowPage) throws ParseException {
 		
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
 		UserDetails userDetails=(UserDetails)auth.getPrincipal();
 		map.put("loginId", userDetails.getUsername());
-		System.out.println("loginId_C:"+map.get("loginId"));
+		
 		ListPagingData<Map> selectTaskList = taskService.selectList(map, req, nowPage);
+		
+		//업무별 마감일 기준 d-day 계산값 
+		List<Map> tasklists = selectTaskList.getLists();
+		for(Map list:tasklists) {
+			String todayFm = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis())); // 오늘날
+			String endDateFm = list.get("SCHE_ENDDATE").toString();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date enddate = new Date(dateFormat.parse(endDateFm).getTime()); 
+			Date today = new Date(dateFormat.parse(todayFm).getTime());
+			long calculate = enddate.getTime() - today.getTime();
+			int Ddays = (int) (calculate / (24*60*60*1000));
+			list.put("Ddays", Ddays);
+			System.out.println("두 날짜 차이일 : " + Ddays);
+		}
+		
 		model.addAttribute("selectTaskList", selectTaskList);
+		model.addAttribute("selectListCheck",projectService.selectListCheck(map,req));
 		//리포트 작성 페이지로 .0. 이동
 		return "project/Task.noa";
 	}
@@ -119,7 +140,7 @@ public class TaskController {
 		
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
 		//UserDetails userD  etails=(UserDetails)auth.getPrincipal();
-		//map.put("login_Id", userDetails.getUsername()); 
+		//map.put("loginId", userDetails.getUsername()); 
 		map.put("loginId", "park1234@samsung.com");
 		
 		System.out.println("loginId_C:"+map.get("loginId"));
@@ -149,14 +170,36 @@ public class TaskController {
 	//업무 수정(psot) - 테스트 완
 	@RequestMapping("/edit.kosmo")
 	public String updateTask(
-			//Authentication auth,
+			Authentication auth,
 			@RequestParam Map map, 
 			Model model) {
-		
+
+		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername()); 
 		int editTask = taskService.update(map);
 		model.addAttribute("editTask", editTask);
 		//수정 완료 후 해당 업무 상세보기 페이지로 이동
 		return "task/view.noa";
+	} 
+	
+	//update - 진행도 업데이트
+	@RequestMapping(value="/updateprog.kosmo" ,produces="text/plain; charset=UTF-8")
+	@ResponseBody
+	public String updateProgress(
+			Authentication auth,
+			@RequestParam Map map, 
+			Model model) throws JsonProcessingException {
+
+		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername()); 
+		int editTask = taskService.updateProgress(map);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		String mapperData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(editTask);
+		System.out.println(mapperData);
+		return mapperData;
 	} 
 	
 	
@@ -173,4 +216,23 @@ public class TaskController {
 		return "task/list.noa";
 	} 
 	
+	//멤버 리스트 불러오기(get) - 테스트 완
+	@RequestMapping(value="/list.kosmo" ,produces = "text/plain; charset=UTF-8")
+	@ResponseBody
+	public String viewMember(
+			Authentication auth,
+			@RequestParam Map map, 
+			Model model) throws JsonProcessingException {
+		
+		//model.addAttribute("projMember", projectService.selectMember(map));
+		//return "project/view.noa";
+		int upProgress = taskService.updateProgress(map);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		//String mapperData = mapper.writeValueAsString(records);
+		//System.out.println(mapper.writeValueAsString(records));
+		String mapperData = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(upProgress);
+		System.out.println(mapperData);
+		return mapperData;
+	}
 }

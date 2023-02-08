@@ -91,5 +91,20 @@ public class ProjectDAO {
 		int affected = template.delete("projectDelMList",map);
 		return affected;
 	}
+
+	public int insertCheck(Map map) {
+		int affected = template.insert("checkInsert",map);
+		return affected;
+	}
+
+	public List findChecklist(Map map) {
+		List clist = template.selectList("checkGetList",map);
+		return clist;
+	}
+
+	public int deleteCheck(List list) {
+		int affected = template.delete("checkDelList",list);
+		return affected;
+	}
 	
 }

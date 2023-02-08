@@ -10,7 +10,7 @@
 	<insert id="taskInsert" parameterType="Map">
 		INSERT ALL
 		  INTO schedule VALUES (SEQ_SCHE.NEXTVAL, #{m_id}, #{task_name}, #{task_content}, SYSDATE, #{set_startdate}, #{set_enddate}, 0,0, 'ORANGE','TASK')
-		  INTO task VALUES (SEQ_TASK.NEXTVAL, #{m_id}, #{project_no}, SEQ_SCHE.CURRVAL, #{task_name}, #{task_content}, #{task_category})
+		  INTO task VALUES (SEQ_TASK.NEXTVAL, #{m_id}, #{project_no}, SEQ_SCHE.CURRVAL, #{task_name}, #{task_content}, #{task_category}, DEFAULT)
 		SELECT * FROM DUAL
 	</insert>
 	
@@ -24,14 +24,15 @@
 	<!-- 페이징을 위한 업무 레코드 수 카운트 - 검색용  -->
 	<select id="taskTotalRecordCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*) FROM(
-			SELECT T2.*,s.sche_startdate, s.sche_enddate FROM
-				(SELECT t.* FROM
-					(SELECT PROJECT_NO FROM PROJ_M_LIST pml 
-						WHERE pml.m_id=#{loginId})T1
-						JOIN TASK t ON t.project_no=T1.project_no
-					WHERE t.project_no=T1.project_no)T2
-					JOIN SCHEDULE s ON s.sche_no = T2.sche_no
-				WHERE s.sche_no = T2.sche_no
+			SELECT T2.*,s.sche_title, s.sche_startdate, s.sche_enddate FROM
+			(SELECT t.*, T1.project_name FROM
+				(SELECT pml.project_no, p.project_name FROM PROJ_M_LIST pml 
+					JOIN PROJECT p ON pml.project_no=p.project_no
+					WHERE pml.m_id=#{loginId})T1
+					JOIN TASK t ON t.project_no=T1.project_no
+				WHERE t.project_no=T1.project_no)T2
+				JOIN SCHEDULE s ON s.sche_no = T2.sche_no
+			WHERE s.sche_no = T2.sche_no
 			<if test="searchColumn != null and searchColumn != ''">
 				AND (${searchColumn} LIKE '%' || #{searchWord} || '%')
 			</if>
@@ -43,9 +44,10 @@
 	
 	<!-- 페이징을 위한 업무 리스트 출력 (검색 포함 - 문자열) -->
 	<select id="taskFindAllList" parameterType="Map" resultType="Map">
-		SELECT T2.*,s.sche_startdate, s.sche_enddate FROM
-			(SELECT t.* FROM
-				(SELECT PROJECT_NO FROM PROJ_M_LIST pml 
+		SELECT T2.*,s.sche_title, s.sche_startdate, s.sche_enddate FROM
+			(SELECT t.*, T1.project_name FROM
+				(SELECT pml.project_no, p.project_name FROM PROJ_M_LIST pml 
+					JOIN PROJECT p ON pml.project_no=p.project_no
 					WHERE pml.m_id=#{loginId})T1
 					JOIN TASK t ON t.project_no=T1.project_no
 				WHERE t.project_no=T1.project_no)T2
@@ -91,10 +93,20 @@
 	
 	<!-- 업무 수정 -->
 	<update id="taskUpdateTTable" parameterType="Map">
-		UPDATE task SET task_name=#{task_name},task_content=#{task_content},m_id=#{m_id} WHERE task_no=#{task_no}
+		UPDATE task SET task_name=#{task_name},task_content=#{task_content},m_id=#{m_id},task_progress=#{task_progress} WHERE task_no=#{task_no}
 	</update>
 	<update id="taskUpdateSTable" parameterType="Map" >
 		UPDATE schedule SET sche_startdate=#{sche_startdate},sche_enddate=#{sche_enddate} WHERE sche_no=#{sche_no}
+	</update>
+	
+	<!-- 진행도 수정 -->
+	<update id="taskUpdateProgress" parameterType="Map">
+		UPDATE task SET task_progress=#{task_progress} WHERE task_no=#{task_no}
+	</update>
+	
+	<!-- 업무페이지 진행도 업데이트 -->
+	<update id="taskProgressUpdate" parameterType="Map">
+		UPDATE task SET task_progress=${task_progress} WHERE task_no=#{task_no}
 	</update>
 	
 	<!-- 업무 하나 삭제 -->

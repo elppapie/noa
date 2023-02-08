@@ -100,9 +100,29 @@
 		WHERE project_no=#{project_no}
 	</select>
 	
-	<!-- 프로젝트별 참여 인원 리스트 삭제오기 -->
-	<select id="projectDelMList" parameterType="Map" resultType="Map">
+	<!-- 프로젝트별 참여 인원 리스트 삭제하기 -->
+	<delete id="projectDelMList" parameterType="Map">
 		DELETE proj_m_list WHERE project_no=#{project_no}
+	</delete>
+	
+	<!-- 체크리스트 목록 -->
+	<select id="checkGetList" parameterType="Map" resultType="Map">
+		SELECT * FROM checklist WHERE m_id=#{loginId}
 	</select>
+	
+	<!-- 체크리스트 추가 -->
+	<insert id="checkInsert" parameterType="Map">
+		INSERT INTO checklist VALUES(SEQ_CHECKLIST.NEXTVAL, #{loginId},#{cl_content},#{cl_deadline},#{cl_category},'EXIST') 
+	</insert>
+	
+	<!-- 체크리스트 삭제 -->
+	<delete id="checkDelList" parameterType="java.util.List">
+		DELETE checklist WHERE 
+		<foreach collection="list" item="item" open="" close="" separator="or">
+			cl_no=#{item.cl_no}
+		</foreach>
+	</delete>	
+	
+	
 </mapper>
 

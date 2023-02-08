@@ -26,22 +26,23 @@ public class TaskDAO {
 		return record;
 	}
 	
+	//seletList
 	public int getTotalRecordCount(Map map) {
 		return template.selectOne("taskTotalRecordCount",map);
 	}
 	
+	//seletList
 	public List getTotalTask(Map map) {
 		return template.selectList("taskFindAllList",map);
 	}
 	
-
+	//seletList - proj
 	public int getTotalRecordCountByProj(Map map) {
-		
 		return template.selectOne("taskTotalRecordCountByProj",map);
 	}
 	
+	//seletList - proj
 	public List getTotalTaskbyProj(Map map) {
-		
 		return template.selectList("taskFindAllListByProj",map);
 	}
 
@@ -93,6 +94,12 @@ public class TaskDAO {
 
 	public String checkMember(Map map) {
 		return template.selectOne("taskCheckMember",map);
+	}
+
+	public int updateProgress(Map map) {
+		int resultUpdate = 0;
+		template.update("taskProgressUpdate",map);
+		return resultUpdate;
 	}
 
 	

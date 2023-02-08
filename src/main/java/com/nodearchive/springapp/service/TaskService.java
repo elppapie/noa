@@ -1,5 +1,6 @@
 package com.nodearchive.springapp.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +29,6 @@ public interface TaskService<T> {
 	int update(Map map);
 	int selectScheNo(int project_no);
 
-	
+	int updateProgress(Map map);
 
-	
-	
 }
