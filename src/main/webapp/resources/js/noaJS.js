@@ -22,7 +22,7 @@ function openWebRTCMain(path,m_id){
 }
 
 
-/////////////////구성원 검색창 띄우기
+/////////////////구성원 검색창 시작/////////////////////
 function openSearchOrg(path,m_id,isInit){
 	const searchName = document.querySelector("#top-input-search-members").value.trim();
 	
@@ -55,6 +55,61 @@ if(memberSearchInput!==null && memberSearchInput.length > 0){
 function checkForEnterPressedThenSubmit(event){
 	
 }
+
+/////////////////구성원 검색창 끝/////////////////////
+
+/////////////////[공용] 전체선택/전체해제 체크박스용 함수 정의 시작/////////////////////
+
+function count_tbody_checked_checkbox(event){
+  if(event.target.type!=='checkbox') return; //이벤트 버블링 활용
+  //tr을 돌며 count세기. event.target은 tbody이다.
+  let table = get_table_element_from_children(event.target);
+  let count=0;
+  let tbody_trs = table.querySelectorAll('tbody tr');
+  let total_tr_count = tbody_trs.length; // tbody내의 체크박수 수
+  let all = table.querySelector('thead input.btn-check-all-onoff'); //전체선택/해제 체크박스 구하기
+  tbody_trs.forEach(function(tr,index) {
+      if(tr.querySelector('td > input[type="checkbox"]').checked) count++;
+  })
+  if(count===total_tr_count){ 
+      all.checked=true; // 다 체크되면 전체선/해 체크박스 체크시키기
+  }
+  else {
+      all.checked=false;
+  }
+}////////////count_tbody_checked_checkbox()
+
+function get_table_element_from_children(child){//내가 클릭한 요소의 부모 중 table태그를 가져오는 함수
+  count=0;
+  while (true) {
+      child = child.parentElement; //부모요소를 얻어온다.
+      if(child.nodeName !== "TABLE" && count<100) {
+          count++;
+          continue; //얻어온 부모요소가 table이 아니면 다시 while문을 반복한다.
+      }
+      break; //얻어온 부모요소가 table태그이면 해당 table요소를 반환하기 위해 break한다.
+  }
+  if(child.nodeName !== 'TABLE') throw new Error('테이블 요소가 없습니다...')
+  return child;
+}////////////get_table_element_from_children()
+
+function toggle_btn_check_all_onoff(event){ //전체선/해 checkbox클릭 시 토글효과로 전체선택/전체해제 구현
+  let btn_check_all_onoff = event.target
+  let table = get_table_element_from_children(btn_check_all_onoff);
+  let tbody_trs = table.querySelector('tbody').querySelectorAll('tr');
+  if(btn_check_all_onoff.checked) {
+      tbody_trs.forEach(function(tr,index) {
+          tr.querySelector('td > input[type="checkbox"]').checked=true;
+      })
+  }
+  else{
+      tbody_trs.forEach(function(tr,index) {
+          tr.querySelector('td > input[type="checkbox"]').checked=false;
+      })
+  }
+}///////////////////toggle_btn_check_all_onoff()
+
+/////////////////[공용] 전체선택/전체해제 체크박스용 함수 정의 끝/////////////////////
 
 /////////////////sidebar sticky로 만들기
 const sidebar = document.querySelector("nav#sidebar");

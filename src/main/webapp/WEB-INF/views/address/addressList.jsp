@@ -69,6 +69,14 @@
 	text-decoration:none;
 	color: #b1b1b1;
 }
+.addr-list-emp-nameAZDL{
+	text-decoration:none;
+	color: #1f1f1f;
+}
+.addr-list-emp-nameAZDL:hover{
+	text-decoration:none;
+	color: #1f1f1f;
+}
 .addr-list-tab-two li , .addr-list-tab-one li {
 	margin-top:3px;
 	margin-bottom:3px;
@@ -120,9 +128,9 @@
 			<h4 class="card-title card-title-dash border-bottom pb-2 mb-2"><i class="fa fa-light fa-address-book"></i> 조직도</h4>
 			<div id="addr-list-org-my-emp-name" ><i class="fa fa-solid fa-building-user"></i> 
 			<!-- onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo?','${param.m_id}',true)" -->
-				<a href="<c:url value='/Address/allListNoPaging.kosmo'/>">${myInfo['emp_name']}</a>
+				<a href="<c:url value='/Address/allListNoPaging.kosmo'/>" class="addr-list-emp-nameAZDL">${myInfo['emp_name']}</a>
 			</div>
-			<ul class="list-unstyled addr-list-tab-one" >
+			<ul class="list-unstyled addr-list-tab-one" id='addr-list-teams-check-ajax'>
 			  <c:set value="${requestScope.org}" var="org" scope="page"/>
 		  	  <c:forEach items="${requestScope.org.deptList}" var="depts">
 				<li>
@@ -158,7 +166,7 @@
                     <thead class="table-thead-sticky">
                       <tr>
                         <th class="addr-list-checkbox-td-padding-right-0">
-                        	<input type="checkbox"/>  
+                        	<input type="checkbox" class="btn-check-all-onoff"/>  
                         </th>
                         <th> 프로필 </th>
                         <th> 이름 </th>
@@ -167,7 +175,7 @@
                         <th style="padding-left:32px;"> 개인 연락처 </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id='addr-list-members-tbody-forcheckbox'>
                       
                       <!-- 여기서 forEach반복 -->
                       <c:forEach items="${membersList}" var="member">
@@ -222,7 +230,20 @@
   <script src="${path}/chatResources/js/noaChatJS.js"></script>
   <script>
   	  const addrListTbody = document.querySelector('#addr-list-card-body-memberlist-card > div > table > tbody')
-	  // * 팀 목록 클릭 시 해당 팀원들 목록 출력하기
+	  
+  	  btn_all = document.querySelector('input.btn-check-all-onoff');
+  	  btn_all.addEventListener('click',toggle_btn_check_all_onoff)
+      document.querySelector('#addr-list-members-tbody-forcheckbox').addEventListener('click',count_tbody_checked_checkbox);
+  	  
+  	  /* ⚠️ 동적으로 변경된 요소에는 적용이 안됨;;;
+  	  document.querySelector('#addr-list-teams-check-ajax').addEventListener('click',e => {
+  	  	  btn_all = document.querySelector('input.btn-check-all-onoff');
+  	  	  btn_all.addEventListener('click',toggle_btn_check_all_onoff)
+  	      document.querySelector('#addr-list-members-tbody-forcheckbox').addEventListener('click',count_tbody_checked_checkbox);  		  
+  	  });
+  	  */
+  	  
+  	  // * 팀 목록 클릭 시 해당 팀원들 목록 출력하기
 	  $('.addr-list-team-no-onclick-ajax').click(e=>{
 	      e.preventDefault();
 	      let team_no = e.target.href;
