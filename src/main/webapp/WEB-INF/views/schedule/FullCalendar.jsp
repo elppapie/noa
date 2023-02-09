@@ -14,7 +14,10 @@
 
 <!-- fullcalendar css -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+<script src="${path}/resources/fullCalendar/index.global.js"></script>
+<%--  
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
+--%>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <!-- fullcalendar 언어 설정관련 script -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
@@ -28,6 +31,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- JQuery Color-Picker -->
+<script src="https://cdn.jsdelivr.net/gh/bgaze/bootstrap-color-palette@1/dist/bcp.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bgaze/bootstrap-color-palette@1/dist/bcp.min.css"> 
 
 <style>
 	.fc-col-header-cell-cushion{
@@ -164,6 +170,17 @@
 	#button-for-select-ref-write{
 		cursor:pointer;
 	}
+	
+	/*캘린더 toolbar 디자인 변경*/
+	.fc-toolbar-chunk {
+		display: flex; 
+		align-items: center;
+	}
+	.fc-toolbar-chunk .fc-button.fc-button-primary{
+		border-style: dotted;
+		background-color:white;
+		color:#1F1F1F;
+	}
 
 	
 </style>
@@ -225,15 +242,16 @@
 
 
 <!-- 일정 조회/수정 모달 Modal -->
-<div class="modal" id="viewEventModal">
+<div class="modal fade" id="viewEventModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
 	<form class="needs-validation" action="<c:url value='/Schedule/editOk.kosmo'/>" method='POST' novalidate>
       <!-- Modal Header -->
       <div class="modal-header">
-        <h3 style="font-weight:bold;">일정 조회/수정</h3>
+        <h3 class="viewEventModal-title viewEventModal-title-view" style="font-weight:bold;">일정 조회</h3>
+        <h3 class="viewEventModal-title viewEventModal-title-edit" style="font-weight:bold;">일정 수정</h3>
         <span id="color_front"></span>
-        <input class="sche_color" type="color" name="sche_color" id="sche_color"/>
+        <input class="sche_color view-event-modal-input" type="color" name="sche_color" id="sche_color"/>
       </div>
       <!-- Modal body -->
       <div class="modal-body card-body">
@@ -242,21 +260,21 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정제목</span>
 				</div>
-				<input type="text" class="form-control" name="sche_title" id="sche_title" required>
+				<input type="text" class="form-control view-event-modal-input" name="sche_title" id="sche_title" required>
     			<div class="invalid-feedback">일정명을 입력하세요</div>			
 			</div>
 			<div class="form-group">
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정내용</span>
 				</div>
-				<textarea class="form-control" name="sche_content" id="sche_content" rows="5" style="height:70px;width:100%;" required></textarea>
+				<textarea class="form-control view-event-modal-input" name="sche_content" id="sche_content" rows="5" style="height:70px;width:100%;" required></textarea>
     			<div class="invalid-feedback">일정내용을 입력하세요</div>			
 			</div>
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">일정종류</span>
 				</div>
-			    <select class="form-control selectpicker" name="sche_type" id="sche_type" required>
+			    <select class="form-control selectpicker view-event-modal-input" name="sche_type" id="sche_type" required>
 					<option value="PERSONAL" class="options-for-sche-type">개인일정</option>
 					<option value="PROJECT" class="options-for-sche-type" disabled>프로젝트</option>
 					<option value="TASK" class="options-for-sche-type" disabled>업무</option>
@@ -288,15 +306,15 @@
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">시작시간</span>
 				</div>
-				<input type="text" class="form-control" name="sche_startdate_d" id="sche_startdate_d" required>
-				<input type="time" class="form-control" name="sche_startdate_t" id="sche_startdate_t" required>					
+				<input type="text" class="form-control view-event-modal-input" name="sche_startdate_d" id="sche_startdate_d" required>
+				<input type="time" class="form-control view-event-modal-input" name="sche_startdate_t" id="sche_startdate_t" required>					
 			</div>			
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
 					<span class="input-group-text text-dark">마감시간</span>
 				</div>
-				<input type="text" class="form-control" name="sche_enddate_d" id="sche_enddate_d" required>
-				<input type="time" class="form-control" name="sche_enddate_t" id="sche_enddate_t" required>    						
+				<input type="text" class="form-control view-event-modal-input" name="sche_enddate_d" id="sche_enddate_d" required>
+				<input type="time" class="form-control view-event-modal-input" name="sche_enddate_t" id="sche_enddate_t" required>    						
 			</div>
 			<div class="form-group input-group">
 				<div class="input-group-prepend">
@@ -312,8 +330,10 @@
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
+		<button type="button" class="btn btn-primary editSchedule" data-dismiss="modal">수정</button>
+		<button type="button" class="btn btn-primary editSchedule-cancel" data-dismiss="modal">수정 취소</button>
+		<input type="hidden" class="btn btn-primary saveSchedule" value="저장하기"/>
         <button type="button" class="btn btn-danger deleteSchedule" data-dismiss="modal">삭제</button>
-		<input type="submit" class="btn btn-primary" value="저장하기"/>
 		<button type="button" class="btn btn-primary close closeModal" data-dismiss="modal">닫기</button>
       </div>
 	</form>
@@ -323,7 +343,7 @@
 
 
 <!-- 일정 등록 모달 Modal -->
-<div class="modal" id="writeEventModal">
+<div class="modal fade" id="writeEventModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
 	<form class="needs-validation" action="<c:url value='/Schedule/writeOk.kosmo'/>" method='POST' novalidate>
@@ -448,12 +468,28 @@ document.addEventListener('DOMContentLoaded', function() {
 				initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
 				locale: 'ko', // 한국어 설정
 				headerToolbar : { // 헤더에 표시할 툴 바
-					start : 'prev next today',
-					center : 'title',
-					end : 'dayGridMonth,dayGridWeek,dayGridDay'
+					start : 'prev title next',
+					center : '',
+					end : 'dayGridYear,dayGridMonth,dayGridWeek,dayGridDay'
 				},
 				titleFormat : function(date) {
-					return date.date.year + '  년  ' + (parseInt(date.date.month) + 1) + '월';
+					var monthForFC ='';
+					switch(date.date.month+1){
+						case 1:monthForFC ='Jan'; break;
+						case 2:monthForFC ='Feb'; break;
+						case 3:monthForFC ='Mar'; break;
+						case 4:monthForFC ='Apr'; break;
+						case 5:monthForFC ='May'; break;
+						case 6:monthForFC ='Jun'; break;
+						case 7:monthForFC ='Jul'; break;
+						case 8:monthForFC ='Aug'; break;
+						case 9:monthForFC ='Sep'; break;
+						case 10:monthForFC ='Oct'; break;
+						case 11:monthForFC ='Nov'; break;
+						case 12:monthForFC ='Dec'; break;
+					}
+					return date.date.year + '  년  ' + monthForFC;
+					//return date.date.year + '  년  ' + (parseInt(date.date.month) + 1) + '월';
 				},
 				//initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
 				selectable : true, // 달력 일자 드래그 설정가능
@@ -462,12 +498,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				nowIndicator: true, // 현재 시간 마크
 				events: data,
 				eventClick:function(info){
-					//링크 안 뜨게끔 하기
-					//info.jsEvent.preventDefault();
-					//console.log("일정 번호:sche_no:"+info.event._def.publicId);
-					//console.log("일정 번호:sche_no:"+String(info.event._def.publicId));
-					//console.log("일정 번호:sche_no:"+(typeof info.event._def.publicId));
-					    //url:"<c:url value='/Schedule/oneEvent.kosmo'/>",
+					console.log('아니 이벤트 클릭은 되는ㄱ나');
+					// 일정 클릭시 상세창 띄우기 ++
 					$.ajax({
 					    url: "<c:url value='/Schedule/oneEvent.kosmo'/>",
 					    //type:'POST',
@@ -480,38 +512,37 @@ document.addEventListener('DOMContentLoaded', function() {
 						//$('#viewEventModal').modal({backdrop: 'static', keyboard: false}, 'show');
 						//$('.viewEventModal').show();
 						//viewModalOpen(info);
-						$('#sche_no').val(info.event._def.publicId);
-						$('#sche_title').val(info.event._def.title);
-						$('#sche_content').val(data['sche_content']);
-						$('#sche_startdate_d').val(data['sche_startdate'].split(" ")[0]).attr("placeholder",data['sche_startdate'].split(" ")[0]);
-						$('#sche_startdate_t').val(data['sche_startdate'].split(" ")[1]);
-						$('#sche_enddate_d').val(data['sche_enddate'].split(" ")[0]).attr("placeholder",data['sche_enddate'].split(" ")[0]);
-						$('#sche_enddate_t').val(data['sche_enddate'].split(" ")[1]);
-						$('#sche_color').val(data['sche_color']).css('background-color',data['sche_color']);
-							$("#color_front").css('background-color',data['sche_color']);
-						$('#sche_status').val(data['sche_status']);
-						$('#sche_type').val(data['sche_type']);
+						var turnOnViewable = function(data){
+							$('.viewEventModal-title-view').show();
+							$('.viewEventModal-title-edit').hide();
 						
-						//참조인 목록에 select박스 만들어서 change할 때마다 추가되게 하기
-						//$('#ref-list_write').append('<select>');
+							$('#sche_no').val(info.event._def.publicId);
+							$('#sche_title').val(info.event._def.title).prop("readonly", true);
+							$('#sche_content').val(data['sche_content']).prop("readonly", true);
+							$('#sche_startdate_d').val(data['sche_startdate'].split(" ")[0]).attr("placeholder",data['sche_startdate'].split(" ")[0]).prop("readonly", true);
+							$('#sche_startdate_t').val(data['sche_startdate'].split(" ")[1]).prop("readonly", true);
+							$('#sche_enddate_d').val(data['sche_enddate'].split(" ")[0]).attr("placeholder",data['sche_enddate'].split(" ")[0]).prop("readonly", true);
+							$('#sche_enddate_t').val(data['sche_enddate'].split(" ")[1]).prop("readonly", true);
+							$('#sche_color').val(data['sche_color']).css('background-color',data['sche_color']).prop("readonly", true);
+								$("#color_front").css('background-color',data['sche_color']).prop("readonly", true);
+							$('#sche_status').val(data['sche_status']).prop("readonly", true);
+							$('#sche_type').val(data['sche_type']).prop("readonly", true);
+							
+							$('.editSchedule-cancel').hide();							
+
+							for(var person of data['ref-list']){
+								//<h6> 시작태그만 넣어도 종료태그는 저절로 따라붙네... 오히려 종료태그 넣으면 <h6>이 2개가 되어버림
+								var personInfo ='<h6 class="personInfo" name="ref-list">'+person['dept_name']+' '+person['team_name']+' '+person['m_name']+' '+person['position_name'];
+								$('#ref-list').append(personInfo);
+								//console.log("안녕 나는 "+person['m_name']+"야");
+							}
+						};
+						turnOnViewable(data);
 						
-						
-						for(var person of data['ref-list']){
-							//<h6> 시작태그만 넣어도 종료태그는 저절로 따라붙네... 오히려 종료태그 넣으면 <h6>이 2개가 되어버림
-							var personInfo ='<h6 class="personInfo" name="ref-list">'+person['dept_name']+' '+person['team_name']+' '+person['m_name']+' '+person['position_name'];
-							$('#ref-list').append(personInfo);
-							//console.log("안녕 나는 "+person['m_name']+"야");
-						}
+						// 일정 삭제 버튼 클릭시
 						$('.deleteSchedule').on('click',function(){
-							console.log("이건 String인가요? "+(typeof info.event._def.publicId)+' 값은요? '+info.event._def.publicId);
-							console.log("이건 String인가요? "+(typeof info.event._def.publicId.toString())+' 값은요? '+info.event._def.publicId.toString());
-							console.log("이건 String인가요? "+(typeof String(info.event._def.publicId))+' 값은요? '+String(info.event._def.publicId));
 							if(!confirm("해당 일정을 삭제하시겠습니까?")) return false;
-							
-							var deleteData = {};
-							deleteData["sche_no"] = String(info.event._def.publicId);
-							
-							
+							// ajax로 일정 삭제 요청
 							$.ajax({
 								url: "<c:url value='/Schedule/delete.kosmo'/>",
 								contentType:'text/plain',
@@ -527,7 +558,43 @@ document.addEventListener('DOMContentLoaded', function() {
 								alert('삭제실패...');
 								alert('응답코드:'+req.status+',에러메시지:'+req.responseText+',error:'+error+',status:'+status);
 							});
+						});//////////////delete schedule
+						
+						
+						// 일정 수정 버튼 클릭시
+						$('.editSchedule').on('click',function(){
+							$('.viewEventModal-title-view').hide();
+							$('.viewEventModal-title-edit').show();
+						
+							$('.view-event-modal-input').prop("readonly", false);
+							
+							//버튼들 타입 변경
+							$('.saveSchedule').attr('type', 'submit');
+							$('.editSchedule-cancel').show(50);
+							$('.editSchedule').hide(50);
+							$('.deleteSchedule').hide(50);
+							
 						});
+						
+						// 일정 수정 취소 클릭시 --> 뷰로 전환
+						$('.editSchedule-cancel').on('click',function(){
+							if( ! confirm('일정 수정을 취소하겠습니까? ★') ) return false;
+							else turnOnViewable(data);
+							
+							
+							
+							
+							
+						
+							$('.view-event-modal-input').prop("readonly", true);
+
+							
+							$('.saveSchedule').attr('type', 'hidden');
+							$('.editSchedule-cancel').hide(50);
+							$('.editSchedule').show(50);
+							$('.deleteSchedule').show(50);
+						});
+
 						//console.log("people"+people);
 						//$('#sche_ref').val(data['sche_ref']);
 					})
@@ -562,7 +629,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			if(e.namespace =='bs.modal'){ //수정 모달창의 이벤트는 로직 넣기
 				//alert('모달 닫기 전에 참조인 목록을 지웁니다');
-				if(!confirm('일정 수정을 취소하겠습니까?')) return false;
+				//if(!confirm('일정 수정을 취소하겠습니까?')) return false;
 				$('#ref-list').empty();
 				location.reload();
 			}

@@ -168,6 +168,19 @@
         	dept_code, m.team_no
 	</select>
 	
+		<!-- 해당 부서의 팀 조회하기 -->
+	<select id="adminGetTeamListByDept" parameterType="String" resultType="Map">
+		SELECT tt.TEAM_NO "team_no", tt.TEAM_NAME "team_name", d.dept_code "dept_code" , tt.TEAM_REGIDATE "team_regidate",
+			(SELECT m_id FROM members m JOIN team t ON m.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_id", 
+		    (SELECT m_name FROM members mm JOIN team t ON mm.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+		    ) "team_leader_name",
+		    (SELECT m_private_contact FROM members mmm JOIN team t ON mmm.team_no=t.team_no WHERE m_team_leader IS NULL AND t.team_no=tt.team_no
+            ) "team_leader_contact"
+		FROM team tt JOIN dept d ON tt.dept_code=d.dept_code
+		WHERE d.dept_code=#{dept_code}
+	</select>
+	
 	
 	<insert id="insertDept" parameterType="Map">
 		INSERT INTO 

@@ -81,6 +81,22 @@ public class AdminDAO {
 		// |부서코드 	  |팀번호		 |팀소속사람(수) 	   |
 		return template.selectList("adminGetTeamMemberNum",map);
 	}
+	
+	//팀 소속 인원수
+	// |emp_code | 부서코드 넣고 각 팀별 인원수 얻기
+	public List<Map> getTeamMemberNumByDeptCode(Map map){
+		// |dept_code |team_no   |team_member_count|
+		// |부서코드 	  |팀번호		 |팀소속사람(수) 	   |
+		return template.selectList("adminGetTeamMemberNumByDeptCode",map);
+	}
+	
+	//부서별 팀 목록
+	// |emp_code | 기업코드 넣고 각 부서별 팀 목록 얻기
+	public List<Map> getTeamListByDept(String dept_code) {
+		// |dept_code |team_no   |team_name |team_leader_id |team_leader_name |team_leader_contact |
+		// |부서코드 	  |팀번호		 |팀 이름		|팀 리더 아이디		|팀 리더 이름		  |팀 리더 연락처		   |		
+		return template.selectList("adminGetTeamListByDept",dept_code);
+	}
 
 	public int enrollDept(Map map) {
 		return template.insert("insertDept",map);

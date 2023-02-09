@@ -95,7 +95,7 @@
                           <div class="col-6">
                             <div class="form-check mx-sm-2">
                               <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input fsu-sm"/> 로그인 상태 유지
+                                <input type="checkbox" name="remember-me" class="form-check-input fsu-sm"/> 로그인 상태 유지
                               </label>
                             </div>
                           </div>

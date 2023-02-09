@@ -1,5 +1,6 @@
 package com.nodearchive.springapp.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -222,6 +223,14 @@ public class AdminServiceImpl implements AdminService<Map>{
 		//<Map> dept_code=부서코드, team_no=팀일련번호, team_name=팀명, m_team_leader=팀책임자, team_leader_name=팀책임자이름의 List컬렉션
 		List<Map> teamList = adminDao.getTeamOrg(deptCodeList);
 
+		//해당 부서를 key값으로 부서의 팀 목록을 value값으로 가지는 컬렉션
+		// key값: dept_code=부서코드 
+		// value값: List<Map> dept_code=부서코드, team_no=팀일련번호, team_name=팀명, m_team_leader=팀책임자, team_leader_name=팀책임자이름, 팀 생성일, 팀 책임자 연락처  
+		Map<String,List> teamListByDept = new HashMap<>();
+		deptCodeList.forEach(deptCode->  
+			teamListByDept.put(deptCode, adminDao.getTeamListByDept(deptCode))
+		);	
+		
 		//팀별 팀 구성원 얻어오기
 		//리스트 컬렉션에 팀 일련번호 넣기
 		List<Integer> teamNoList = new Vector<>();
@@ -231,13 +240,49 @@ public class AdminServiceImpl implements AdminService<Map>{
 		// 팀 번호  | 팀원 아이디  | 팀원이름  |프로필사진링크   | 직급명        |
 		List<Map> teamMembersList = addrDao.getTeamMembers(teamNoList);
 		
+		
+/////////////////////		
 		List<Map> teamMemberNum = adminDao.getTeamMemberNum(map);
+		//teamMemberNum.forEach(t->teamListByDept.add(get("")));
+		
+		/*
+		// teamListByDept에서 팀 인원수도 넣기....
+		Map map_ = new HashMap();
+		for(String deptCode:deptCodeList) {
+			for(Object team: teamListByDept.get(deptCode)) {
+				map_ = (Map) team;
+				for(Map teamNum:teamMemberNum)
+					if(map_.get("team_no")==teamNum.get("team_no")) {
+						map_.put("team_member_count", teamNum.get("team_member_count"));
+						team =map_;
+					}
+			}
+		}
+		*/
 		List<Map> deptMemberNum =  adminDao.getDeptMemberNum(map);
-
+		/*
+		Map temp1 = new HashMap();
+		Map temp2 = new HashMap();
+		for(Object dept_:deptList) {
+			temp2 = (Map) dept_;
+			for(Object _dept_: deptMemberNum) {
+				temp1 = (Map) _dept_;
+				if(temp2.get("dept_code").toString()==temp1.get("dept_code").toString()) {
+					temp2.put("dept_member_count", temp1.get("dept_member_count"));
+					dept_ = temp2;
+				};
+			}
+		}
+		*/
+		// 그냥...팀 인원 부서 인원 가져오는 거 있으니까...
+		
+		
+////////////////////
 		OrganizationDTO dto = new OrganizationDTO();
 		dto.setDeptList(deptList);
 		dto.setTeamList(teamList);
 		dto.setTeamMembersList(teamMembersList);
+		dto.setTeamListByDept(teamListByDept);
 		return dto;
 	}////////////getOrg()
 

@@ -117,6 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement()
 			.invalidSessionUrl("/Login/login.kosmo")
 			.maximumSessions(1)//최대 허용 가능 중복 세션 수.(중복 로그인 방지하기 위해 1로 설정)
+			.maxSessionsPreventsLogin(true)//true설정시 기존에 로그인 했던 사용자가 남고 새로 로그인시도하는 사용자가 로그인 실패
 			.expiredUrl("/Login/login.kosmo"); //만기된 세션 즉 세션 유효시간이 경과 한 경우 이동할 URL(중복으로 인해 끊어진 경우도 해당함).
 	}
 
