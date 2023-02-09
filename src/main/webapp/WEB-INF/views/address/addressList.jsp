@@ -118,7 +118,10 @@
 		<div class="card card-rounded">
 			<div class="card-body addr-list-overflow-y-auto addr-list-card-body-custom-height">
 			<h4 class="card-title card-title-dash border-bottom pb-2 mb-2"><i class="fa fa-light fa-address-book"></i> 조직도</h4>
-			<div id="addr-list-org-my-emp-name" onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo?','${param.m_id}',true)"><i class="fa fa-solid fa-building-user"></i> ${myInfo['emp_name']}</div>
+			<div id="addr-list-org-my-emp-name" ><i class="fa fa-solid fa-building-user"></i> 
+			<!-- onclick="openSearchOrg('${path}/Address/allListNoPaging.kosmo?','${param.m_id}',true)" -->
+				<a href="<c:url value='/Address/allListNoPaging.kosmo'/>">${myInfo['emp_name']}</a>
+			</div>
 			<ul class="list-unstyled addr-list-tab-one" >
 			  <c:set value="${requestScope.org}" var="org" scope="page"/>
 		  	  <c:forEach items="${requestScope.org.deptList}" var="depts">
@@ -160,8 +163,8 @@
                         <th> 프로필 </th>
                         <th> 이름 </th>
                         <th> 소속 팀 </th>
-                        <th> 직급 </th>
-                        <th> 개인 연락처 </th>
+                        <th style="padding-left:50px;"> 직급 </th>
+                        <th style="padding-left:32px;"> 개인 연락처 </th>
                       </tr>
                     </thead>
                     <tbody>

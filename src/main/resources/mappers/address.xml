@@ -61,6 +61,12 @@
 		WHERE R BETWEEN #{start} AND #{end}
 	</select>
 	
+	<!-- 전체 구성원 조회하기
+		#{mm.m_id}='로그인 중인 구성원'
+		#{e.emp_code}='로그인 중인 구성원의 기업코드'	
+		#{m_id!}='로그인 중인 구성원'
+		#{searchWord} = 검색 시 검색어
+	 -->
 	<select id="addressGetAllMembersNoPaging" parameterType="Map" resultType="Map">
 		SELECT (
 		    SELECT COUNT(*)
@@ -76,7 +82,7 @@
 		JOIN position p ON memb.position_code=p.position_code
 		JOIN team t ON memb.team_no=t.team_no
 		WHERE e.emp_code=#{emp_code} 
-		<if test="searchWord.length() > 0">
+		<if test="searchWord != null and searchWord.length() > 0">
 		AND ${searchColumn} LIKE '%' || #{searchWord} || '%'		
 		</if>
 		ORDER BY "mark" DESC , "m_name"

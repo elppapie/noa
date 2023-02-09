@@ -32,7 +32,7 @@
 	top:105px; 
 	width:541px;
 	background-color:#eaedeb; 
-	border-radius:15px 15px 0px 0px;
+	border-radius:13px 13px 13px 13px;
 }
 .mifa {
 	width:30px !important;
@@ -168,6 +168,12 @@
 }
 .fg-10{
   flex-grow: 10;
+}
+.mra{
+	margin-right:auto !important;
+}
+.mla{
+	margin-left:auto !important;
 }
 .bg-chat-green{
     background-color: #2db400;
