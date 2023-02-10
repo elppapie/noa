@@ -11,7 +11,7 @@
 		<result property="att_no" column="att_no" />
 		<result property="m_id" column="m_id" />
 		<result property="att_startdate" column="att_startdate" />
-		<result property="att_enddate" column=" att_enddate" />
+		<result property="att_enddate" column="att_enddate" />
 		<result property="att_date" column="att_date" />
 		<result property="att_worktime" column="att_worktime" />
 		<result property="att_state" column="att_state" />

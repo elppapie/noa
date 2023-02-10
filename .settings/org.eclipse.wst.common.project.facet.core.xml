@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
-  <runtime name="NoAServer"/>
   <installed facet="java" version="11"/>
   <installed facet="wst.jsdt.web" version="1.0"/>
-  <installed facet="jst.web" version="3.0"/>
+  <installed facet="jst.web" version="2.5"/>
 </faceted-project>
