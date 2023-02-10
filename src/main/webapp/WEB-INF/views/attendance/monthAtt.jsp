@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -10,7 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" 
 	integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" 
 	crossorigin="anonymous"></script>
-<script src="${pageContext.request.contextPath}/resources/js/Chart.min.js"></script>	
+<script src="${pageContext.request.contextPath}/resources/vendors/chart.js/Chart.min.js"></script>	
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -50,56 +52,7 @@ a {
     height: 100%;
     margin: 0 auto;
 }
-/* 사이드메뉴 */
-.sidenav{
-    position: relative;
-    width: 210px;
-    height: 100%;
-    float: left;
-    background-color : #f2f2f2;
-}
-.sidenav ul,
-.sidenav ul li a {
-    display: block;
-    color: black;
-}
-.sidenav ul li{
-    display: block;
-    font-size: 16px;
-}
-.sidenav ul ul {
-	display: none;
-}
-.sidenav > ul > li > a {
-	padding: 25px 20px 19px 60px;
-	z-index: 2;  
-	cursor: pointer;
-	font-weight: 500;
-	text-decoration: none;
-}
-
-.sidenav ul ul li{
-    /* background-color: #e7e7e7; */
-}
-.sidenav ul ul li a {
-	cursor: pointer;
-	padding: 20px 0;
-	padding-left: 60px;
-	z-index: 1;
-	text-decoration: none;
-	font-size: 13px;
-}
-.sidenav ul ul li:hover{
-	background-color : #e7e7e7;
-	color : #5A3673;
-}
-
-.sidenav ul ul li a:hover{
-	font-weight : 700;
-	
-}
-    
-/* 콘텐츠 */
+/* 콘텐츠
 .contents {
 	position: absolute;
 	width: 1000px;
@@ -109,7 +62,7 @@ a {
 	border-left: 1px solid #e7e7e7;
 	box-sizing: border-box;
 	background-color : white;
-}
+} */
 .conTitle{
     width: 930px;
     height: 40px;
@@ -229,9 +182,13 @@ a {
                 <table>
                     <tr>
                         <td>기간 선택</td>
-                        <td><input type="Date" id="startDate" name="startdate" placeholder="시작일을 선택하세요" autocomplete="off" style="width:170px; height:30px; padding : 0 10px; color : #787878;"> 
+                        <td><input type="Date" id="startDate" name="startdate" placeholder="시작일을 선택하세요" autocomplete="off"
+                        		   value="${startdate}" 
+                        			style="width:170px; height:30px; padding : 0 10px; color : #787878;"> 
                         &nbsp;&nbsp;&nbsp; ~ &nbsp;&nbsp;&nbsp; 
-                        <input type="Date" id="endDate" name="enddate" placeholder="종료일을 선택하세요" autocomplete="off" style="width:170px; height:30px; padding : 0 10px;color : #787878;"></td>
+                        <input type="Date" id="endDate" name="enddate" placeholder="종료일을 선택하세요" autocomplete="off" 
+                        		value="${enddate}"
+                        		style="width:170px; height:30px; padding : 0 10px;color : #787878;"></td>
                         <td><button id="search">조회</button></td>
                     </tr>
                 </table>
@@ -248,20 +205,36 @@ a {
                     </tr>
                      <tr>
                         <th>날짜</th>
-                        <th>근무시간</th>
-                        <th>시간외 근무시간</th>
-                        <th>총 근무시간</th>
-                    
+						<th>근무상태</th>
+						<th>출근시간</th>
+						<th>퇴근시간</th>
+						<th>근무시간</th>
                     </tr>
                     </thead>
                     <c:if test="${not empty list}">
 						<c:forEach var="ml" items="${list}" varStatus="status">
-                    <tr>
-                        <td>${ml.att_date} </td>
-                        <td>${ml.att_worktime}</td>
-                        <th>${ml.total}</th>
-                    </tr>
-                    </c:forEach>
+		                    <tr>
+		                        <td> 
+		                        	<fmt:formatDate var="att_date" pattern="yyyy-MM-dd" value="${ml.att_date}" />
+									<c:out value="${att_date}" />
+		                        </td>
+		                        <td>
+									<input type="hidden" value="${ml.att_state}" class="app${status.count}">  
+                       				<span class="owappval${status.count}"></span> 
+								
+								</td>
+								<td>${ml.att_startdate}</td>
+								<td>${ml.att_enddate}</td>
+		                        <td>${ml.att_worktime}</td>
+		                    </tr>
+		                    <script>
+			                    if($(".app${status.count}").val() == 1){
+			                    	$(".owappval${status.count}").text("지각");
+			                    }else if($(".app${status.count}").val() == 0){
+			                    	$(".owappval${status.count}").text("정상출근");
+			                    }
+	                    	</script>
+	                    </c:forEach>
                     </c:if>
                         <!-- 앞 페이지 번호 처리 -->
 					<tr >
@@ -303,98 +276,192 @@ a {
                 </table>
             </div>
         </div>
-     <%--    <div class="row">
-            <div class="container">
-                <div style="margin-top:20px; margin-left:80px">
-                    <select name="selectMonth" id="selectMonth">
-                        <option value="1">JAN</option>
-                        <option value="2">FEB</option>
-                        <option value="3">MAR</option>
-                        <option value="4">APR</option>
-                        <option value="5">MAY</option>
-                        <option value="6">JUN</option>
-                        <option value="7">JUL</option>
-                        <option value="8">AUG</option>
-                        <option value="9">SEP</option>
-                        <option value="10">OCT</option>
-                        <option value="11">NOV</option>
-                        <option value="12">DEC</option>
-                    </select>
-                    <button id="btn">보기</button>
-                </div>
-            </div>
-            <div id="graph" style="width: 80%; margin: 30px;">
-                <div>
-                    <canvas id="canvas" height="350" width="600"></canvas>
-                </div>
-            </div>
-        </div> --%>
+
     </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+
 <script>
         //그래프 그리기
         //createChart()함수를 안에다 선언해야지 차트값을 받더라...
+        
+        var startdate = "${startdate}"
+        var enddate = "${enddate}"
+        
+        var dateList = [] // getDateRangeData( startdate, enddate )	// 근무날짜
+        var workTimeList = []  // getDataList( startdate, enddate )		// 근무시간
+        getDataList( startdate, enddate )
+        
         $(document).ready(function() {
-        /* $('#btn').click(function(){ */
-                chartLabels = [];
-                chartData=[];
-                //getJson으로 데이터 
-                $.getJSON("${pageContext.request.contextPath}/commute/getDailyCommute", {
-                    month : month
-                }, function(data) {
-                    $.each(data, function(key, value) {
-                        
-                        chartLabels.push(value.cdate);
-                        chartData.push(value.total);
-                    });
-                    
-                    lineChartData = {
-                            labels : chartLabels,
-                            datasets : [ {
-                                label : "일별 근무시간",
-                                backgroundColor:"#bfdaf9",
-                                borderColor: "#da0f8e", 
-                                pointBorderColor: "#da0f8e",
-                                pointBackgroundColor: "#da0f8e",
-                                pointHoverBackgroundColor: "#da0f8e",
-                                pointHoverBorderColor: "#da0f8e",
-                                fill: false,
-                                borderWidth: 4,
-                                data : chartData
-                            } ]
-                        }
-                    createChart();
-                });
-            })
-            
-            var chartLabels = []; // 받아올 데이터를 저장할 배열 선언
-            var chartData = []; 
-            var month="";
-            function createChart() {
-                var ctx = document.getElementById("canvas").getContext("2d");
-                LineChartDemo = Chart.Line(ctx, {
-                    data : lineChartData,
-                    options : {
-                        scales : {
-                            yAxes : [ {
-                                ticks : {
-                                    beginAtZero : true
-                                }
-                            } ]
-                        }
-                    }
-                });
+        	var ctx = $('#canvas')
+        	
+        	// 날짜와 근무시간 조회
+        	
+        	var data = {
+        		labels: dateList,			// 날짜
+        		datasets: [{
+        			label: '출근',
+//         	        barPercentage: 0.5,
+        	        barThickness: 80,
+        	        maxBarThickness: 80,
+        	        minBarLength: 10,
+        	        backgroundColor: [
+        	            "rgba(255, 10, 10, 0.2)",
+        	            "rgba(255, 10, 10, 0.2)",
+        	            "rgba(255, 10, 10, 0.2)",
+        	            "rgba(255, 10, 10, 0.2)",
+        	            "rgba(255, 10, 10, 0.2)",
+        	            "rgba(255, 10, 10, 0.2)",
+        	            "rgba(255, 10, 10, 0.2)"
+        	        ],
+        	        borderColor : [
+        	        	"rgba(255,99,132,1)",
+        	        	"rgba(255,99,132,1)",
+        	        	"rgba(255,99,132,1)",
+        	        	"rgba(255,99,132,1)",
+        	        	"rgba(255,99,132,1)",
+        	        	"rgba(255,99,132,1)",
+        	        	"rgba(255,99,132,1)"
+        	        ],
+        	        borderWidth: 2,
+        	        data: workTimeList			// 근무시간
+        	    }]
             }
-            
-            //selectList로 월을 선택해서 ajax로 받는다.
-            $('#selectMonth').change(function() {
-                var changeMonth = $('#selectMonth option:selected').val();
-                month = changeMonth;
-                console.log('month:'+month);
-            });
-            
+			
+			
+			var options = {
+        		//
+        		legend: {
+		            display: true,
+		            labels: {
+		                fontColor: 'rgb(255, 99, 132)'
+		            }
+		        },
+			    scales: {
+			        xAxes: [{
+			            gridLines: {
+			                offsetGridLines: true
+			            }
+			        }],
+			        yAxes: [{
+						ticks: {
+							beginAtZero: true,
+							fontSize : 14,
+						}
+					}],
+			    },
+			    showValue:{
+		                fontStyle: 'Helvetica', //Default Arial
+		                fontSize: 20
+			     },
+			     tooltips: {
+						enabled: false
+				 },
+				 animation: {
+						duration: 1,
+						onComplete: function () {
+							var chartInstance = this.chart,
+							ctx = chartInstance.ctx;
+							var fontSize = 18
+							// 폰트 기본값 : Chart.defaults.global.defaultFontSize
+							ctx.font = Chart.helpers.fontString(fontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = 'red';
+							ctx.textAlign = 'center';
+							ctx.textBaseline = 'bottom';
+
+							this.data.datasets.forEach(function (dataset, i) {
+								var meta = chartInstance.controller.getDatasetMeta(i);
+								meta.data.forEach(function (bar, index) {
+									var data = dataset.data[index];							
+									ctx.fillText(data, bar._model.x, bar._model.y - 5);
+								});
+							});
+						}
+					},
+			    
+			};
+        	
+        	var myBarChart = new Chart(ctx, {
+        	    'type': 'bar',
+        	    'data': data,
+        	    'options': options
+        	});
+        	
+        	
+        })
+        
+        // 시작일부터 종료일까지의 날짜들을 배열로 반환하는 함수
+        function getDateRangeData(param1, param2){  //param1은 시작일, param2는 종료일이다.
+			var res_day = [];
+		 	var ss_day = new Date(param1);
+		   	var ee_day = new Date(param2);    	
+		  		while(ss_day.getTime() <= ee_day.getTime()){
+		  			var _mon_ = (ss_day.getMonth()+1);
+		  			_mon_ = _mon_ < 10 ? '0'+_mon_ : _mon_;
+		  			var _day_ = ss_day.getDate();
+		  			_day_ = _day_ < 10 ? '0'+_day_ : _day_;
+		   			res_day.push(ss_day.getFullYear() + '-' + _mon_ + '-' +  _day_);
+		   			ss_day.setDate(ss_day.getDate() + 1);
+		   	}
+		   	return res_day;
+		}
+        
+        
+       function  getDataList( startdate, enddate ) {
+    	   
+    	   let url = "${pageContext.request.contextPath}/Attendance/getDailyAtt.kosmo"
+    	   let data = {
+    	 		'startdate' : startdate,
+    	 		'enddate' : enddate,
+    	   }
+    	   $.getJSON( url, data, function(list) {
+    		   console.log(list)
+    		   $.each(list, function(key, value) {
+    			   let day = new Date(value.att_date)
+    			   dateList.push( dateFormat(day) )
+    			   workTimeList.push( value.att_worktime )
+    			   
+//     			   console.log(day)
+//     			   console.log(dateFormat(day))
+//     			   console.log(value.att_worktime)
+               });
+    	   })
+    	   
+       }
+       
+       function dateFormat(date) {
+    	   let year = '' + date.getFullYear()
+    	   let month = date.getMonth()
+    	   month = (month < 9) ? "0" + (month+1) : month+1
+    	   let day = date.getDate()
+    	   day = (day <= 9) ? ("0" + day) : day
+    	   
+    	   let format = year + "-" + month + "-" + day
+    			   
+    	   return format
+       }
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!-- 뷰 페이지 -->    
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <c:set var="res" value="${pageContext.request.contextPath}/resources"/>
@@ -16,10 +18,10 @@
 <script src="${pageContext.request.contextPath}/resources/js/getmap.js"></script>
 
 <!-- 스캐너 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jsQr.js"></script>
+ <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jsQr.js"></script> 
 
 <style>
- /*콘텐츠*/ 
+ /*콘텐츠
 .contents {
 	position: absolute;
 	width: 1000px;
@@ -29,7 +31,7 @@
 	border-left: 1px solid #e7e7e7;
 	box-sizing: border-box;
 	background-color : white;
-}
+}*/ 
 .conTitle {
 	width: 930px;
 	height: 40px;
@@ -47,7 +49,7 @@
 	text-align: center;
 	border-bottom: 1px solid #e7e7e7;
 }
-#qrcreate, #qrenter, #qrleave {
+#qrcreate, #qrenter, #qrleave, #mapcreate {
 	width: 100px;
 	height: 32px;
 	margin-right: 20px;
@@ -159,6 +161,7 @@
 <script>
     $(document).ready(function() {
         
+    	
         //모달생성
         $("#qrcreate").click(function(){
         	$("#gomodal").attr("style", "display:block");
@@ -225,7 +228,8 @@
 			      var imgsrc = gqrapi+"&chl="+encodeURIComponent($text); //입력 데이터 인코딩해서 구글 API에 파라메터로 붙이고...
 			      //이미지 객체를 생성해서 구글API URL을 "src="로 지정
 			      var img = new Image();
-			      $(img).load(function (){
+// 			      $(img).load(function (){		// load()문법 jQuery 1.8 이후에 사라짐
+				  $(img).on('load',function() {
 			        var $this = $(this);
 			        $this.hide();
 			        $("#qrout1").empty().append(this); //<div>에 이미지 객체 추가
@@ -238,26 +242,27 @@
 			    }
 		  });
 		  
-		//출퇴근 스캐너호출 
-		  $('#qrenter').click(function() {
-				popupOpen('qrenter');
+		   //출퇴근 스캐너호출 
+		   $('#qrenter').click(function() {
+				popupOpen('qrenter.kosmo');
 			});
-		  function popupOpen(url){
+		   function popupOpen(url){
 			  	var name="enter";
 			    var specs = 'width=510, height=700, menubar=no,status=no,toolbar=no';
 			    var newWindow = window.open(url,name,specs);
 			    newWindow.focus();
 			}
-		$('#qrleave').click(function() {
-				popupOpen('qrleave');
-		});
+			  
+			$('#qrleave').click(function() {
+					popupOpen('qrleave');
+			});
+			function popupOpen(url){
+				  	var name="leave";
+				    var specs = 'width=510, height=700, menubar=no,status=no,toolbar=no';
+				    var newWindow = window.open(url,name,specs);
+				    newWindow.focus();
+			}
 		
-		function popupOpen(url){
-			  	var name="leave";
-			    var specs = 'width=510, height=700, menubar=no,status=no,toolbar=no';
-			    var newWindow = window.open(url,name,specs);
-			    newWindow.focus();
-		}
     });
 </script>
 </head>
@@ -269,8 +274,9 @@
 			<div class="article">
 				<div class="conTitle">출퇴근 관리</div>
 				<div class="commuteBtn">
-					<input type="hidden" id="m_id" value="${m_id}" var="m_id"/>
-<!-- 				<input type="hidden" id="dno" value="<sec:authentication property="principal.dno" var="dno"/>${dno}">  -->
+					<input type="text" id="m_id" value="${m_id}" var="m_id"/>
+ 					<input type="hidden" id="m_id" value="<sec:authentication property="principal.username" var="m_id"/>${m_id}">
+					<button name="map" id="mapcreate">내위치확인</button>
 					<button name="go" id="qrcreate">QR생성</button>
 					<button name="go" id="qrenter">출근하기</button>
 					<button value="" id="qrleave">퇴근하기</button>
@@ -284,25 +290,55 @@
 					</div>
 				</div>
 				<div class="option">
-					<form name="search_frm">
+					<form name="search_frm" action="">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 						<table>
 							<tr>
 								<td>기간 선택</td>
 								<td>
-								<input type="Date" id="startdate" name="att_startdate" autocomplete="off" style="width:170px; height:30px; padding : 0 10px; color : #787878;"/>
+								<input type="Date" id="startdate" name="startdate" autocomplete="off"
+									   value="${param.startdate}" 
+									   style="width:170px; height:30px; padding : 0 10px; color : #787878;"/>
 									&nbsp;&nbsp;&nbsp; ~ &nbsp;&nbsp;&nbsp; 
-								<input type="Date" id="enddate" name="att_enddate" autocomplete="off"   style="width:170px; height:30px; padding : 0 10px; color : #787878;"/>
+								<input type="Date" id="enddate" name="enddate" autocomplete="off"
+									   value="${param.enddate}"   
+									   style="width:170px; height:30px; padding : 0 10px; color : #787878;"/>
 								</td>
 							</tr>
 							<tr>
 								<td>출퇴근 여부</td>
-								<td><input type="radio" id="nomalAtt" name="att_state"
-									value="0"> <label for="nomal">정상</label>&nbsp;&nbsp;&nbsp;
-									<input type="radio" id="abnomalEnter" name="att_state"
-									value="1"> <label for="nomal">지각</label>&nbsp;&nbsp;&nbsp;
-									<input type="radio" id="abnomalLeave" name="att_state"
-									value="2"> <label for="nomal">기타</label></td>
+								<td>
+									<c:if test="${param.att_state == 0}">
+										<input type="radio" id="nomalAtt" name="att_state" value="0" checked> 
+										<label for="nomalAtt">정상</label>&nbsp;&nbsp;&nbsp;
+										<input type="radio" id="abnomalEnter" name="att_state" value="1">
+										<label for="abnomalEnter">지각</label>&nbsp;&nbsp;&nbsp;
+										<input type="radio" id="abnomalLeave" name="att_state" value="2">
+										<label for="abnomalLeave">기타</label>
+									</c:if>
+									<c:if test="${param.att_state == 1}">
+										<input type="radio" id="nomalAtt" name="att_state" value="0"> 
+										<label for="nomalAtt">정상</label>&nbsp;&nbsp;&nbsp;
+										<input type="radio" id="abnomalEnter" name="att_state" value="1" checked>
+										<label for="abnomalEnter">지각</label>&nbsp;&nbsp;&nbsp;
+										<input type="radio" id="abnomalLeave" name="att_state" value="2">
+										<label for="abnomalLeave">기타</label>
+									</c:if>
+									<c:if test="${param.att_state == 2}">
+										<input type="radio" id="nomalAtt" name="att_state" value="0"> 
+										<label for="nomalAtt">정상</label>&nbsp;&nbsp;&nbsp;
+										<input type="radio" id="abnomalEnter" name="att_state" value="1">
+										<label for="abnomalEnter">지각</label>&nbsp;&nbsp;&nbsp;
+										<input type="radio" id="abnomalLeave" name="att_state" value="2" checked>
+										<label for="abnomalLeave">기타</label>
+									</c:if>
+<!-- 									<input type="radio" id="nomalAtt" name="att_state" value="0">  -->
+<!-- 									<label for="nomalAtt">정상</label>&nbsp;&nbsp;&nbsp; -->
+<!-- 									<input type="radio" id="abnomalEnter" name="att_state" value="1"> -->
+<!-- 									<label for="abnomalEnter">지각</label>&nbsp;&nbsp;&nbsp; -->
+<!-- 									<input type="radio" id="abnomalLeave" name="att_state" value="2"> -->
+<!-- 									<label for="abnomalLeave">기타</label> -->
+								</td>
 							</tr>
 							<tr>
 								<td colspan="2"><button value="" id="search">조회</button></td>
@@ -331,10 +367,12 @@
 							</tr>
 						</c:if> 
 						<c:if test="${listCount ne 0}">
-						<%-- <c:if test="${not empty list}"> --%>
-							<c:forEach var="cm" items="${RequestScope.list}" varStatus="status">
+							<c:forEach var="cm" items="${list}" varStatus="status">
 								<tr>
-									<td>${cm.att_date}</td>
+									<td>
+										<fmt:formatDate var="att_date" pattern="yyyy-MM-dd" value="${cm.att_date}" />
+										<c:out value="${att_date}" />
+									</td>
 									<td>
 										<input type="hidden" value="${cm.att_state}" class="app${status.count}">  
                         				<span class="owappval${status.count}"></span> 
@@ -364,7 +402,8 @@
 									</c:url>
 									<a href="${dailyprev}">&lt; &nbsp; </a>
 								</c:if> 
-								<!-- 끝 페이지 번호 처리 --> <c:set var="endPage" value="${maxPage}" />
+								<!-- 끝 페이지 번호 처리 --> 
+								<c:set var="endPage" value="${maxPage}" />
 								<c:forEach var="p" begin="${startPage+1}" end="${endPage}">
 									<!-- eq : == / ne : != -->
 									<c:if test="${p eq currentPage}">
@@ -400,7 +439,7 @@
 			
  	   var frm = document.search_frm;
  	   frm.action = "${pageContext.request.contextPath}/Attendance/dailylist.kosmo";
- 	   frm.method = "post";
+ 	   frm.method = "get";
  	   frm.submit();
 	}else{
  	   return;
@@ -427,5 +466,7 @@ function fnMemberValidation(){
  	 };
  	
 	</script>
+	
+	
 </body>
 </html>
