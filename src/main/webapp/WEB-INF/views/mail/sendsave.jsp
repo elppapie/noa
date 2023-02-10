@@ -48,7 +48,7 @@
 			<div class="card-body">
 				<div class="d-sm-flex justify-content-between align-items-start">
 					<div>
-						<h4 class="card-title card-title-dash">임시 메일함</h4>
+						<h4 class="card-title card-title-dash">저장한 메일함</h4>
 						<p class="card-subtitle card-subtitle-dash">메일 \${안읽은메일}/\${읽은메일}</p>
 					</div>
 					<%-- 
@@ -80,13 +80,13 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:if test="${empty allmail}" var="isEmpty">
+							<c:if test="${empty mymail}" var="isEmpty">
 								<tr>
 									<td colspan="6">메일이 없습니다.</td>
 								</tr>
 							</c:if>
 							<c:if test="${not isEmpty }">
-								<c:forEach var="mail" items="${allmail}" varStatus="loop">
+								<c:forEach var="mail" items="${mymail}" varStatus="loop">
 									<c:set var="mail_important" value="${mail.MAIL_MARK}"/>
 									<c:set var="mail_read" value="${mail.MAIL_CHECK}"/>
 									<tr>
