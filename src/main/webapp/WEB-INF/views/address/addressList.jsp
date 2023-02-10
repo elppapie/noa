@@ -231,18 +231,14 @@
   <script>
   	  const addrListTbody = document.querySelector('#addr-list-card-body-memberlist-card > div > table > tbody')
 	  
-  	  btn_all = document.querySelector('input.btn-check-all-onoff');
-  	  btn_all.addEventListener('click',toggle_btn_check_all_onoff)
-      document.querySelector('#addr-list-members-tbody-forcheckbox').addEventListener('click',count_tbody_checked_checkbox);
   	  
-  	  /* ⚠️ 동적으로 변경된 요소에는 적용이 안됨;;;
-  	  document.querySelector('#addr-list-teams-check-ajax').addEventListener('click',e => {
-  	  	  btn_all = document.querySelector('input.btn-check-all-onoff');
-  	  	  btn_all.addEventListener('click',toggle_btn_check_all_onoff)
-  	      document.querySelector('#addr-list-members-tbody-forcheckbox').addEventListener('click',count_tbody_checked_checkbox);  		  
-  	  });
-  	  */
+  	  document.addEventListener('click',e => {
+  		btn_all = document.querySelector('input.btn-check-all-onoff');
+    	btn_all.addEventListener('click',toggle_btn_check_all_onoff)
+        document.querySelector('#addr-list-members-tbody-forcheckbox').addEventListener('click',count_tbody_checked_checkbox);  
+  	  })
   	  
+  	
   	  // * 팀 목록 클릭 시 해당 팀원들 목록 출력하기
 	  $('.addr-list-team-no-onclick-ajax').click(e=>{
 	      e.preventDefault();
