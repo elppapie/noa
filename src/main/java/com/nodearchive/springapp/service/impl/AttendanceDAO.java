@@ -56,6 +56,9 @@ public class AttendanceDAO {
 	public List<AttendanceDTO> selectMonthAtt(int startPage, int limit, String m_id) {
 		int startRow = (startPage - 1) * limit; // 시작 페이지를 가져옴, 0~9, 10~19
 		RowBounds row = new RowBounds(startRow, limit); //ibatis 세션의 rowboun
+		System.out.println("startPage :  " + startPage);
+		System.out.println("limit :  " + limit);
+		System.out.println("m_id :  " + m_id);
 		return template.selectList("selectMonthAtt",m_id,row);
 	}
 
@@ -72,13 +75,6 @@ public class AttendanceDAO {
 	}
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 }

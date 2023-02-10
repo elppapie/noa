@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
+<!-- #{}:변수 // ${}:파라미터 바로 출력 -->
 
 <mapper namespace="mappers.attendance">
 
@@ -31,7 +31,7 @@
 	<select id="listCount" resultType="int" parameterType ="Map">
 		SELECT COUNT(*) FROM attendance
 		WHERE att_state = '${att_state}' 
-		AND att_date BETWEEN TO_DATE('${att_startdate}', 'YYYY-MM-DD') AND TO_DATE('${att_enddate}', 'YYYY-MM-DD')
+		AND att_date BETWEEN TO_DATE('${startdate}', 'YYYY-MM-DD') AND TO_DATE('${enddate}', 'YYYY-MM-DD')
 		AND m_id='${m_id}'  
 	</select>
 	<select id="searchDailyAtt" 
@@ -40,7 +40,7 @@
 		resultMap="resultAtt">
 		SELECT * FROM attendance 
 		WHERE att_state = #{att_state}
-		AND att_date BETWEEN TO_DATE(#{att_startdate}, 'YYYY-MM-DD') AND TO_DATE(#{att_enddate}, 'YYYY-MM-DD')
+		AND att_date BETWEEN TO_DATE(#{startdate}, 'YYYY-MM-DD') AND TO_DATE(#{enddate}, 'YYYY-MM-DD')
 		AND m_id=#{m_id} ORDER BY att_date DESC
 	</select>
 	
@@ -54,11 +54,9 @@
 	<!-- 퇴근 시간 삽입 -->
 	<update id="updateLeave" flushCache="true" statementType="PREPARED">
 		UPDATE attendance 
-		SET att_enddate = TO_CHAR(TO_DATE(#{att_enddate},'YYYY-MM-DD HH24:MI:SS'), 'yyyy-mm-dd hh24:mi:ss'), 
-			att_worktime = TRUNC((TO_DATE(#{att_enddate},'YYYY-MM-DD HH24:MI:SS') - TO_DATE(att_startdate,'YYYY-MM-DD HH24:MI:SS'))*24) || '.' ||
-						TRUNC(MOD((TO_DATE(#{att_enddate},'YYYY-MM-DD HH24:MI:SS') - TO_DATE(att_startdate,'YYYY-MM-DD HH24:MI:SS'))*24,1)*60)
+		SET att_enddate = TO_CHAR(TO_DATE(#{att_enddate},'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), 
+			att_worktime = ROUND( ((to_date(#{att_enddate},'YYYY-MM-DD HH24:MI:SS') ) - (to_date(att_startdate,'YYYY-MM-DD HH24:MI:SS') ) ) * 24, 2)
 		WHERE m_id=#{m_id} AND att_no=#{att_no};
-		
 	</update>
 	
 	<!-- 월 근무내역 조회 -->
@@ -71,28 +69,32 @@
 	<select id="selectMonthAtt" 
 		resultType="arraylist"
 		resultMap="resultAtt">
-		SELECT TO_CHAR(att_date, 'yyyy-mm-dd'), att_worktime
+		SELECT TO_CHAR(att_date, 'yyyy-mm-dd hh:mm:ss') att_date, att_worktime, att_startdate, att_enddate, att_state
 			FROM attendance
 			WHERE m_id=#{m_id} 
-			ORDER BY att_date DESC;
+			ORDER BY att_date DESC
 	</select>
 	
 	<!-- 월 근무 내역 검색 -->
 	<select id="msearchCount" resultType="int">
 		SELECT COUNT(*) FROM attendance
 			WHERE m_id=#{m_id}
-			AND att_date BETWEEN TO_DATE(#{att_startdate}, 'yyyy-mm-dd') AND TO_DATE(#{att_enddate}, 'yyyy-mm-dd')
-			ORDER BY att_date DESC;
+			AND att_date BETWEEN TO_DATE(#{startdate}, 'yyyy-mm-dd') AND TO_DATE(#{enddate}, 'yyyy-mm-dd')
+			ORDER BY att_date DESC
 	</select>
 	
 	<select id="searchMonthAtt" 
 		parameterType ="Map"
 		resultType="arraylist"
 		resultMap="resultAtt">
-		SELECT att_date, att_worktime
+<!-- 		SELECT att_date, att_worktime
 			FROM attendance
 			WHERE m_id=#{m_id}
-			AND att_date BETWEEN TO_DATE(#{att_startdate}, 'yyyy-mm-dd') AND TO_DATE(#{att_enddate}, 'yyyy-mm-dd')
+			AND att_date BETWEEN TO_DATE(#{startdate}, 'yyyy-mm-dd') AND TO_DATE(#{enddate}, 'yyyy-mm-dd') -->
+		SELECT *
+			FROM attendance
+			WHERE m_id=#{m_id}
+			AND att_date BETWEEN TO_DATE(#{startdate}, 'yyyy-mm-dd') AND TO_DATE(#{enddate}, 'yyyy-mm-dd')
 	</select>
 	
 	<select id="testAtt" 

@@ -1,7 +1,10 @@
 package com.nodearchive.springapp.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,12 +29,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 
 	@Override
-	public int listCount(Map map) {
+	public int listCount(HashMap<String, String> map) {
 		return dao.listCount(map);
 	}
 
 	@Override
-	public List<AttendanceDTO> searchDailyAtt(Map map) {
+	public List<AttendanceDTO> searchDailyAtt(HashMap<String, String> map) {
 		return dao.searchDailyAtt(map);
 	}
 
@@ -53,16 +56,46 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 	@Override
 	public List<AttendanceDTO> selectMonthAtt(int startPage, int limit, String m_id) {
-		return dao.selectMonthAtt(startPage, limit, m_id);
+		
+		List<AttendanceDTO> list = dao.selectMonthAtt(startPage, limit, m_id);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for (AttendanceDTO attendanceDTO : list) {
+			Date date = attendanceDTO.getAtt_date();
+			String dateStr = sdf.format(date);
+			attendanceDTO.setAtt_date_str(dateStr);
+		}
+		
+		return list;
 	}
 
 	@Override
-	public int msearchCount(Map map) {
+	public int msearchCount(HashMap<String, String> map) {
+		String startdate = map.get("startdate");
+		String enddate = map.get("enddate");
+		
+		Calendar cal = Calendar.getInstance();
+		int firstDay = 1;
+		int lastDay = cal.getActualMaximum( Calendar.DAY_OF_MONTH );
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		
+		if( startdate == null || startdate.equals("") ) {
+			cal.set( Calendar.DAY_OF_MONTH, firstDay );
+			startdate = sdf.format( cal.getTime() );
+			map.put("startdate", startdate);
+		}
+		if( enddate == null || enddate.equals("") ) {
+			cal.set( Calendar.DAY_OF_MONTH, lastDay);
+			enddate = sdf.format( cal.getTime() );
+			map.put("enddate", enddate);
+		}
+		
 		return dao.msearchCount(map);
 	}
 
 	@Override
-	public List<AttendanceDTO> searchMonthAtt(Map map) {
+	public List<AttendanceDTO> searchMonthAtt(HashMap<String, String> map) {
 		return dao.searchMonthAtt(map);
 	}
 

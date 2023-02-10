@@ -15,9 +15,9 @@ public interface AttendanceService {
 	
 	List<AttendanceDTO> selectDailyAtt(int startPage, int limit, String m_id);
 	
-	int listCount(Map map);
+	int listCount(HashMap<String, String> map);
 	
-	List<AttendanceDTO> searchDailyAtt(Map map);
+	List<AttendanceDTO> searchDailyAtt(HashMap<String, String> map);
 
 	int insertEnter(AttendanceDTO att);
 	
@@ -28,9 +28,9 @@ public interface AttendanceService {
 	
 	List<AttendanceDTO> selectMonthAtt(int startPage, int limit, String m_id);
 	
-	int msearchCount(Map map);
+	int msearchCount(HashMap<String, String> map);
 	
-	List<AttendanceDTO> searchMonthAtt(Map map);
+	List<AttendanceDTO> searchMonthAtt(HashMap<String, String> map);
 	
 	List<AttendanceDTO> testAtt(String m_id);
 

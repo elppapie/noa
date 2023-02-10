@@ -1,5 +1,7 @@
 package com.nodearchive.springapp.service.impl;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,10 +19,13 @@ public class AttendanceDTO {
 	private String m_id;
 	private String att_startdate;
 	private String att_enddate;
-	private java.sql.Date att_date;
-	private int att_worktime;
+	private Date att_date;
+	private String att_date_str;		// 2023-01-01
+	private double att_worktime;
 	private int att_state;
-	private double total;
+//	private double total;
 	private String uname;
+	
+	
 
 }

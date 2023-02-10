@@ -274,7 +274,7 @@
 			<div class="article">
 				<div class="conTitle">출퇴근 관리</div>
 				<div class="commuteBtn">
-					<input type="text" id="m_id" value="${m_id}" var="m_id"/>
+<!-- 					<input type="text" id="m_id" value="${m_id}" var="m_id"/>   -->
  					<input type="hidden" id="m_id" value="<sec:authentication property="principal.username" var="m_id"/>${m_id}">
 					<button name="map" id="mapcreate">내위치확인</button>
 					<button name="go" id="qrcreate">QR생성</button>
