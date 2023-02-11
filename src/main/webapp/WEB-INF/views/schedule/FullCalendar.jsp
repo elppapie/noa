@@ -59,8 +59,10 @@
 		border-radius: 100px;
 	}	
 	input::placeholder { /*이거 왜 안 먹히지*/
+	/*
  		color: black;
   		opacity: 1; /* Firefox */
+	*/
 	}
 	.personInfo{
 		margin-left:20px;
@@ -181,6 +183,30 @@
 		background-color:white;
 		color:#1F1F1F;
 	}
+	
+	
+	.flexable-nav{
+		display:inline-flex;
+	}
+	.flexable-nav > .card{
+		display:inline-flex; 
+		height:40px;
+		line-height:40px;
+	}
+	.flexable-nav > div > div > input{
+		background:transparent;
+		outline: none;
+		border: none;
+	}
+	.flexable-nav > div > div > input:focus{
+		/*	
+		border-bottom: 1px solid black;
+		*/
+	}
+	.flexable-nav > div > div > i:nth-child(1),
+	.flexable-nav > div > div > i:nth-child(3){
+		cursor:pointer;
+	}	
 
 	
 </style>
@@ -213,12 +239,23 @@
     --%>
   </ul>
   <div>
-    <div class="btn-wrapper">
+    <div class="btn-wrapper flexable-nav">
       <%-- 
       <a href="<c:url value="/Notice/list.kosmo"/>" class="btn btn-otline-dark align-items-center"><i class="fa-solid fa-square-plus"></i> 공지사항(임시)</a>
       --%>
-      <a href="#" class="btn btn-primary text-white me-0 align-items-center"><i class="fa-solid fa-magnifying-glass"></i> 일정검색</a>
+      <div class="card" >
+	      <div class="card-body" style="padding:0 20px 0 20px; ">
+	      <%-- 
+	      	<a href="#" class="btn btn-primary text-white me-0 align-items-center"><i class="fa-solid fa-magnifying-glass"></i> 일정검색</a>      
+	      --%>
+	      	<i class="fa-solid fa-magnifying-glass"></i>
+	      	<input placeholder="검색"/>
+	      	<i class="fa fa-solid fa-caret-down"></i>
+	      </div>
+      </div>
+      <%-- 
       <a href="#" class="btn btn-primary text-white me-0 align-items-center"><i class="fa-solid fa-download"></i> 달력저장</a>
+      --%>
       <%-- 
       <a href="#" id="addSchedule" class="btn  btn-primary text-white me-0 align-items-center"><i class="fa-solid fa-square-plus"></i> 일정추가</a>
     	--%>
@@ -452,7 +489,43 @@ document.addEventListener('DOMContentLoaded', function() {
 	//var login_id = '<c:out value="${login_id}"/>'
 	var login_id = "${login_id}".replace('&#64;','@').replace('&#46;','.');
 	
+	//검색창 구현
 	$(function(){
+		//미클릭시 숨기기
+		var flexableinput = $('.flexable-nav > div > div > input');
+		var flexabletri = $('.flexable-nav > div > div > i:nth-child(3)');
+		var flexablemag = $('.flexable-nav > div > div > i:nth-child(1)');
+		
+		flexabletri.hide();
+		flexableinput.hide();
+		
+		//돋보기(flexablemag) 클릭시
+		$('.flexable-nav > .card').on('click',function(){
+			//숨긴거 보이기
+			flexabletri.show(400);
+			flexableinput.show(400).focus();
+			//검색창 blur시 다시 숨기기
+			flexableinput.blur(function(){
+				flexabletri.hide(400);
+				flexableinput.hide(400);
+			});
+			flexablemag.on('click',function(){
+				flexableinput.focus();
+			});
+			
+			
+		});
+	});
+	
+	
+	
+	$(function(){
+		
+		
+		
+		
+		
+		
 		
 //////////////////////////////////////////////////////////////////////////////////////////////////////		
 		// fullcalendar 가져오기

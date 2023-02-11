@@ -156,7 +156,6 @@
 													<!-- 부서별 정보 뿌리기 -->
 													<c:forEach var="dept" items="${deptList}">
 														<c:set var="deptCodeFromList" value="${dept['dept_code']}"/>
-														\${deptCodeFromList}:${deptCodeFromList}
 														<tr class="view">
 															<td>${dept["dept_name"]}</td>
 															<td>${dept["dept_leader_name"]}(${dept["dept_leader_contact"]})</td>
@@ -349,6 +348,14 @@
 			$(this).next('.fold').slideToggle();
 			console.log('클릭되었어요');
 			//$(this).toggleClass("open").next(".fold").toggleClass("open");
+			/*
+			if($(this).next().css('display')==='none'){
+			    $(this).next('.fold').slideDown(1000);
+			}
+			else
+				$(this).next('.fold').slideUp(1000);
+		
+			*/
 		});
 		
 		
