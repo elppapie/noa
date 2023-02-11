@@ -88,6 +88,14 @@
 	font-size:1.2rem !important;
 	color: #c1c1c1 !important;
 }
+.input-helper::before{
+	border: 2px solid #304839 !important;
+	border-radius: 5px !important;
+}
+.input-helper::after{
+	background-color: #324a3b !important;
+	border-radius: 5px !important;
+}
 </style>
 <script type="text/javascript">
 </script>
@@ -164,15 +172,22 @@
 				<div class="table-reponsive overflow-y-scroll custom-scrollbar" style='height:506px; padding-right:8px;padding-top:50px;overflow-x:hidden;'>
                   <table class="table table-stripped table-hover ">
                     <thead class="table-thead-sticky">
-                      <tr>
-                        <th class="addr-list-checkbox-td-padding-right-0">
-                        	<input type="checkbox" class="btn-check-all-onoff"/>  
+                      <tr style="border-bottom:none;">
+                        
+                        <th class="addr-list-checkbox-td-padding-right-0" style="border-bottom:none;">
+                        	<div class="form-check m-0" style="width:20px">
+	                        	<label class="form-check-label">
+	                        		<input type="checkbox" class="btn-check-all-onoff form-check-input"/>
+	                        		<i class="input-helper"></i>
+	                        	</label>  
+                        	</div>
                         </th>
-                        <th> 프로필 </th>
-                        <th> 이름 </th>
-                        <th> 소속 팀 </th>
-                        <th style="padding-left:50px;"> 직급 </th>
-                        <th style="padding-left:32px;"> 개인 연락처 </th>
+                        
+                        <th style="border-bottom:none;"> 프로필 </th>
+                        <th style="border-bottom:none;"> 이름 </th>
+                        <th style="border-bottom:none;"> 소속 팀 </th>
+                        <th style="padding-left:50px;border-bottom:none;"> 직급 </th>
+                        <th style="padding-left:32px;border-bottom:none;"> 개인 연락처 </th>
                       </tr>
                     </thead>
                     <tbody id='addr-list-members-tbody-forcheckbox'>
@@ -181,11 +196,24 @@
                       <c:forEach items="${membersList}" var="member">
 	                      <!-- tr : 행 , td : 열 (여기 td 개수는 <thead>의 th개수랑 맞춰야 함.)-->
 	                      <tr>
+	                      	
+	                      	<td class="addr-list-checkbox-td-padding-right-0">
+	                        	<div class="form-check m-0" style="width:20px">
+		                        	<label class="form-check-label">
+		                        		<input type="checkbox" class="btn-check-all-onoff form-check-input" />
+		                        		<i class="input-helper"></i>
+		                        	</label>  
+	                        	</div>
+	                        </td>
+	                      	
+	                      	<!-- 
 	                      	<td class="addr-list-checkbox-td-padding-right-0">
 	                      		<input type="checkbox"/>
-	                      	</td>
+	                      	</td>	                      	
+	                      	-->
+	                      	
 	                        <td class="py-1"> <img src="${path}/resources/images/logo-noa-messanger.png" alt="프로필사진"/> </td>
-	                        <td> ${member['m_name']} </td>
+	                        <td> ${member['m_name']} <span hidden>${member['m_id']}</span></td>
 	                        <td> ${member['team_name']} </td>
 	                        <td> ${member['position_name']} </td>
 	                        <td> ${fn:substring(member['m_private_contact'],0,3)}-${fn:substring(member['m_private_contact'],3,7)}-${fn:substring(member['m_private_contact'],7,11)} </td>
@@ -230,12 +258,23 @@
   <script src="${path}/chatResources/js/noaChatJS.js"></script>
   <script>
   	  const addrListTbody = document.querySelector('#addr-list-card-body-memberlist-card > div > table > tbody')
-	  
+	  let btn_all = document.querySelector('input.btn-check-all-onoff');
+   	  btn_all.addEventListener('click',toggle_btn_check_all_onoff)
+      let addr_list_mlist_tbody = document.querySelector('#addr-list-members-tbody-forcheckbox');
+      addr_list_mlist_tbody.addEventListener('click',count_tbody_checked_checkbox);
   	  
   	  document.addEventListener('click',e => {
   		btn_all = document.querySelector('input.btn-check-all-onoff');
     	btn_all.addEventListener('click',toggle_btn_check_all_onoff)
-        document.querySelector('#addr-list-members-tbody-forcheckbox').addEventListener('click',count_tbody_checked_checkbox);  
+    	addr_list_mlist_tbody = document.querySelector('#addr-list-members-tbody-forcheckbox');
+    	addr_list_mlist_tbody.addEventListener('click',count_tbody_checked_checkbox);
+    	
+    	addr_list_mlist_tbody.addEventListener('click',e => {
+    		if(event.target.type === 'checkbox') return;
+    		console.log(e.target.nodeName)
+    		let member_id = get_tr_element_from_children(e.target).querySelector('span').textContent.trim();
+    		
+    	});
   	  })
   	  
   	
@@ -255,8 +294,13 @@
 	    	  for(member of data){
 	    		  let html = '<tr>'+
 			                    '<td class="addr-list-checkbox-td-padding-right-0">'+
-			                 	  '<input type="checkbox"/>'+
-			                	'</td>'+
+		                        	'<div class="form-check m-0" style="width:20px">'+
+			                        	'<label class="form-check-label">'+
+			                        		'<input type="checkbox" class="btn-check-all-onoff form-check-input" />'+
+			                        		'<i class="input-helper"></i>'+
+			                        	'</label>'+  
+		                        	'</div>'+
+		                        '</td>'+
 			                    '<td class="py-1"> <img src="'+member["m_profile"]+'" alt="프로필 사진"/> </td>'+
 			                    '<td> '+member["m_name"]+' </td>'+
 			                    '<td> '+member["team_name"]+' </td>'+

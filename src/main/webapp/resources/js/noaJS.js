@@ -60,7 +60,9 @@ function checkForEnterPressedThenSubmit(event){
 
 /////////////////[공용] 전체선택/전체해제 체크박스용 함수 정의 시작/////////////////////
 
+
 function count_tbody_checked_checkbox(event){
+	console.log('count_tbody_checked_checkbox()함수 호출, e.target은?',event.target)
   if(event.target.type!=='checkbox') return; //이벤트 버블링 활용
   //tr을 돌며 count세기. event.target은 tbody이다.
   let table = get_table_element_from_children(event.target);
@@ -68,8 +70,11 @@ function count_tbody_checked_checkbox(event){
   let tbody_trs = table.querySelectorAll('tbody tr');
   let total_tr_count = tbody_trs.length; // tbody내의 체크박수 수
   let all = table.querySelector('thead input.btn-check-all-onoff'); //전체선택/해제 체크박스 구하기
+   		console.log('변수확인: table:',table,', tbody_trs:',tbody_trs,', total_tr_count:',total_tr_count,' , all:',all)
   tbody_trs.forEach(function(tr,index) {
-      if(tr.querySelector('td > input[type="checkbox"]').checked) count++;
+  			console.log(tr)
+  			console.log('체크박스확인:',tr.querySelector('td:nth-child(1) > div > label > input[type="checkbox"]'));
+      if(tr.querySelector('td:nth-child(1) > div > label > input[type="checkbox"]').checked) count++;
   })
   if(count===total_tr_count){ 
       all.checked=true; // 다 체크되면 전체선/해 체크박스 체크시키기
@@ -77,9 +82,11 @@ function count_tbody_checked_checkbox(event){
   else {
       all.checked=false;
   }
+  	console.log('📢체크된 체크박스 수')
 }////////////count_tbody_checked_checkbox()
 
 function get_table_element_from_children(child){//내가 클릭한 요소의 부모 중 table태그를 가져오는 함수
+	console.log('get_table_element_from_children()함수 호출')
   count=0;
   while (true) {
       child = child.parentElement; //부모요소를 얻어온다.
@@ -89,22 +96,42 @@ function get_table_element_from_children(child){//내가 클릭한 요소의 부
       }
       break; //얻어온 부모요소가 table태그이면 해당 table요소를 반환하기 위해 break한다.
   }
-  if(child.nodeName !== 'TABLE') throw new Error('테이블 요소가 없습니다...')
+  if(child.nodeName !== 'TABLE') throw new Error('테이블 요소가 없습니다...') // 99번 반복했는데 table 못 찾으면 예외 발생시키기 
   return child;
 }////////////get_table_element_from_children()
 
+function get_tr_element_from_children(child){//내가 클릭한 요소의 부모 중 tr태그를 가져오는 함수
+	console.log('get_tr_element_from_children()함수 호출')
+  count=0;
+  if(child.nodeName == "TR"){
+  	return child
+  }
+  while (true) { 
+      child = child.parentElement; //부모요소를 얻어온다.
+      if(child.nodeName !== "TR" && count<100) {
+          count++;
+          continue; //얻어온 부모요소가 TR이 아니면 다시 while문을 반복한다.
+      }
+      break; //얻어온 부모요소가 TR태그이면 해당 tr요소를 반환하기 위해 break한다.
+  }
+  if(child.nodeName !== 'TR') throw new Error('tr 요소가 없습니다...') // 99번 반복했는데 tr 못 찾으면 예외 발생시키기
+  return child;
+}////////////get_table_element_from_children()
+
+
 function toggle_btn_check_all_onoff(event){ //전체선/해 checkbox클릭 시 토글효과로 전체선택/전체해제 구현
+	console.log('toggle_btn_check_all_onoff()함수 호출')
   let btn_check_all_onoff = event.target
   let table = get_table_element_from_children(btn_check_all_onoff);
   let tbody_trs = table.querySelector('tbody').querySelectorAll('tr');
   if(btn_check_all_onoff.checked) {
       tbody_trs.forEach(function(tr,index) {
-          tr.querySelector('td > input[type="checkbox"]').checked=true;
+          tr.querySelector('td:nth-child(1) > div > label > input[type="checkbox"]').checked=true;
       })
   }
   else{
       tbody_trs.forEach(function(tr,index) {
-          tr.querySelector('td > input[type="checkbox"]').checked=false;
+          tr.querySelector('td:nth-child(1) > div > label > input[type="checkbox"]').checked=false;
       })
   }
 }///////////////////toggle_btn_check_all_onoff()
