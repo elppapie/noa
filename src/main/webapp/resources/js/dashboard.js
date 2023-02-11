@@ -549,7 +549,7 @@
           options: marketingOverviewOptionsDark
       });
       document.getElementById('marketing-overview-legend').innerHTML = marketingOverviewDark.generateLegend();
-    }
+    }/*
     if ($("#doughnutChart").length) {
       var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
       var doughnutPieData = {
@@ -633,7 +633,7 @@
         options: doughnutPieOptions
       });
       document.getElementById('doughnut-chart-legend').innerHTML = doughnutChart.generateLegend();
-    }
+    }*/
     if ($("#leaveReport").length) {
       var leaveReportChart = document.getElementById("leaveReport").getContext('2d');
       var leaveReportData = {
