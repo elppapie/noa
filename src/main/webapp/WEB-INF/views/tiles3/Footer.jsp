@@ -41,11 +41,16 @@
   <script src="${path}/resources/js/template.js"></script>
   <script src="${path}/resources/js/settings.js"></script>
   <script src="${path}/resources/js/todolist.js"></script>
+  <script src="${path}/resources/js/jquery-1.4.2.js"></script>
+  <script src="${path}/resources/js/date.js"></script>
+  <script src="${path}/resources/js/jquery-ui-1.8.4.js"></script>
+  <script src="${path}/resources/js/jquery.ganttView.js"></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="${path}/resources/js/dashboard.js"></script>
   <script src="${path}/resources/js/Chart.roundedBarCharts.js"></script>
   <script src="${path}/resources/js/select2.js"></script>
+ 
   <!-- End custom js for this page-->
   <script src="${path}/resources/js/noaJS.js"></script>
   <script src="${path}/chatResources/js/noaChatJS.js"></script>

@@ -32,6 +32,8 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="${path}/resources/css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="${path}/resources/css/jquery-ui-1.8.4.css">
+  <link rel="stylesheet" href="${path}/resources/css/jquery.ganttView.css">
   <!-- custom style -->
   <link rel="stylesheet" href="${path}/resources/css/noaCss.css">
   <!-- endinject -->
@@ -43,6 +45,7 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <!--  Custom CSS   -->
   <style>
 	.navbar .navbar-menu-wrapper{
