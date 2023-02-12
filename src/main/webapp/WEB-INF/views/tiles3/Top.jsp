@@ -32,8 +32,6 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="${path}/resources/css/vertical-layout-light/style.css">
-  <link rel="stylesheet" href="${path}/resources/css/jquery-ui-1.8.4.css">
-  <link rel="stylesheet" href="${path}/resources/css/jquery.ganttView.css">
   <!-- custom style -->
   <link rel="stylesheet" href="${path}/resources/css/noaCss.css">
   <!-- endinject -->
