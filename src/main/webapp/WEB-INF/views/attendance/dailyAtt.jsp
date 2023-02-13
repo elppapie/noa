@@ -254,7 +254,7 @@
 			}
 			  
 			$('#qrleave').click(function() {
-					popupOpen('qrleave');
+					popupOpen('qrleave.kosmo');
 			});
 			function popupOpen(url){
 				  	var name="leave";

@@ -146,7 +146,7 @@ a {
           	}
     		else if(nMemberValidation() == true){
 	     	   var frm = document.search_frm;
-	     	   frm.action = "${pageContext.request.contextPath}/commute/monthlylist";
+	     	   frm.action = "${pageContext.request.contextPath}/Attendance/monthlylist.kosmo";
 	     	   frm.method = "post";
 	     	   frm.submit();
     		}
@@ -243,7 +243,7 @@ a {
 						&lt; &nbsp;
 						</c:if>
 						 	<c:if test="${currentPage > 1}">
-								<c:url var="monthlistprev" value="/commute/monthlylist">
+								<c:url var="monthlistprev" value="/Attendance/monthlylist.kosmo">
 									<c:param name="page" value="${currentPage-1}" />
 								</c:url>
 								<a href="${monthlistprev}">&lt; &nbsp;</a>
@@ -257,7 +257,7 @@ a {
 									<font color ="#da0f8e"><b>${p} &nbsp;</b></font>
 								</c:if>
 								<c:if test="${p ne currentPage}">
-									<c:url var="monthlistchk" value="/commute/monthlylist">
+									<c:url var="monthlistchk" value="/Attendance/monthlylist.kosmo">
 										<c:param name="page" value="${p}" />
 									</c:url>
 									<a href="${monthlistchk}">${p} &nbsp;</a>
@@ -266,7 +266,7 @@ a {
 							<c:if test="${currentPage >= maxPage}">  &gt;
 							</c:if>
 							<c:if test="${currentPage < maxPage}">
-								<c:url var="monthlistnext" value="/commute/monthlylist">
+								<c:url var="monthlistnext" value="/Attendance/monthlylist.kosmo">
 									<c:param name="page" value="${currentPage+1}" />
 								</c:url>
 								<a href="${monthlistnext}"> &gt;</a>
