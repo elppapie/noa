@@ -70,7 +70,7 @@ public class TaskController {
 	
 	//업무 리스트 구하기 - 문자열, 날짜 검색 기능 - 테스트 완
 	//@RequestMapping(value={"/list.kosmo", "/Project/list.kosmo"})
-	@RequestMapping("/list.kosmo")
+	@RequestMapping(value="/list.kosmo")
 	public String selectTasks(
 			Authentication auth,
 			@RequestParam Map map,

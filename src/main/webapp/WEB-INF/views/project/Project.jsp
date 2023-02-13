@@ -111,7 +111,10 @@
 	                                    <div class="btn-group" role="group" style="height: 50px;">
 	                                      <!-- href=#프로젝트일련번호 -->
 	                                      <div class="card-header card-link hover project-list-accordion-card-header btn fg-10 project-list-btn-dropdownbtn" data-toggle="collapse" href="#project${projectList.lists[vs.index].PROJECT_NO}" style="border:none; flex-grow:15;">
-	                                        <span id="${projectList.lists[vs.index].PROJECT_NO}" class="project-list-ul-custom project-span" style="line-height:25px">${projectList.lists[vs.index].PROJECT_NAME}</span>	                                        	                                     
+	                                        <span id="${projectList.lists[vs.index].PROJECT_NO}" class="project-list-ul-custom project-span" style="line-height:25px">
+	                                        <b style="margin-left:10px;">${projectList.lists[vs.index].PROJECT_NAME}</b>
+	                                        <p>담당자:<label class=" project-manager-label" style="line-height:25px; text-size:20px;">${projectList.lists[vs.index].M_ID}</label></p>
+	                                        </span>	                                        	                                     
 	                                      </div>
 	                                      <!-- 드롭다운 쓰리닷 메뉴 시작, id=프로젝트일련번호-dropdown-menu-button -->
 	                                      <button class="btn dropdown-toggle project-list-btn-dropdownbtn fg-1 project-dropdown-btngroup-border-leftonly project-foreach-setting" type="button" name="${projectList.lists[vs.index].PROJECT_NAME}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -131,13 +134,13 @@
 	                                    <div id="project${projectList.lists[vs.index].PROJECT_NO}" class="collapse" data-parent="#project-list-accordion">	                                    
 	                                      <div class="card-body project-list-accordion-card-body">	                                        
 	                                        <div class="table-reponsive overflow-x-scroll">
-	                                        <p>프로젝트 담당자:<label class=" project-manager-label" style="line-height:25px; text-size:20px;">${projectList.lists[vs.index].M_ID}</label></p>
 	                                          <table class="table table-stripped table-hover">	                                        
 	                                            <thead>
 	                                              <tr>
 	                                                <th> 프로필 </th>
 	                                                <th> 이름 </th>
 	                                                <th> 업무명 </th>
+	                                                <th> 마감일 </th>
 	                                                <th> 진행도 </th>
 	                                              </tr>
 	                                            </thead>
@@ -147,12 +150,26 @@
 		                                              <!-- tr : 행 , td : 열 (여기 td 개수는 <thead>의 th개수랑 맞춰야 함.)-->
 		                                              <tr>
 		                                                <td class="py-1"> <img src="/webapp/projectResources/profile1.jpg" alt="프로필사진"/> </td>
-		                                                <td>${projectList.lists[vs.index].tlists[ts.index].M_NAME}</td>
+		                                                <td>
+		                                                	<p>${projectList.lists[vs.index].tlists[ts.index].M_NAME}</p>
+		                                                	<p>${projectList.lists[vs.index].tlists[ts.index].TEAM_NAME}</p>
+		                                                </td>
 		                                                <td>${projectList.lists[vs.index].tlists[ts.index].TASK_NAME}</td>
+		                                                <td>${fn:substring(projectList.lists[vs.index].tlists[ts.index].SCHE_ENDDATE,0,10)}</td>
 		                                                <td> 
+		                                                  <p><b class="task-percent">${fn:substring(projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS,0,3)}</b>/100</p>
 		                                                  <div class="progress task-progress">
-		                                                    <div class="progress-bar bg-success task-progress-bar" role="progressbar" style="width: ${projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS}%"></div>
-		                                                  </div>
+		                                                    <c:if test="${(projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS gt 0) and (projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS lt 30)}">
+		                                                    	<div class="progress-bar bg-danger task-progress-bar" role="progressbar" style="width: ${projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS}%"></div>
+		                                                  	</c:if>  
+							                                <c:if test="${(projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS gt 30) and (projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS lt 60)}">
+							                                	<div class="progress-bar bg-warning task-progress-bar" role="progressbar" style="width: ${projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS}%"></div>
+							                                </c:if>
+							                                <c:if test="${(projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS gt 60) and (projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS le 100)}">
+							                                	<div class="progress-bar bg-success task-progress-bar" role="progressbar" style="width: ${projectList.lists[vs.index].tlists[ts.index].TASK_PROGRESS}%"></div>
+							                                </c:if>  
+					                                        <div class="progress-state"></div>
+					                                      </div>
 		                                                </td>
 		                                              </tr>
 	                                              </c:forEach>
@@ -321,9 +338,9 @@
 	      	<label for="project-name" class="col-form-label">프로젝트명:</label>
 	        <input type="text" class="form-control" id="edit_project_name" name="project_name" required>
 	        <label for="project-start-date" class="col-form-label">프로젝트 시작일:</label>
-	        <input type="text" class="form-control" id="edit_set_startdate" name="set_startdate" required>
+	        <input type="text" class="form-control" id="edit_set_startdate" name="set_startdate" placeholder="yyyy-mm-dd" required>
 	        <label for="project-end-date" class="col-form-label">프로젝트 마감일:</label>
-			<input type="text" class="form-control" id="edit_set_enddate" name="set_enddate" required>
+			<input type="text" class="form-control" id="edit_set_enddate" name="set_enddate" placeholder="yyyy-mm-dd" required>
 			<label id="edit-project-members">프로젝트 멤버 선택:</label><br/>
 			<select class="js-example-basic-multiple project-edit-select" multiple="multiple" name="member" data-dropdown-parent="#edit-project-members">				      
 			   <option value="kim1234@samsung.com" >kim1234@samsung.com</option>
@@ -369,9 +386,9 @@
             <label for="task_content" class="col-form-label">업무 내용:</label>
             <input type="text" class="form-control" id="task_content" name="task_content" required>
             <label for="project-start-date" class="col-form-label">업무 시작일:</label>
-           	<input type="text" class="form-control" name="set_startdate" required>
+           	<input type="text" class="form-control" name="set_startdate" placeholder="yyyy-mm-dd" required>
             <label for="project-end-date" class="col-form-label">업무 마감일:</label>
-			<input type="text" class="form-control" name="set_enddate" required>
+			<input type="text" class="form-control" name="set_enddate" placeholder="yyyy-mm-dd" required>
           	<div class="mt-3">
           		<label id="select-task-category" >업무 카테고리:</label>
 		    	<select class="js-example-basic-single w-200" name="task_category" data-dropdown-parent="#select-task-category">
@@ -543,10 +560,12 @@ $(".project-list-accordion-card-header").click(function(e){
 	    	console.log('서버로부터 받은 데이타:',data);
 	    	$.each(data , function(i){
 	    		var project_member=data[i].M_NAME;
+	    		var member_team=data[i].TEAM_NAME;
+	    		var member_status=data[i].M_STATUS;
 	    		console.log(project_member);
 	    		$('#insert-project-members').after(
 	    				  "<div class='project_member_lists'>"+
-	    				  	"<div class='wrapper d-flex align-items-center py-2 border-bottom'>"+
+	    				  	"<div class='wrapper d-flex align-items-center py-2 border-bottom' style='justify-content: space-between'>"+
 			                  "<div class='d-flex align-items-center py-2'>"+
 			                    "<img class='img-sm rounded-10' alt='profile-img' src='#'>"+
 			                  "</div>"+
@@ -554,7 +573,10 @@ $(".project-list-accordion-card-header").click(function(e){
 			                    "<span>"+ project_member + "</span>"+
 			                  "</div>"+
 			                  "<div class='d-flex align-items-center py-2'>"+
-			                    "<span>부서명</span>"+
+			                    "<span class='ml-2'> "+ member_team +" </span>"+
+			                  "</div>"+
+			                  "<div class='d-flex align-items-center py-2'>"+
+			                    "<span class='ml-2'> "+ member_status +" </span>"+
 			                  "</div>"+
 			                "</div>"+
 			              "</div>"		
@@ -685,7 +707,9 @@ $('#project_create').click(function(e){
   });
 ////[4]
 
-//[5] 프로그래스바 제어 
+//[5] 프로그래스바 제어: 
+// 	프로젝트 페이지에서는 프로그래스바를 조정할 수 없는것이 나을 것 같아 주석처리함
+/*
 $(document).ready(function(){
   //프로그래스 바를 클릭
   $('.task-progress').click(function(e){
@@ -719,7 +743,8 @@ $(document).ready(function(){
      
   })
 })
-/////
+*/
+/////[5]
 /*
 function sendPost(url,params){
 	var form = document.createElement('form');

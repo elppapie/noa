@@ -36,7 +36,7 @@
                         <div class="d-sm-flex justify-content-between align-items-start">
                            <div>
                              <h4 class="card-title card-title-dash">개인업무 리스트</h4>
-                            <p class="card-subtitle card-subtitle-dash">진행중인 업무 수 : ${selectTaskList.map['totalRecordCount']}</p>
+                            <p class="card-subtitle card-subtitle-dash total-task-no" id="${selectTaskList.map['totalRecordCount']}">진행중인 업무 수 : ${selectTaskList.map['totalRecordCount']}</p>
                            </div>
                            <div>
                              <button class="btn btn-primary btn-lg text-white mb-0 me-0 dropdown-item" data-toggle="modal" data-target="#task-Create-Modal" data-whatever="@mdo" id="task_create" type="button">
@@ -117,16 +117,16 @@
                                  </td>
                                  <td>
                                  	<c:if test="${selectTaskList.lists[vs.index].TASK_CATEGORY eq '진행'}">
-	                                	<div class="badge badge-opacity-warning">In progress</div>
+	                                	<div class="badge badge-opacity-warning task-badge-progress" id="${selectTaskList.lists[vs.index].TASK_PROGRESS}">In progress</div>
 	                                </c:if>
 	                                <c:if test="${selectTaskList.lists[vs.index].TASK_CATEGORY eq '요청'}">
-	                                	<div class="badge badge-opacity-danger">Request</div>
+	                                	<div class="badge badge-opacity-danger task-badge-request" id="${selectTaskList.lists[vs.index].TASK_PROGRESS}">Request</div>
 	                                </c:if>
 	                                <c:if test="${selectTaskList.lists[vs.index].TASK_CATEGORY eq '피드백'}">
-	                                	<div class="badge badge-opacity-info">Feedback</div>
+	                                	<div class="badge badge-opacity-info task-badge-feedback" id="${selectTaskList.lists[vs.index].TASK_PROGRESS}">Feedback</div>
 	                                </c:if>
 	                                <c:if test="${selectTaskList.lists[vs.index].TASK_CATEGORY eq '완료'}">
-	                                	<div class="badge badge-opacity-success">Completed</div>
+	                                	<div class="badge badge-opacity-success task-badge-complete" id="${selectTaskList.lists[vs.index].TASK_PROGRESS}">Completed</div>
 	                                </c:if>
 	                             </td>
                                  <!-- 프로그래스바 테스트 끝 -->
@@ -202,7 +202,7 @@
                   </div>
                 </div>
                 <!-- 체크리스트 카드 바디 끝 -->
-                <!-- 차트 임시 시작 -->
+                <!-- 차트 시작 -->
                 <div class="card">
                 	<div class="card-body">
                 		<div class="chartjs-size-monitor">
@@ -215,11 +215,11 @@
 	                			</div>
 	                		</div>
 	                	</div>
-	                  	<h4 class="card-title">Doughnut chart</h4>
+	                  	<h4 class="card-title">총 업무 진행도</h4>
 	                  	<canvas id="doughnutChart" width="336" height="167" style="display: block; height: 134px; width: 269px;" class="chartjs-render-monitor"></canvas>
                 	</div>
                 </div>
-                <!-- 차트 임시 끝 -->
+                <!-- 차트 끝 -->
 			</div>
 		</div>
 	</div>
@@ -249,9 +249,9 @@
             <label for="task_content" class="col-form-label">업무 내용:</label>
             <input type="text" class="form-control" id="task_content" name="task_content" required>
             <label for="project-start-date" class="col-form-label">업무 시작일:</label>
-           	<input type="text" class="form-control" name="set_startdate" required>
+           	<input type="text" class="form-control" name="set_startdate" placeholder="yyyy-mm-dd" required>
             <label for="project-end-date" class="col-form-label">업무 마감일:</label>
-			<input type="text" class="form-control" name="set_enddate" required>
+			<input type="text" class="form-control" name="set_enddate" placeholder="yyyy-mm-dd" required>
           	<div class="mt-3">
           		<label id="select-task-category" >업무 카테고리:</label>
 		    	<select class="js-example-basic-single w-200" name="task_category" data-dropdown-parent="#select-task-category">
@@ -286,8 +286,8 @@
 	      <div class="modal-body">
 			<label for="task_m_id" class="col-form-label">체크 내용</label>
 			<input type="text" class="form-control" id="modal_checklist_content" name="cl_content" required>
-	        <label for="project_name" class="col-form-label">만료 기간</label>
-	        <input type="text" class="form-control" id="modal_checklist_end_date" name="cl_deadline" required>
+	        <label for="cl_deadline" class="col-form-label">만료 기간</label>
+	        <input type="text" class="form-control" id="modal_checklist_end_date" name="cl_deadline" placeholder="yyyy-mm-dd" required>
 	       	<div class="mt-3">
 	       		<label>카테고리:</label>
 		    	<select class="js-example-basic-single w-200" name="cl_category" id="modal_checklist_category" data-dropdown-parent="#check-Add-Modal">
@@ -428,6 +428,77 @@ $('.todo-list-chbox').click(function(e){
 	});
 });
 /////[3]
+
+//[4]도넛 파이데이터 스크립트 데이터
+// 차트를 그럴 영역을 dom요소로 가져온다.
+var chartArea = document.getElementById('doughnutChart').getContext('2d');
+var totalTask = $('.total-task-no').prop('id');
+var progresslen = $('.task-badge-progress').length;
+var progressPer=0;
+$('.task-badge-progress').each(function(index, item){
+    progressPer = Number(progressPer)+Number($(item).prop('id'));
+});
+console.log("progressPer:",progressPer);
+var requestlen = $('.task-badge-request').length;
+var requestPer=0;
+$('.task-badge-request').each(function(index, item){
+	requestPer = Number(requestPer)+Number($(item).prop('id'));
+});
+var feedbacklen = $('.task-badge-feedback').length;
+var feedbackPer=0;
+$('.task-badge-feedback').each(function(index, item){
+	feedbackPer = Number(feedbackPer)+Number($(item).prop('id'));
+});
+var completelen = $('.task-badge-complete').length;
+var completePer=0;
+$('.task-badge-complete').each(function(index, item){
+	completePer = Number(completePer)+Number($(item).prop('id'));
+});
+// 차트를 생성한다. 
+var myChart = new Chart(chartArea, {
+    // ①차트의 종류(String)
+    type: 'doughnut',
+    // ②차트의 데이터(Object)
+    data: {
+        // ③x축에 들어갈 이름들(Array)
+        labels: ['Progress', 'Request', 'Feedback', 'Complete'],
+        // ④실제 차트에 표시할 데이터들(Array), dataset객체들을 담고 있다.
+        datasets: [{
+            // ⑤dataset의 이름(String)
+            label: '#업무카테고리',
+            // ⑥dataset값(Array)
+            data: [(progressPer/totalTask), (requestPer/totalTask), (feedbackPer/totalTask), (completePer/totalTask)],
+            // ⑦dataset의 배경색(rgba값을 String으로 표현)
+            backgroundColor:[
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+                'rgba(75, 192, 192, 0.5)'            
+              ],
+            // ⑧dataset의 선 색(rgba값을 String으로 표현)
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',                
+              ],
+            // ⑨dataset의 선 두께(Number)
+            borderWidth: 1
+        }]
+    },
+    // ⑩차트의 설정(Object)
+    options: {
+        // ⑪축에 관한 설정(Object)
+        scales: {
+            // ⑫y축에 대한 설정(Object)
+            y: {
+                // ⑬시작을 0부터 하게끔 설정(최소값이 0보다 크더라도)(boolean)
+                beginAtZero: true
+            }
+        }
+    }
+});
+////////[4]
 
 </script>
 

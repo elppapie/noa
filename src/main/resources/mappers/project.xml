@@ -96,7 +96,10 @@
 	
 	<!-- 프로젝트별 참여 인원 리스트 불러오기 -->
 	<select id="projectGetMList" parameterType="Map" resultType="Map">
-		SELECT pml.*, m.m_name FROM proj_m_list pml JOIN members m ON m.m_id = pml.m_id 
+		SELECT T.*,tm.team_name FROM 
+			(SELECT pml.*, m.m_name,m.team_no,m.m_status FROM 
+				proj_m_list pml JOIN members m ON m.m_id = pml.m_id)T
+			JOIN team tm ON tm.team_no=T.team_no
 		WHERE project_no=#{project_no}
 	</select>
 	

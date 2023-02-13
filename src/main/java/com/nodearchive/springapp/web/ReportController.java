@@ -1,5 +1,8 @@
 package com.nodearchive.springapp.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +11,16 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.nodearchive.springapp.service.ProjectService;
 import com.nodearchive.springapp.service.ReportService;
+import com.nodearchive.springapp.service.TaskService;
 import com.nodearchive.springapp.service.utils.ListPagingData;
 
 @Controller
@@ -22,6 +29,10 @@ public class ReportController {
 
 	@Autowired
 	private ReportService<Map> reportService;
+	@Autowired
+	private ProjectService<Map> projectService;
+	@Autowired
+	private TaskService<Map> taskService;
 	
 	//리포트 생성(post) - 테스트 완
 	@RequestMapping("/create.kosmo")
@@ -39,21 +50,40 @@ public class ReportController {
 	//리포트 목록(get) - 테스트 완
 	@RequestMapping("/list.kosmo")
 	public String reportMain(
-			//Authentication auth,
+			Authentication auth,
 			HttpServletRequest req,
 			@RequestParam(required = false,defaultValue = "1") int nowPage,
 			@RequestParam Map map, 
-			Model model) {
+			Model model) throws ParseException {
 		
 		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
-		//UserDetails userDetails=(UserDetails)auth.getPrincipal();
-		//map.put("loginId", userDetails.getUsername());
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername());
 				
+		//Project / Task 쪽에서 받는 데이터
+		ListPagingData<Map> selectTaskList = taskService.selectList(map, req, nowPage);
+		
+		//업무별 마감일 기준 d-day 계산값 
+		List<Map> tasklists = selectTaskList.getLists();
+		for(Map list:tasklists) {
+			String todayFm = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis())); // 오늘날
+			String endDateFm = list.get("SCHE_ENDDATE").toString();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date enddate = new Date(dateFormat.parse(endDateFm).getTime()); 
+			Date today = new Date(dateFormat.parse(todayFm).getTime());
+			long calculate = enddate.getTime() - today.getTime();
+			int Ddays = (int) (calculate / (24*60*60*1000));
+			list.put("Ddays", Ddays);
+			System.out.println("두 날짜 차이일 : " + Ddays);
+		}
+		
+		model.addAttribute("selectTaskList", selectTaskList);
+		model.addAttribute("selectListCheck",projectService.selectListCheck(map,req));
 		
 		ListPagingData<Map> selectListReport = reportService.selectList(map, req, nowPage);
 		model.addAttribute("selectListReport", selectListReport);
 		//리포트 목록
-		return "report/list.noa";
+		return "project/Report.noa";
 	}
 	
 	//리포트 상세보기(get) - 테스트 완
@@ -160,6 +190,44 @@ public class ReportController {
 		model.addAttribute("reportMember", reportService.selectMember(map));
 		return "report/view.noa";
 	}
+	/*
+	//업무 리스트 구하기 - 문자열, 날짜 검색 기능 - 테스트 완
+	//@RequestMapping(value={"/list.kosmo", "/Project/list.kosmo"})
+	@RequestMapping(value="/list.kosmo")
+	public String selectTasks(
+			Authentication auth,
+			@RequestParam Map map,
+			HttpServletRequest req,
+			Model model,
+			@RequestParam(required = false,defaultValue = "1") int nowPage) throws ParseException {
+		
+		//**스프링 시큐리티 적용시 아래 두줄로 유저 아이디 조회 & map에 저장
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		map.put("loginId", userDetails.getUsername());
+		
+		ListPagingData<Map> selectTaskList = taskService.selectList(map, req, nowPage);
+		
+		//업무별 마감일 기준 d-day 계산값 
+		List<Map> tasklists = selectTaskList.getLists();
+		for(Map list:tasklists) {
+			String todayFm = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis())); // 오늘날
+			String endDateFm = list.get("SCHE_ENDDATE").toString();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date enddate = new Date(dateFormat.parse(endDateFm).getTime()); 
+			Date today = new Date(dateFormat.parse(todayFm).getTime());
+			long calculate = enddate.getTime() - today.getTime();
+			int Ddays = (int) (calculate / (24*60*60*1000));
+			list.put("Ddays", Ddays);
+			System.out.println("두 날짜 차이일 : " + Ddays);
+		}
+		
+		model.addAttribute("selectTaskList", selectTaskList);
+		model.addAttribute("selectListCheck",projectService.selectListCheck(map,req));
+		//리포트 작성 페이지로 .0. 이동
+		return "project/Report.noa";
+	}
+	*/
+	
 
 	//리포트 다운로드 
 	//- 리엑트 사용 예정(개발 환경 서치 필요)

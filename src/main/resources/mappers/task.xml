@@ -64,21 +64,25 @@
 	<!-- 페이징을 위한 업무 레코드 수 카운트 - 프로젝트 하위 업무 셀렉트 용  -->
 	<select id="taskTotalRecordCountByProj" parameterType="Map" resultType="int">
 		SELECT COUNT(*) FROM(
-			SELECT T1.*,m.m_name FROM
-			(SELECT t.*,s.sche_startdate, s.sche_enddate FROM TASK t
-			JOIN schedule s ON s.sche_no = t.sche_no)T1
-			JOIN members m ON T1.m_id=m.m_id				
-			WHERE T1.project_no = #{project_no}
+			SELECT T2.*,tm.team_name,tm.dept_code FROM
+				(SELECT T1.*,m.m_name,m.team_no FROM
+					(SELECT t.*,s.sche_startdate, s.sche_enddate FROM TASK t
+					JOIN schedule s ON s.sche_no = t.sche_no)T1
+				JOIN members m ON T1.m_id=m.m_id)T2
+			JOIN team tm ON T2.team_no=tm.team_no	
+		WHERE T2.project_no = #{project_no}
 		)
 	</select>
 	
 	<!-- 페이징을 위한 업무 리스트 출력 - 프로젝트 하위 업무 셀렉트 용 -->
 	<select id="taskFindAllListByProj" parameterType="Map" resultType="Map">
-		SELECT T1.*,m.m_name FROM
-		(SELECT t.*,s.sche_startdate, s.sche_enddate FROM TASK t
-		JOIN schedule s ON s.sche_no = t.sche_no)T1
-		JOIN members m ON T1.m_id=m.m_id				
-		WHERE T1.project_no = #{project_no}
+		SELECT T2.*,tm.team_name,tm.dept_code FROM
+				(SELECT T1.*,m.m_name,m.team_no FROM
+					(SELECT t.*,s.sche_startdate, s.sche_enddate FROM TASK t
+					JOIN schedule s ON s.sche_no = t.sche_no)T1
+				JOIN members m ON T1.m_id=m.m_id)T2
+			JOIN team tm ON T2.team_no=tm.team_no	
+		WHERE T2.project_no = #{project_no}
 	</select>
 	
 	<!-- 수정용 sche_no 구하는 쿼리 -->
