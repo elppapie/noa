@@ -447,7 +447,7 @@ CREATE TABLE MEMBERS
 );
 
 
--- 회의식 예약
+-- 회의실 예약
 CREATE TABLE MR_RESERVATION
 (
 	-- 예약 일련번호
@@ -464,6 +464,12 @@ CREATE TABLE MR_RESERVATION
 	MRR_CONTENT nvarchar2(1000) NOT NULL,
 	-- 예약상태
 	MRR_STATUS number(1) DEFAULT 0 NOT NULL,
+	-- 예약일
+	MRR_DATE date NOT NULL,
+	-- 시작시간
+	MRR_STARTTIME timestamp NOT NULL,
+	-- 종료시간
+	MRR_ENDTIME timestamp NOT NULL,
 	PRIMARY KEY (MRR_NO)
 );
 

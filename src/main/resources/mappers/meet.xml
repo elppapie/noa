@@ -8,13 +8,12 @@
     </select>
     
     <select id="selectList" resultMap="meetResrvResultSet">
-        select mrr_no,sche_no,m_id,mr_code,mrr_regidate,mrr_content, mrr_status, mrr_date,
-               mr_name, m_name, sche_startdate, sche_enddate
+        select mrr_no,sche_no,m_id,mr_code,mrr_regidate,mrr_content, mrr_status, mrr_date, mrr_starttime, mrr_endtime,
+               mr_name, m_name
         from mr_reservation
              left join members using(m_id)
              left join meeting_room using(mr_code)
-             left join schedule using(sche_no)
-        order by sche_startdate
+        order by mrr_starttime
     </select>
     
     <resultMap type="MeetingResrv" id="meetResrvResultSet">
@@ -26,10 +25,11 @@
         <result column="MRR_CONTENT" property="mrr_content"/>
         <result column="MRR_STATUS" property="mrr_status"/>
         <result column="MRR_DATE" property="mrr_date"/>
+        <result column="MRR_STARTTIME" property="mrr_starttime"/>
+        <result column="MRR_ENDTIME" property="mrr_endtime"/>
         <result column="MR_NAME" property="mr_name"/>
         <result column="M_NAME" property="m_name"/>
-        <result column="SCHE_STARTDATE" property="sche_startdate"/>
-        <result column="SCHE_ENDDATE" property="sche_enddate"/>
+
     </resultMap>
     
     <select id="getMyListCount" resultType="int">
@@ -39,19 +39,18 @@
     </select>
     
     <select id="selectMyList" resultMap="meetResrvResultSet">
-        select mrr_no,sche_no,m_id,mr_code,mrr_regidate,mrr_content, mrr_status, mrr_date,
-               mr_name, m_name sche_startdate, sche_enddate
+        select mrr_no,sche_no,m_id,mr_code,mrr_regidate,mrr_content, mrr_status, mrr_date, mrr_starttime, mrr_endtime,
+               mr_name, m_name
         from mr_reservation
              left join members using(m_id)
              left join meeting_room using(mr_code)
-             left join schedule using(sche_no)
         where m_id = #{m_id}
-        order by sche_startdate
+        order by mrr_starttime
     </select>
     
     <insert id="insertMeetResrv">
         insert into mr_reservation
-        values(seq_mrr_no.nextval, #{sche_no}, #{m_id}, #{mr_code}, default, #{mr_content}, default, SYSDATE)
+        values(seq_mrr_no.nextval, #{sche_no}, #{m_id}, #{mr_code}, default, #{mr_content}, default, SYSDATE, #{mrr_starttime}, #{mrr_endtime})
     </insert>
     
     <!-- 선택 가능한 회의실 조회하기 -->
@@ -64,28 +63,28 @@
             from meeting_room
             where mr_code in (select mr_code
                               from meeting_room
-                              where mr_status <> '1'
+                              where mrr_status <> '1'
                                     and mr_code not in (select mr_code
                                                         from mr_reservation
-                                                        where rev_status = '0'
-                                                              and to_char(rev_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
-                                                              and rev_start_time <= #{inputStartTime}
-                                                              and rev_end_time > #{inputStartTime}
+                                                        where mrr_status = '0'
+                                                              and to_char(mrr_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
+                                                              and mrr_starttime <= #{inputStartTime}
+                                                              and mrr_endtime > #{inputStartTime}
                                                         union
-                                                        select meet_no
-                                                        from meet_reservation
-                                                        where rev_status = '0'
-                                                              and to_char(rev_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
-                                                              and rev_start_time < #{inputEndTime}
-                                                              and rev_end_time >= #{inputEndTime}
+                                                        select mr_code
+                                                        from mr_reservation
+                                                        where mrr_status = '0'
+                                                              and to_char(mrr_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
+                                                              and mrr_starttime < #{inputEndTime}
+                                                              and mrr_endtime >= #{inputEndTime}
                                                         union
-                                                        select meet_no
-                                                        from meet_reservation
-                                                        where rev_status = '0'
-                                                              and to_char(rev_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
-                                                              and rev_start_time > #{inputStartTime}
-                                                              and rev_end_time < #{inputEndTime}))
-                  and meet_status = 0
+                                                        select mr_code
+                                                        from mr_reservation
+                                                        where mrr_status = '0'
+                                                              and to_char(mrr_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
+                                                              and mrr_starttime > #{inputStartTime}
+                                                              and mrr_endtime < #{inputEndTime}))
+                  and mrr_status = 0
             ]]>
             <if test="rNo != null">
             union
@@ -93,37 +92,37 @@
             <![CDATA[
             select *
             from meeting_room
-            where meet_no in (select meet_no
+            where mr_code in (select mr_code
                               from meeting_room
-                              where meet_status <> '1'
-                                    and meet_no in (select meet_no
-                                                    from meet_reservation
-                                                    where rev_no = #{rNo}
+                              where mrr_status <> '1'
+                                    and mr_code in (select mr_code
+                                                    from mr_reservation
+                                                    where mrr_no = #{rNo}
                                                     intersect
-                                                    (select meet_no
-                                                        from meet_reservation
-                                                        where rev_status = '0'
-                                                              and to_char(rev_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
+                                                    (select mr_code
+                                                        from mr_reservation
+                                                        where mrr_status = '0'
+                                                              and to_char(mrr_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
                                                               and rev_start_time <= #{inputStartTime}
                                                               and rev_end_time > #{inputStartTime}
                                                         union
                                                         select meet_no
                                                         from meet_reservation
-                                                        where rev_status = '0'
+                                                        where mrr_status = '0'
                                                               and to_char(rev_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
                                                               and rev_start_time < #{inputEndTime}
                                                               and rev_end_time >= #{inputEndTime}
                                                         union
                                                         select meet_no
                                                         from meet_reservation
-                                                        where rev_status = '0'
+                                                        where mrr_status = '0'
                                                               and to_char(rev_date, 'YYYY-MM-DD') = to_char(#{inputDate}, 'YYYY-MM-DD')
                                                               and rev_start_time > #{inputStartTime}
                                                               and rev_end_time < #{inputEndTime})))
-                  and meet_status = 0
+                  and mrr_status = 0
             ]]>
             </if>)
-        order by meet_name
+        order by mr_code
     </select>
     
     <resultMap type="MeetingRoom" id="meetRoomResultSet">
@@ -138,12 +137,12 @@
         <![CDATA[
         update mr_reservation
         set mrr_status = '1'
-        where #{tNow} >=(select sche_enddate from schedule left join mr_reservation using(sche_no))
+        where mrr_endtime <= #{tNow}
               and mrr_status = '0'
         ]]>
     </update>
   
-      <!--  
+    <!--  
     <select id="searchListCount" resultType="int">
         select count(*)
         from mr_reservation

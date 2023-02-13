@@ -59,12 +59,12 @@ public class MeetingResrvController {
         
         /*String loginUserId = ((Member) session.getAttribute("loginUser")).getM_id();*/
         
-        int listCount2 = mrService.getMyListCount("hong1234@samsung.com");
+        int listCount2 = mrService.getMyListCount("kim1234@samsung.com");
         
         PageInfo pi2 = Pagination.getPageInfo(currentPage2, listCount2);
         
         HashMap map = new HashMap();
-        map.put("m_id", "hong1234@samsung.com");
+        map.put("m_id", "kim1234@samsung.com");
         map.put("pi2", pi2);
         
         ArrayList<MeetingResrvDTO> list2 = mrService.selectMyList(map);
@@ -75,20 +75,20 @@ public class MeetingResrvController {
         
         for (MeetingResrvDTO meetingResrv : list1) {
             Date mrr_date = meetingResrv.getMrr_date();
-            Timestamp sche_startdate = meetingResrv.getSche_startdate();
-            Timestamp sche_enddate = meetingResrv.getSche_enddate();
+            Timestamp mrr_starttime = meetingResrv.getMrr_starttime();
+            Timestamp mrr_endtime = meetingResrv.getMrr_endtime();
             
-            meetingResrv.setRev_time(sdf_date.format(mrr_date) + "   " + sdf_time.format(sche_startdate) + " ~ "
-                    + sdf_time.format(sche_enddate));
+            meetingResrv.setRev_time(sdf_date.format(mrr_date) + "   " + sdf_time.format(mrr_starttime) + " ~ "
+                    + sdf_time.format(mrr_endtime));
         }
         
         for (MeetingResrvDTO meetingResrv : list2) {
-            Date rev_date = meetingResrv.getMrr_date();
-            Timestamp rev_start_time = meetingResrv.getSche_startdate();
-            Timestamp rev_end_time = meetingResrv.getSche_enddate();
+            Date mrr_date = meetingResrv.getMrr_date();
+            Timestamp mrr_starttime = meetingResrv.getMrr_starttime();
+            Timestamp mrr_endtime = meetingResrv.getMrr_endtime();
             
-            meetingResrv.setRev_time(sdf_date.format(rev_date) + "   " + sdf_time.format(rev_start_time) + " ~ "
-                    + sdf_time.format(rev_end_time));
+            meetingResrv.setRev_time(sdf_date.format(mrr_date) + "   " + sdf_time.format(mrr_starttime) + " ~ "
+                    + sdf_time.format(mrr_endtime));
         }
         
         // view로 데이터 전달
@@ -158,11 +158,11 @@ public class MeetingResrvController {
         String start_time = sdf.format(r_date) + " " + r_start_time + ":00";
         String end_time = sdf.format(r_date) + " " + r_end_time + ":00";
         
-        mr.setSche_startdate(Timestamp.valueOf(start_time));    // 예약 시작시간 입력
-        mr.setSche_enddate(Timestamp.valueOf(end_time));    // 예약 종료 시간 입력
+        mr.setMrr_starttime(Timestamp.valueOf(start_time));    // 예약 시작시간 입력
+        mr.setMrr_endtime(Timestamp.valueOf(end_time));    // 예약 종료 시간 입력
         mr.setMrr_content(r_content);   // 예약목적 내용 입력
         mr.setMr_code(r_room);  // 예약 회의실 번호 입력
-        mr.setM_id(/*((Member) session.getAttribute("loginUser")).getM_id()*/"hong1234@samsung.com");   // 예약자 아이디 입력
+        mr.setM_id(/*((Member) session.getAttribute("loginUser")).getM_id()*/"kim1234@samsung.com");   // 예약자 아이디 입력
         
         int result = mrService.insertMeetingResrv(mr);
         
@@ -269,11 +269,11 @@ public class MeetingResrvController {
         String start_time = sdf.format(r_date) + " " + r_start_time + ":00";
         String end_time = sdf.format(r_date) + " " + r_end_time + ":00";
         
-        mr.setSche_startdate(Timestamp.valueOf(start_time));    // 예약 시작시간 입력
-        mr.setSche_enddate(Timestamp.valueOf(end_time));    // 예약 종료 시간 입력
+        mr.setMrr_starttime(Timestamp.valueOf(start_time));    // 예약 시작시간 입력
+        mr.setMrr_endtime(Timestamp.valueOf(end_time));    // 예약 종료 시간 입력
         mr.setMrr_content(r_content);   // 예약목적 내용 입력
         mr.setMr_code(r_room);  // 예약 회의실 번호 입력
-        mr.setM_id(/*((Member) session.getAttribute("loginUser")).getM_id()*/"hong1234@samsung.com");   // 예약자 아이디 입력
+        mr.setM_id(/*((Member) session.getAttribute("loginUser")).getM_id()*/"kim1234@samsung.com");   // 예약자 아이디 입력
         
         int result = mrService.updateMeetingResrv(mr);
         
@@ -379,7 +379,7 @@ public class MeetingResrvController {
         
         /*String loginUserId = ((Member) session.getAttribute("loginUser")).getM_id();*/
         
-        map.put("m_id", "hong1234@samsung.com");
+        map.put("m_id", "kim1234@samsung.com");
         
         if (condition.equals("r_no")) {    // 예약번호로 검색 시
             int r_no = -1;  // 상태를 확인할 수 없는 값 초기 값 할당
@@ -438,20 +438,20 @@ public class MeetingResrvController {
         
         for (MeetingResrvDTO meetingResrv : searchList1) {
             Date mrr_date = meetingResrv.getMrr_date();
-            Timestamp sche_startdate = meetingResrv.getSche_startdate();
-            Timestamp sche_enddate = meetingResrv.getSche_enddate();
+            Timestamp mrr_starttime = meetingResrv.getMrr_starttime();
+            Timestamp mrr_endtime = meetingResrv.getMrr_endtime();
             
-            meetingResrv.setRev_time(sdf_date.format(mrr_date) + "   " + sdf_time.format(sche_startdate) + " ~ "
-                    + sdf_time.format(sche_enddate));
+            meetingResrv.setRev_time(sdf_date.format(mrr_date) + "   " + sdf_time.format(mrr_starttime) + " ~ "
+                    + sdf_time.format(mrr_endtime));
         }
         
         for (MeetingResrvDTO meetingResrv : searchList2) {
             Date mrr_date = meetingResrv.getMrr_date();
-            Timestamp sche_startdate = meetingResrv.getSche_startdate();
-            Timestamp sche_enddate = meetingResrv.getSche_enddate();
+            Timestamp mrr_starttime = meetingResrv.getMrr_starttime();
+            Timestamp mrr_endtime = meetingResrv.getMrr_endtime();
             
-            meetingResrv.setRev_time(sdf_date.format(mrr_date) + "   " + sdf_time.format(sche_startdate) + " ~ "
-                    + sdf_time.format(sche_enddate));
+            meetingResrv.setRev_time(sdf_date.format(mrr_date) + "   " + sdf_time.format(mrr_starttime) + " ~ "
+                    + sdf_time.format(mrr_endtime));
         }
         
         // view로 데이터 전달

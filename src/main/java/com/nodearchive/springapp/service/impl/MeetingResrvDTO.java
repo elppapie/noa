@@ -12,17 +12,22 @@ public class MeetingResrvDTO {
     private String mrr_content; 		// 예약목적(내용)
     private int mrr_status;             // 예약상태(0: 예약 완료, 1: 사용 완료, 2: 예약 취소)
     private Date mrr_date;              // 예약일
-    
-    
-    private Timestamp sche_startdate;   // 시작시간
-    private Timestamp sche_enddate;     // 종료시간
+    private Timestamp mrr_starttime;    // 시작시간
+    private Timestamp mrr_endtime;      // 종료시간
     
    
     private String mr_name;           	// 예약한 회의실 이름
-    private String m_name;               // 예약자 이름
-	
+    private String m_name;              // 예약자 이름
     
-    public MeetingResrvDTO() {
+    private String rev_time;            // 예약날짜 정보(YYYY-MM-DD HH:MM ~ HH:MM)
+
+	public MeetingResrvDTO() {
+
+	}
+
+	public MeetingResrvDTO(int mrr_no, int sche_no, String m_id, String mr_code, Timestamp mrr_regidate,
+			String mrr_content, int mrr_status, Date mrr_date, Timestamp mrr_starttime, Timestamp mrr_endtime,
+			String mr_name, String m_name, String rev_time) {
 		super();
 		this.mrr_no = mrr_no;
 		this.sche_no = sche_no;
@@ -32,155 +37,124 @@ public class MeetingResrvDTO {
 		this.mrr_content = mrr_content;
 		this.mrr_status = mrr_status;
 		this.mrr_date = mrr_date;
-		this.sche_startdate = sche_startdate;
-		this.sche_enddate = sche_enddate;
+		this.mrr_starttime = mrr_starttime;
+		this.mrr_endtime = mrr_endtime;
 		this.mr_name = mr_name;
 		this.m_name = m_name;
+		this.rev_time = rev_time;
 	}
-
-
 
 	public int getMrr_no() {
 		return mrr_no;
 	}
 
-
 	public void setMrr_no(int mrr_no) {
 		this.mrr_no = mrr_no;
 	}
-
 
 	public int getSche_no() {
 		return sche_no;
 	}
 
-
 	public void setSche_no(int sche_no) {
 		this.sche_no = sche_no;
 	}
-
 
 	public String getM_id() {
 		return m_id;
 	}
 
-
 	public void setM_id(String m_id) {
 		this.m_id = m_id;
 	}
-
 
 	public String getMr_code() {
 		return mr_code;
 	}
 
-
 	public void setMr_code(String mr_code) {
 		this.mr_code = mr_code;
 	}
-
 
 	public Timestamp getMrr_regidate() {
 		return mrr_regidate;
 	}
 
-
 	public void setMrr_regidate(Timestamp mrr_regidate) {
 		this.mrr_regidate = mrr_regidate;
 	}
-
 
 	public String getMrr_content() {
 		return mrr_content;
 	}
 
-
 	public void setMrr_content(String mrr_content) {
 		this.mrr_content = mrr_content;
 	}
-
 
 	public int getMrr_status() {
 		return mrr_status;
 	}
 
-
 	public void setMrr_status(int mrr_status) {
 		this.mrr_status = mrr_status;
 	}
-
 
 	public Date getMrr_date() {
 		return mrr_date;
 	}
 
-
 	public void setMrr_date(Date mrr_date) {
 		this.mrr_date = mrr_date;
 	}
 
-
-	public Timestamp getSche_startdate() {
-		return sche_startdate;
+	public Timestamp getMrr_starttime() {
+		return mrr_starttime;
 	}
 
-
-	public void setSche_startdate(Timestamp sche_startdate) {
-		this.sche_startdate = sche_startdate;
+	public void setMrr_starttime(Timestamp mrr_starttime) {
+		this.mrr_starttime = mrr_starttime;
 	}
 
-
-	public Timestamp getSche_enddate() {
-		return sche_enddate;
+	public Timestamp getMrr_endtime() {
+		return mrr_endtime;
 	}
 
-
-	public void setSche_enddate(Timestamp sche_enddate) {
-		this.sche_enddate = sche_enddate;
+	public void setMrr_endtime(Timestamp mrr_endtime) {
+		this.mrr_endtime = mrr_endtime;
 	}
-
 
 	public String getMr_name() {
 		return mr_name;
 	}
 
-
 	public void setMr_name(String mr_name) {
 		this.mr_name = mr_name;
 	}
-
 
 	public String getM_name() {
 		return m_name;
 	}
 
-
 	public void setM_name(String m_name) {
 		this.m_name = m_name;
 	}
-	
-	
 
+	public String getRev_time() {
+		return rev_time;
+	}
+
+	public void setRev_time(String rev_time) {
+		this.rev_time = rev_time;
+	}
 
 	@Override
 	public String toString() {
-		return "MeetingResrv [mrr_no=" + mrr_no + ", sche_no=" + sche_no + ", m_id=" + m_id + ", mr_code=" + mr_code
+		return "MeetingResrvDTO [mrr_no=" + mrr_no + ", sche_no=" + sche_no + ", m_id=" + m_id + ", mr_code=" + mr_code
 				+ ", mrr_regidate=" + mrr_regidate + ", mrr_content=" + mrr_content + ", mrr_status=" + mrr_status
-				+ ", mrr_date=" + mrr_date + ", sche_startdate=" + sche_startdate + ", sche_enddate=" + sche_enddate
-				+ ", mr_name=" + mr_name + ", m_name=" + m_name + "]";
+				+ ", mrr_date=" + mrr_date + ", mrr_starttime=" + mrr_starttime + ", mrr_endtime=" + mrr_endtime
+				+ ", mr_name=" + mr_name + ", m_name=" + m_name + ", rev_time=" + rev_time + "]";
 	}
 
-
-	public void setRev_time(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-    
-    
-	
-	
-	
-    
-    
    
 }
