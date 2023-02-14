@@ -59,6 +59,10 @@ public class AddressDAO {
 		return template.selectList("addressGetOneTeam",map);
 	}
 
+	public Map getOneMemberDetails(Map map) {
+		return template.selectOne("addressGetOneMemberDetails", map);
+	}
+
 	
 	
 	

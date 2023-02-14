@@ -144,6 +144,16 @@
 		WHERE memb.team_no=#{team_no}
 	</select>
 	
+	<!-- 구성원 한 명의 상세정보 조회 -->
+	<select id="addressGetOneMemberDetails" parameterType="Map" resultType="Map">
+		SELECT m.m_id "m_id",m.m_name "m_name", m.m_profile_img "m_profile_img", t.team_name "team_name", 
+			m.m_team_leader "m_team_leader", m.m_dept_leader "m_dept_leader", p.position_name "position_name", 
+			m.m_private_contact "m_private_contact", m.m_emp_contact "m_emp_contact", m.m_hiredate "m_hiredate"
+		FROM members m JOIN position p ON m.position_code = p.position_code
+		JOIN team t ON m.team_no=t.team_no
+		WHERE m.m_id = #{m_id}
+	</select>
+	
 	<!-- 회원인지 아닌지 selectOne하는 쿼리 - 안드로이드 로그인 시 사용 -->
 	<select id="addressIsMember" parameterType="MembersDTO" resultType="int">
 		SELECT COUNT(*) FROM members WHERE m_id=#{m_id} AND m_password=#{m_password}

@@ -72,8 +72,8 @@ function count_tbody_checked_checkbox(event){
   let all = table.querySelector('thead input.btn-check-all-onoff'); //전체선택/해제 체크박스 구하기
    		console.log('변수확인: table:',table,', tbody_trs:',tbody_trs,', total_tr_count:',total_tr_count,' , all:',all)
   tbody_trs.forEach(function(tr,index) {
-  			console.log(tr)
-  			console.log('체크박스확인:',tr.querySelector('td:nth-child(1) > div > label > input[type="checkbox"]'));
+  			//console.log(tr)
+  			//console.log('체크박스확인:',tr.querySelector('td:nth-child(1) > div > label > input[type="checkbox"]'));
       if(tr.querySelector('td:nth-child(1) > div > label > input[type="checkbox"]').checked) count++;
   })
   if(count===total_tr_count){ 

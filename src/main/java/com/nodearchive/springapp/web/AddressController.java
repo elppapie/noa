@@ -127,8 +127,30 @@ public class AddressController {
 //test
 System.out.println("넘어온 파라미터:"+map.get("team_no"));
 		
-		
 		return addrService.searchOneTeam(map);
 	}
+	
+	//구성원 1명의 세부정보 조회
+	@GetMapping(value = "/searchOneMember.kosmo")
+	@ResponseBody
+	public Map searchOneMember(
+			Authentication auth, 
+			@RequestParam Map map
+			) {
+		//넘어오는 파라미터 m_id = 클릭한 구성원 아이디
+		Map<String,String> map_ = addrService.selectOne(map); 
+		/*
+		m_profile_img
+		m_id
+		team_no >> team_name 
+		++ team_leader? or dept leader?
+		position_code >> position_name
+		m_private_contact
+		m_emp_contact
+		m_hiredate
+		*/
+		return map_;
+	}
+	
 
 }

@@ -44,7 +44,9 @@
 <!--  Custom CSS   -->
 
 <style>
-.
+.p15{
+	padding:15px;
+}
 .addr-list-checkbox-td-padding-right-0{
 	padding-right:0px !important;
 }
@@ -95,6 +97,27 @@
 .input-helper::after{
 	background-color: #324a3b !important;
 	border-radius: 5px !important;
+}
+.profile-img-box-shadowing{
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+  border-radius: 50px;
+  margin-right: 10px;
+  width: 100px; 
+  height: 100px;
+}
+.member-title{
+  color: #c1c1c1;
+  font-size: smaller;
+  padding: 0px 8px;
+  border-right: 1.8px solid #c1c1c1;
+  margin-right: 8px;
+}
+.member-title-no-divider{
+  color: #c1c1c1;
+  font-size: smaller;
+}
+.member-content{
+  font-weight: bolder;
 }
 </style>
 <script type="text/javascript">
@@ -168,7 +191,7 @@
 	</div>
 	<div class="col-sm-9">
 		<div class="card card-rounded">
-			<div class="card-body addr-list-card-body-custom-height" id="addr-list-card-body-memberlist-card">
+			<div class="card-body addr-list-card-body-custom-height toggle-member-list-show-hidden" id="addr-list-card-body-memberlist-card">
 				<div class="table-reponsive overflow-y-scroll custom-scrollbar" style='height:506px; padding-right:8px;padding-top:50px;overflow-x:hidden;'>
                   <table class="table table-stripped table-hover ">
                     <thead class="table-thead-sticky">
@@ -183,11 +206,11 @@
                         	</div>
                         </th>
                         
-                        <th style="border-bottom:none;"> 프로필 </th>
-                        <th style="border-bottom:none;"> 이름 </th>
-                        <th style="border-bottom:none;"> 소속 팀 </th>
-                        <th style="padding-left:50px;border-bottom:none;"> 직급 </th>
-                        <th style="padding-left:32px;border-bottom:none;"> 개인 연락처 </th>
+                        <th style="border-bottom:none;padding-left:35px;"> 프로필 </th>
+                        <th style="border-bottom:none;padding-left:40px;"> 이름 </th>
+                        <th style="border-bottom:none;padding-left:25px;"> 소속 팀 </th>
+                        <th style="padding-left:25px;border-bottom:none;"> 직급 </th>
+                        <th style="padding-left:25px;border-bottom:none;"> 개인 연락처 </th>
                       </tr>
                     </thead>
                     <tbody id='addr-list-members-tbody-forcheckbox'>
@@ -212,11 +235,11 @@
 	                      	</td>	                      	
 	                      	-->
 	                      	
-	                        <td class="py-1"> <img src="${path}/resources/images/logo-noa-messanger.png" alt="프로필사진"/> </td>
+	                        <td class="py-1"> <img src="${path}/resources/imagesft/logo-noa-messanger.png" alt="프로필사진"/> </td>
 	                        <td> ${member['m_name']} <span hidden>${member['m_id']}</span></td>
 	                        <td> ${member['team_name']} </td>
-	                        <td> ${member['position_name']} </td>
-	                        <td> ${fn:substring(member['m_private_contact'],0,3)}-${fn:substring(member['m_private_contact'],3,7)}-${fn:substring(member['m_private_contact'],7,11)} </td>
+	                        <td style="padding-left:0px;"> ${member['position_name']} </td>
+	                        <td style="padding-left:0px;"> ${fn:substring(member['m_private_contact'],0,3)}-${fn:substring(member['m_private_contact'],3,7)}-${fn:substring(member['m_private_contact'],7,11)} </td>
 	                      </tr>
                       </c:forEach>
                     </tbody>
@@ -228,6 +251,59 @@
                 	</div>
                 </c:if>
 			</div>
+			
+			<!-- 구성원 상세보기 div 시작 -->
+			<div class="card-body d-flex flex-column justify-content-center p-15" style="display:none !important;" id="hidden-member-details">
+              <div style="width:565.5px;height:506px; padding:40px 10px;" class="d-flex flex-column justify-content-center">
+                <div class="d-flex align-items-center my-3" >
+                  <div style="margin:0px 15px;flex-grow: 1;">
+                    <img src="./images/profileskh.jpg" class="profile-img-box-shadowing"/>
+                  </div>
+                  <div class="d-flex flex-column" style="margin:0px 15px;flex-grow: 1;">
+                    <span class="member-title-no-divider">아이디</span>
+                    <span class="member-content" id="span-m-detail-m_id">m_id</span>
+                  </div>
+                  <div class="d-flex flex-column" style="margin:0px 15px;flex-grow: 1;">
+                    <span class="member-title-no-divider">이름</span>
+                    <span class="member-content" id="span-m-detail-m_name">m_name</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center my-3">
+                  <div class="d-flex align-items-baseline" style="margin:0px 15px;flex-grow: 1;">
+                    <span class="member-title">소속 </span>
+                    <span class="member-content" id="span-m-detail-team_name">team_name</span>
+                  </div>
+                  <div class="d-flex align-items-baseline" style="margin:0px 15px;flex-grow: 1;">
+                    <span class="member-title">직책</span>
+                    <span class="member-content"  id="span-m-detail-is_leader"></span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center my-3" >
+                  <div class="d-flex align-items-baseline" style="margin:0px 15px;flex-grow: 1;">
+                    <span class="member-title">직급 </span>
+                    <span class="member-content" id="span-m-detail-position_name">position_name</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center my-3">
+                  <div class="d-flex align-items-baseline" style="margin:0px 15px;flex-grow: 1;">
+                    <span class="member-title">개인연락처</span>
+                    <span class="member-content" id="span-m-detail-m_private_contact">010-5316-9953</span>
+                  </div>
+                  <div class="d-flex align-items-baseline" style="margin:0px 15px;flex-grow: 1;">
+                    <span class="member-title">사내연락처 </span>
+                    <span class="member-content" id="span-m-detail-m_emp_contact">02-345-9953 or None</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center my-3" >
+                  <div class="d-flex align-items-baseline" style="margin:0px 15px;flex-grow: 1;">
+                    <span class="member-title">입사일 </span>
+                    <span class="member-content" id="span-m-detail-m_hiredate">m_hiredate</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 구성원 상세보기 div 끝 -->
+            
 		</div>
 	</div>
 </div>
@@ -258,23 +334,60 @@
   <script src="${path}/chatResources/js/noaChatJS.js"></script>
   <script>
   	  const addrListTbody = document.querySelector('#addr-list-card-body-memberlist-card > div > table > tbody')
-	  let btn_all = document.querySelector('input.btn-check-all-onoff');
+  	  const alMemberListCardBody = document.querySelector('#addr-list-card-body-memberlist-card')
+	  
+  	  let btn_all = document.querySelector('input.btn-check-all-onoff');
    	  btn_all.addEventListener('click',toggle_btn_check_all_onoff)
       let addr_list_mlist_tbody = document.querySelector('#addr-list-members-tbody-forcheckbox');
       addr_list_mlist_tbody.addEventListener('click',count_tbody_checked_checkbox);
-  	  
+      addr_list_mlist_tbody.onclick = count_tbody_checked_checkbox;
+      
+      const hmd = document.querySelector('#hidden-member-details');
+      
   	  document.addEventListener('click',e => {
+  		//전체선택/전체해제 체크박스용 js
   		btn_all = document.querySelector('input.btn-check-all-onoff');
     	btn_all.addEventListener('click',toggle_btn_check_all_onoff)
     	addr_list_mlist_tbody = document.querySelector('#addr-list-members-tbody-forcheckbox');
+    	//addr_list_mlist_tbody.onclick = count_tbody_checked_checkbox;
     	addr_list_mlist_tbody.addEventListener('click',count_tbody_checked_checkbox);
-    	
+    	//tr 클릭 시 구성원 상세보기 띄우기
     	addr_list_mlist_tbody.addEventListener('click',e => {
     		if(event.target.type === 'checkbox') return;
-    		console.log(e.target.nodeName)
     		let member_id = get_tr_element_from_children(e.target).querySelector('span').textContent.trim();
-    		
+    		console.log('➡️구성원 m_id: ',member_id)
+    		$.ajax({
+    			url:'<c:url value="/Address/searchOneMember.kosmo"/>',
+    			data: "m_id="+member_id,
+    			dataType:'json'
+    		}).done(data=>{
+    			//data에 담긴 구성원 정보를 hidden에 값 설정
+    			console.log(data)
+    			hmd.querySelector('#span-m-detail-m_id').textContent = data['m_id']
+				hmd.querySelector('#span-m-detail-m_name').textContent = data['m_name']
+				hmd.querySelector('#span-m-detail-team_name').textContent = data['team_name']
+				let duty = '';
+				if (data['m_team_leader']===undefined){
+					duty+='👑팀장';
+					if (data['m_dept_leader']===undefined) duty+=' & 👑부서장';
+				}
+				else duty+='팀원';					
+				hmd.querySelector('#span-m-detail-is_leader').textContent = duty
+				hmd.querySelector('#span-m-detail-position_name').textContent = data['position_name']
+				hmd.querySelector('#span-m-detail-m_private_contact').textContent = data['m_private_contact']
+				hmd.querySelector('#span-m-detail-m_emp_contact').textContent = data['m_emp_contact']
+				hmd.querySelector('#span-m-detail-m_hiredate').textContent = data['m_hiredate']
+    			
+				//hidden 띄우기 닫기
+				alMemberListCardBody.style.display='none';
+				hmd.style.display='';
+				
+    				
+    		}).fail(error=>{
+    			console.log('에러발생: ',error)
+   			});
     	});
+    	
   	  })
   	  
   	
@@ -302,10 +415,10 @@
 		                        	'</div>'+
 		                        '</td>'+
 			                    '<td class="py-1"> <img src="'+member["m_profile"]+'" alt="프로필 사진"/> </td>'+
-			                    '<td> '+member["m_name"]+' </td>'+
+			                    '<td> '+member["m_name"]+'<span hidden>'+member["m_id"]+'</span> </td>'+
 			                    '<td> '+member["team_name"]+' </td>'+
-			                    '<td> '+member["position_name"]+' </td>'+
-			                    '<td> '+String(member["m_private_contact"]).substr(0,3)+String(member["m_private_contact"]).substr(3,7)+String(member["m_private_contact"]).substr(7,11)+' </td>'+
+			                    '<td style="padding-left:0px;"> '+member["position_name"]+' </td>'+
+			                    '<td style="padding-left:0px;"> '+String(member["m_private_contact"]).substr(0,3)+String(member["m_private_contact"]).substr(3,7)+String(member["m_private_contact"]).substr(7,11)+' </td>'+
 							  '</tr>'
                   addrListTbody.innerHTML+=html
 	    	  }
